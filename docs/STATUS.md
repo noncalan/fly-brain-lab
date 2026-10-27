@@ -17,12 +17,7 @@ Known issues / next:
 - Remaining v1: neuron inspector (click a point), spike raster/heatmap, two flies side by side, exports (PNG/GIF/CSV).
 - v2 not started. `legacy/` still not deleted (hook blocks deletion).
 
-## In progress (step 5, 2026-10-27) — not yet committed when this note was written
-- DONE locally: realistic gait from recorded NeuroMechFly steps (`public/data/gait.json`, `tools/build-data/build_gait.py`,
-  `src/fly/gait.ts` + tests; FlyRig uses absolute recorded joint angles; running = higher step rate + longer stride,
-  no foot sliding; command low-pass 150 ms; "Бег" label + speed mm/s).
-- DONE locally: neuron data now has NT + root IDs file (`build_neurons.py`, `atlas.ts loadRootIds`); engine/worker/client
-  `connections(neuron)`; `src/lab/NeuronInspector.tsx`; i18n keys for inspector/history/export/compare in `extra.ts`.
-- TODO: wire inspector (BrainView point picking via `onPickNeuron`, LabPage state, lastSpike array), raster+heatmap
-  component, exports (PNG via preserveDrawingBuffer, GIF via gifenc, CSV from history), Compare page (two
-  useSimulation instances, B gets lesion/opto/pruning), e2e for new features, commit, deploy, docs.
+## Step 5 (2026-10-27): realistic gait + rest of v1 — see CHANGELOG
+Remaining from the plan: v2 (compress-the-brain page with model size MB, lessons + quiz + teacher mode, spike
+sonification, Scale page, mobile auto-quality), final Lighthouse/a11y pass. Gait is recorded-step playback
+(NeuroMechFly CPG style), not a physics simulation; turning and backward walking reuse the forward step.

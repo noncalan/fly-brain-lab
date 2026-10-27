@@ -39,7 +39,7 @@ void main() {
 }`;
 
 /** All neurons as points at their soma (or representative) position; a spike lights the point, then it fades. */
-function NeuronPoints({ atlas, spikes, idle, accent }: { atlas: Atlas; spikes: SpikeQueueRef; idle: THREE.Color; accent: THREE.Color }) {
+function NeuronPoints({ atlas, spikes, idle, accent, onPick }: { atlas: Atlas; spikes: SpikeQueueRef; idle: THREE.Color; accent: THREE.Color; onPick?: (neuron: number) => void }) {
   const { geometry, activity } = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.BufferAttribute(atlas.positions, 3));
@@ -69,7 +69,28 @@ function NeuronPoints({ atlas, spikes, idle, accent }: { atlas: Atlas; spikes: S
     geometry.dispose();
     material.dispose();
   }, [geometry, material]);
-  return <points geometry={geometry} material={material} />;
+  return (
+    <points
+      geometry={geometry}
+      material={material}
+      onClick={(e) => {
+        if (e.index === undefined || !onPick) return;
+        e.stopPropagation();
+        onPick(e.index);
+      }}
+    />
+  );
+}
+
+/** Ring marker on the inspected neuron. */
+function Selection({ atlas, neuron, color }: { atlas: Atlas; neuron: number; color: THREE.Color }) {
+  const p = atlas.positions;
+  return (
+    <mesh position={[p[3 * neuron], p[3 * neuron + 1], p[3 * neuron + 2]]}>
+      <sphereGeometry args={[0.018, 16, 12]} />
+      <meshBasicMaterial color={color} transparent opacity={0.9} depthTest={false} />
+    </mesh>
+  );
 }
 const ACTIVE_OPACITY = 0.85;
 
@@ -158,7 +179,21 @@ function cssColor(varName: string): THREE.Color {
   return new THREE.Color(v[0] / 255, v[1] / 255, v[2] / 255);
 }
 
-export default function BrainView({ levels, activeCount, atlas, spikes }: { levels: LevelsRef; activeCount: number; atlas: Atlas | null; spikes: SpikeQueueRef }) {
+export default function BrainView({
+  levels,
+  activeCount,
+  atlas,
+  spikes,
+  selected = null,
+  onPickNeuron,
+}: {
+  levels: LevelsRef;
+  activeCount: number;
+  atlas: Atlas | null;
+  spikes: SpikeQueueRef;
+  selected?: number | null;
+  onPickNeuron?: (neuron: number) => void;
+}) {
   const { t, lang } = useI18n();
   const [meshes, setMeshes] = useState<NeuropilMesh[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -185,13 +220,16 @@ export default function BrainView({ levels, activeCount, atlas, spikes }: { leve
         aria-label={t('brain.canvasLabel', { active: activeCount })}
         role="img"
         onPointerMissed={() => setHovered(null)}
+        raycaster={{ params: { Points: { threshold: 0.008 } } } as never}
+        gl={{ preserveDrawingBuffer: true }}
       >
         <ambientLight intensity={0.9} />
         <directionalLight position={[1, 2, 3]} intensity={0.8} />
         {meshes?.map((m) => (
           <Region key={m.name} mesh={m} levels={levels} idleColor={palette.idle} accent={palette.accent} onHover={setHovered} />
         ))}
-        {atlas && <NeuronPoints atlas={atlas} spikes={spikes} idle={palette.idle} accent={palette.accent} />}
+        {atlas && <NeuronPoints atlas={atlas} spikes={spikes} idle={palette.idle} accent={palette.accent} onPick={onPickNeuron} />}
+        {atlas && selected !== null && <Selection atlas={atlas} neuron={selected} color={palette.accent} />}
         <Controls />
       </Canvas>
       {hovered && (

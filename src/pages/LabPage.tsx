@@ -9,7 +9,11 @@ import type { ArenaMark, FlyDrive } from '../fly/Fly3D';
 import { locomotionFromRates, type FlyState, type LocomotionCommand } from '../fly/locomotion';
 import { useI18n, type StringKey } from '../i18n';
 import { indicesOfType, loadAtlas, type Atlas } from '../lab/atlas';
+import { ActivityHistory } from '../lab/ActivityHistory';
 import { ExperimentPanel } from '../lab/ExperimentPanel';
+import { exportCsv, exportGif, exportPng } from '../lab/exporters';
+import { History, historyToCsv } from '../lab/history';
+import { NeuronInspector } from '../lab/NeuronInspector';
 import { decodeState, encodeState, type LabState, type OptoTarget } from '../lab/labState';
 import { RegionBars, type RegionRate } from '../lab/RegionBars';
 import { SignalPath } from '../lab/SignalPath';
@@ -40,6 +44,8 @@ const TURN_MIN = 0.15;
 const RUN_MIN_MM_S = 11;
 const NEURON_LABEL: Record<string, string> = { mn9: 'MN9', giant_fiber: 'Giant Fiber', adn1: 'aDN1' };
 const KNOWN_STIMULI = new Set(stimuliConfig.stimuli.map((s) => s.id));
+/** raster rows: every readout neuron, then a sample of stimulated neurons */
+const MAX_WATCHED_STIMULATED = 30;
 
 interface Status {
   timeMs: number;
@@ -84,9 +90,16 @@ export function LabPage() {
   const [atlas, setAtlas] = useState<Atlas | null>(null);
   const [touching, setTouching] = useState(false);
   const [foodContact, setFoodContact] = useState(false);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [gifProgress, setGifProgress] = useState<number | null>(null);
+  const history = useRef(new History());
+  const lastSpike = useRef<Float64Array | null>(null);
 
   const onFrame = useCallback((f: SimFrame) => {
     cloudRef.current?.addSpikes(f.activity.spikedIndices);
+    history.current.push(f.activity.timeMs, f.activity.windowMs, f.activity.neuropilSpikes, f.activity.setRatesHz, f.activity.spikedIndices);
+    const ls = lastSpike.current;
+    if (ls) for (const i of f.activity.spikedIndices) ls[i] = f.activity.timeMs;
     spikeQueue.current.push(f.activity.spikedIndices);
     if (spikeQueue.current.length > MAX_QUEUED_FRAMES) spikeQueue.current.shift();
     const { neuropilSpikes, windowMs, setRatesHz } = f.activity;
@@ -126,6 +139,7 @@ export function LabPage() {
   const { stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence } = sim;
   const info = sim.load.status === 'ready' ? sim.load.info : null;
   if (info) neuropilsRef.current = info.neuropils;
+  if (info && !lastSpike.current) lastSpike.current = new Float64Array(info.neuronCount).fill(-1);
 
   useEffect(() => {
     if (!info) return;
@@ -162,6 +176,30 @@ export function LabPage() {
     }
     prev.stimuli = { ...state.stimuli };
   }, [state, info, atlas, stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence]);
+
+  // raster rows: readout neurons first, then a sample of what is being stimulated
+  const watch = useMemo(() => {
+    if (!info) return { neurons: [] as number[], labels: [] as string[] };
+    const neurons: number[] = [];
+    const labels: string[] = [];
+    const add = (i: number, label: string) => {
+      if (!neurons.includes(i)) {
+        neurons.push(i);
+        labels.push(label);
+      }
+    };
+    for (const [id, set] of Object.entries(info.sets)) {
+      if (set.kind !== 'readout' || /_(l|r)$/.test(id)) continue;
+      set.indices.forEach((i, k) => add(i, `${NEURON_LABEL[id] ?? id}${set.indices.length > 1 ? ` ${k + 1}` : ''}`));
+    }
+    const stimulated: Array<[number, string]> = [];
+    for (const st of stimuliConfig.stimuli) if (st.id in state.stimuli) info.sets[st.set].indices.forEach((i) => stimulated.push([i, st.id]));
+    if (atlas) for (const o of state.opto) indicesOfType(atlas, o.type, o.side).forEach((i) => stimulated.push([i, o.type]));
+    const step = Math.max(1, Math.ceil(stimulated.length / MAX_WATCHED_STIMULATED));
+    for (let k = 0; k < stimulated.length; k += step) add(stimulated[k][0], stimulated[k][1]);
+    return { neurons, labels };
+  }, [info, state, atlas]);
+  useEffect(() => history.current.setWatch(watch.neurons), [watch]);
 
   // arena interactions drive their own stimulus channels so they never change the shared experiment state
   useEffect(() => {
@@ -306,12 +344,31 @@ export function LabPage() {
       </Panel>
 
       <Panel title={t('brain.title')} aside={<span className="hidden text-xs text-muted sm:inline">{t('brain.hint')}</span>}>
-        <div className="h-72 sm:h-96">
+        <div className="h-72 sm:h-96" data-testid="brain">
           <Suspense fallback={<div className="h-full animate-pulse rounded-lg bg-surface-2" />}>
-            <BrainView levels={levels} activeCount={activeRegionCount} atlas={atlas} spikes={spikeQueue} />
+            <BrainView levels={levels} activeCount={activeRegionCount} atlas={atlas} spikes={spikeQueue} selected={selected} onPickNeuron={setSelected} />
           </Suspense>
         </div>
         <p className="mt-2 text-xs text-muted">{t('brain.disclaimer')}</p>
+        <div className="mt-3">
+          {selected !== null && atlas ? (
+            <NeuronInspector
+              neuron={selected}
+              atlas={atlas}
+              neuropils={info.neuropils}
+              primaryNeuropil={info.primaryNeuropil}
+              lastSpikeMs={lastSpike.current?.[selected] ?? -1}
+              nowMs={status?.timeMs ?? 0}
+              connections={sim.connections}
+              onActivateType={(type) => changeState({ ...state, opto: [...state.opto.filter((o) => o.type !== type), { type, side: 'both', rateHz: 150 }] })}
+              onSilenceType={(type) => changeState({ ...state, lesions: [...state.lesions.filter((l) => !('type' in l && l.type === type)), { type }] })}
+              onPick={setSelected}
+              onClose={() => setSelected(null)}
+            />
+          ) : (
+            <p className="text-sm text-muted">{t('insp.hint')}</p>
+          )}
+        </div>
       </Panel>
 
       <Panel title={t('exp.title')}>
@@ -330,6 +387,50 @@ export function LabPage() {
       <div className="flex flex-col gap-4">
         <Panel title={t('path.title')}>
           <SignalPath stimulusId={lastStimulus} setRatesHz={rates} topRegions={(status?.regions ?? []).filter((r) => r.hz > 0.5).map((r) => r.name)} behaviors={status?.behaviors ?? []} />
+        </Panel>
+        <Panel title={t('hist.title')}>
+          <ActivityHistory history={history} neuropils={info.neuropils} labels={watch.labels} />
+        </Panel>
+        <Panel title={t('export.title')}>
+          <div className="flex flex-wrap gap-2 text-sm">
+            <button
+              type="button"
+              className="rounded-md border border-line px-3 py-1.5 hover:border-accent"
+              data-testid="export-png"
+              onClick={() => {
+                const cs = ['fly', 'brain'].map((id) => document.querySelector<HTMLCanvasElement>(`[data-testid="${id}"] canvas`)).filter((c): c is HTMLCanvasElement => !!c);
+                exportPng(cs, getComputedStyle(document.body).backgroundColor);
+              }}
+            >
+              {t('export.png')}
+            </button>
+            <button
+              type="button"
+              disabled={gifProgress !== null}
+              className="rounded-md border border-line px-3 py-1.5 hover:border-accent disabled:opacity-60"
+              data-testid="export-gif"
+              onClick={async () => {
+                const c = document.querySelector<HTMLCanvasElement>('[data-testid="fly"] canvas');
+                if (!c) return;
+                setGifProgress(0);
+                try {
+                  await exportGif(c, setGifProgress);
+                } finally {
+                  setGifProgress(null);
+                }
+              }}
+            >
+              {gifProgress !== null ? t('export.recording', { s: Math.ceil(5 * (1 - gifProgress)) }) : t('export.gif')}
+            </button>
+            <button
+              type="button"
+              className="rounded-md border border-line px-3 py-1.5 hover:border-accent"
+              data-testid="export-csv"
+              onClick={() => exportCsv(historyToCsv(history.current.frames, info.neuropils, Object.keys(info.sets)))}
+            >
+              {t('export.csv')}
+            </button>
+          </div>
         </Panel>
         <div className="grid gap-4 md:grid-cols-2">
           <Panel title={t('brain.bars')}>
@@ -354,6 +455,8 @@ export function LabPage() {
           onStep={sim.stepOnce}
           onReset={() => {
             sim.reset();
+            history.current.clear();
+            lastSpike.current?.fill(-1);
             smoothed.current?.fill(0);
             flyState.current = { x: 0, z: 0, heading: Math.PI / 2 };
           }}

@@ -7,6 +7,7 @@ export interface SimFrame {
   activity: ActivitySnapshot;
   realtimeFactor: number;
   behaviors: BehaviorState[];
+  activeEdges: number;
 }
 
 export type LoadState =
@@ -31,7 +32,7 @@ export function useSimulation(onFrame: (frame: SimFrame) => void) {
     );
     const offFrame = client.on('frame', (f) => {
       const behaviors = monitorRef.current.push(f.activity);
-      onFrameRef.current({ activity: f.activity, realtimeFactor: f.realtimeFactor, behaviors });
+      onFrameRef.current({ activity: f.activity, realtimeFactor: f.realtimeFactor, behaviors, activeEdges: f.activeEdges });
     });
     const offError = client.on('error', (message) => setLoad({ status: 'error', message }));
     client.ready

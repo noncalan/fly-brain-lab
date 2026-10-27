@@ -53,7 +53,8 @@ test('optogenetics: switching on P9 (DNp09) makes the fly walk forward', async (
   await page.getByTestId('type-search').fill('DNp09');
   await page.getByRole('button', { name: /Switch on: DNp09/ }).click();
   await expect(page.getByTestId('opto-active')).toContainText('DNp09');
-  await expect(page.locator('[data-behavior="walk_forward"]')).toHaveAttribute('data-active', 'true');
+  // at 150 Hz the descending command is fast enough to read as running
+  await expect(page.locator('[data-behavior="run"][data-active="true"], [data-behavior="walk_forward"][data-active="true"]')).toHaveCount(1);
   await expect(page).toHaveURL(/o=DNp09/);
 });
 

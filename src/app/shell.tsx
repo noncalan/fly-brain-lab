@@ -3,10 +3,11 @@ import { LANGS, useI18n, type StringKey } from '../i18n';
 import { FlyIcon } from './FlyIcon';
 
 const THEME_KEY = 'fbl.theme';
-export type Route = '/' | '/experiments' | '/about';
+export type Route = '/' | '/experiments' | '/compare' | '/about';
 const ROUTES: Array<{ path: Route; label: StringKey }> = [
   { path: '/', label: 'nav.lab' },
   { path: '/experiments', label: 'nav.experiments' },
+  { path: '/compare', label: 'nav.compare' },
   { path: '/about', label: 'nav.about' },
 ];
 
@@ -41,7 +42,7 @@ export function useTheme() {
 
 function currentRoute(): Route {
   const p = window.location.pathname;
-  return p === '/about' || p === '/experiments' ? p : '/';
+  return p === '/about' || p === '/experiments' || p === '/compare' ? p : '/';
 }
 
 /** Two-page client router on the History API; Vercel rewrites unknown paths to index.html. */

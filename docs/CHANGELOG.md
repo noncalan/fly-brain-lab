@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-10-27 — Step 5: realistic walking and running, rest of v1
+
+- Gait: the 3D legs now replay a recorded walking step of a real fly (NeuroMechFly preprogrammed steps, flygym,
+  Apache-2.0; 45 samples × 3 ms = 7.41 Hz) as a tripod, with periodic cubic interpolation. Step frequency and stride
+  scale with the descending command so feet do not slide (speed = stride × amplitude × frequency); running = up to
+  16 Hz and 1.35× stride (≤ 21 mm/s); turning = unequal sides, turning in place = sides in opposition; body bob.
+  Walking command is low-pass filtered (150 ms simulated). "Running" label and speed readout.
+- Neuron inspector: click a neuron in the 3D brain → type, class, side, predicted transmitter, main region, strongest
+  inputs/outputs (computed in the worker), FlyWire Codex link (root IDs loaded on demand), switch the type on or off.
+- Spike raster (readout neurons + sampled stimulated neurons) and region × time heatmap over the last 10 s.
+- Exports: PNG (fly + brain), 5 s GIF of the fly (gifenc, MIT), CSV of all set and region rates.
+- Compare page: two flies with separate simulations and the same stimuli; fly B can get a lesion, optogenetics,
+  connection pruning (min synapses) and weight quantisation; verdict "kept / partly / lost".
+- Tests: 68 Vitest, 33 Playwright.
+
 ## 2026-10-27 — Step 4: 3D fly, walking neurons, detailed brain, many experiments
 
 - 3D fly: NeuroMechFly v2 body (flygym, Apache-2.0; 45 meshes, 69 segments, 451 kB) in an arena; joint rig with the

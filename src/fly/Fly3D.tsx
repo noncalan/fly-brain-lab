@@ -249,7 +249,7 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
     loadGait(base).then(setGait, (e: Error) => onModelError?.(e.message));
   }, [onModelError]);
   return (
-    <Canvas shadows camera={{ position: [5, 4.5, 6.5], fov: 35, near: 0.1, far: 500 }} dpr={[1, 2]} role="img" aria-label={label}>
+    <Canvas shadows camera={{ position: [5, 4.5, 6.5], fov: 35, near: 0.1, far: 500 }} dpr={[1, 2]} role="img" aria-label={label} gl={{ preserveDrawingBuffer: true }} data-testid="fly-canvas">
       <ambientLight intensity={0.7} />
       <FollowLight target={state} />
       <Arena onPick={onArenaClick} />
