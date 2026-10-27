@@ -29,13 +29,13 @@ export function SignalPath({ stimulusId, setRatesHz, topRegions, behaviors }: Pr
     .join(', ');
 
   const stages = [
-    { label: t('path.receptor'), value: t(`stim.${stimulus.id}` as StringKey), level: Math.min(1, receptorHz / 100), detail: `${n(receptorHz)} Hz` },
+    { label: t('path.receptor'), value: t(`stim.${stimulus.id}` as StringKey), level: Math.min(1, receptorHz / 100), detail: `${n(receptorHz)} ${t('unit.hz')}` },
     { label: t('path.processing'), value: regionText || '—', level: topRegions.length ? 1 : 0, detail: '' },
     {
       label: t('path.motor'),
       value: expected ? NEURON_LABEL[expected.readout] ?? expected.readout : '—',
       level: expected ? Math.min(1, motorHz / (expected.thresholdHz * 3)) : 0,
-      detail: expected ? `${n(motorHz, 1)} Hz` : '',
+      detail: expected ? `${n(motorHz, 1)} ${t('unit.hz')}` : '',
     },
     {
       label: t('path.action'),
