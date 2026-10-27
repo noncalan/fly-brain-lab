@@ -1,6 +1,6 @@
 import { DEFAULT_PRUNING, SHIU_PARAMS } from './params';
 import { mulberry32 } from './rng';
-import type { ActivitySnapshot, Connectome, ModelParams, PruningParams, SilenceTarget } from './types';
+import type { ActivitySnapshot, Connectome, ModelParams, NeuronConnections, PruningParams, SilenceTarget, Synapse } from './types';
 
 /** Below this |v - v_rest| and |g| (mV) a neuron is snapped to rest and leaves the active list. */
 const QUIESCENT_MV = 1e-4;
@@ -127,6 +127,26 @@ export class Simulator {
     let k = 0;
     for (let e = 0; e < this.effWeight.length; e++) if (this.effWeight[e] !== 0) k++;
     return k;
+  }
+
+  /** Strongest inputs and outputs of one neuron by synapse count (sign: negative = inhibitory). */
+  connections(neuron: number, top = 8): NeuronConnections {
+    const { rowPtr, col, weight, neuronCount } = this.connectome;
+    if (!(neuron >= 0 && neuron < neuronCount)) throw new Error(`No neuron ${neuron}`);
+    const outputs: Synapse[] = [];
+    for (let j = rowPtr[neuron]; j < rowPtr[neuron + 1]; j++) outputs.push({ neuron: col[j], synapses: weight[j] });
+    const inputs: Synapse[] = [];
+    for (let pre = 0; pre < neuronCount; pre++) {
+      for (let j = rowPtr[pre], end = rowPtr[pre + 1]; j < end; j++) if (col[j] === neuron) inputs.push({ neuron: pre, synapses: weight[j] });
+    }
+    const byStrength = (a: Synapse, b: Synapse) => Math.abs(b.synapses) - Math.abs(a.synapses);
+    return {
+      neuron,
+      inputCount: inputs.length,
+      outputCount: outputs.length,
+      inputs: inputs.sort(byStrength).slice(0, top),
+      outputs: outputs.sort(byStrength).slice(0, top),
+    };
   }
 
   /** Activity since the previous call; resets the window. */

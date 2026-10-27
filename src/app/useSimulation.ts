@@ -63,10 +63,11 @@ export function useSimulation(onFrame: (frame: SimFrame) => void) {
   const silenceNeuropil = useCallback((neuropil: string) => clientRef.current?.silence({ neuropil }), []);
   const clearSilence = useCallback(() => clientRef.current?.clearSilence(), []);
   const stepOnce = useCallback((ms: number) => clientRef.current?.stepOnce(ms), []);
+  const connections = useCallback((neuron: number) => clientRef.current?.connections(neuron) ?? Promise.reject(new Error('not ready')), []);
   const reset = useCallback(() => {
     monitorRef.current.reset();
     clientRef.current?.reset(1);
   }, []);
 
-  return { load, speed, setSpeed, stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence, stepOnce, reset };
+  return { load, speed, setSpeed, stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence, stepOnce, reset, connections, setPruning: (p: Parameters<SimClient['setPruning']>[0]) => clientRef.current?.setPruning(p) };
 }

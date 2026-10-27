@@ -59,3 +59,17 @@ export interface ActivitySnapshot {
   setRatesHz: Record<string, number>;
   totalSpikes: number;
 }
+
+export interface Synapse {
+  neuron: number;
+  /** signed synapse count, negative = inhibitory */
+  synapses: number;
+}
+
+export interface NeuronConnections {
+  neuron: number;
+  inputCount: number;
+  outputCount: number;
+  inputs: Synapse[];
+  outputs: Synapse[];
+}

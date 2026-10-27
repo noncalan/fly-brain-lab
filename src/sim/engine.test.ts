@@ -124,6 +124,16 @@ describe('Simulator on synthetic networks', () => {
   });
 });
 
+describe('connections', () => {
+  it('lists strongest inputs and outputs with sign', () => {
+    const sim = new Simulator(syntheticConnectome(4, [[0, 1, 10], [2, 1, -30], [1, 3, 7], [1, 0, 50]]));
+    const c = sim.connections(1);
+    expect(c.inputs.map((x) => [x.neuron, x.synapses])).toEqual([[2, -30], [0, 10]]);
+    expect(c.outputs.map((x) => [x.neuron, x.synapses])).toEqual([[0, 50], [3, 7]]);
+    expect(() => sim.connections(99)).toThrow();
+  });
+});
+
 describe('makeLogQuantiser', () => {
   it('maps to at most 2^bits levels and keeps the endpoints', () => {
     const w = Int16Array.from([5, 6, 7, 20, 100, 2000]);

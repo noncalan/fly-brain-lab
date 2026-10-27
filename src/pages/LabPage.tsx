@@ -6,7 +6,7 @@ import { NeuronCloud, type NeuronCloudHandle } from '../app/NeuronCloud';
 import { useSimulation, type SimFrame } from '../app/useSimulation';
 import type { LevelsRef, SpikeQueueRef } from '../brain/BrainView';
 import type { ArenaMark, FlyDrive } from '../fly/Fly3D';
-import { locomotionFromRates, type FlyState } from '../fly/locomotion';
+import { locomotionFromRates, type FlyState, type LocomotionCommand } from '../fly/locomotion';
 import { useI18n, type StringKey } from '../i18n';
 import { indicesOfType, loadAtlas, type Atlas } from '../lab/atlas';
 import { ExperimentPanel } from '../lab/ExperimentPanel';
@@ -31,9 +31,13 @@ const HEAD_OFFSET_MM = 1.6;
 const TOUCH_PULSE_MS = 4000;
 /** the brain view drains spike frames every animation frame; cap the queue if it is not drawing */
 const MAX_QUEUED_FRAMES = 8;
+/** walking command low-pass (simulated ms): smooths frame-to-frame spike noise in the descending neurons */
+const LOCOMOTION_TAU_MS = 150;
 const ARENA_STIMULUS = { food: 'shiu_sugar_r', touch: 'jo_wind_gravity' } as const;
 const WALK_SPEED_MIN = 0.3;
 const TURN_MIN = 0.15;
+/** faster than ~1.5 recorded strides per step cycle reads as running */
+const RUN_MIN_MM_S = 11;
 const NEURON_LABEL: Record<string, string> = { mn9: 'MN9', giant_fiber: 'Giant Fiber', adn1: 'aDN1' };
 const KNOWN_STIMULI = new Set(stimuliConfig.stimuli.map((s) => s.id));
 
@@ -43,6 +47,7 @@ interface Status {
   behaviors: BehaviorState[];
   setRatesHz: Record<string, number>;
   regions: RegionRate[];
+  command: LocomotionCommand;
 }
 
 const optoKey = (o: OptoTarget) => `opto:${o.type}.${o.side}`;
@@ -99,7 +104,12 @@ export function LabPage() {
     regions.sort((a, b) => b.hz - a.hz);
     const on = (id: string) => f.behaviors.find((b) => b.id === id)?.active ?? false;
     const d = drive.current;
-    d.command = locomotionFromRates(setRatesHz);
+    const raw = locomotionFromRates(setRatesHz);
+    const alpha = 1 - Math.exp(-windowMs / LOCOMOTION_TAU_MS);
+    d.command = {
+      speed: d.command.speed + alpha * (raw.speed - d.command.speed),
+      turnRate: d.command.turnRate + alpha * (raw.turnRate - d.command.turnRate),
+    };
     d.feeding = on('feeding');
     d.escape = on('escape');
     d.grooming = on('antennal_grooming');
@@ -109,7 +119,7 @@ export function LabPage() {
     const hx = s.x + Math.cos(s.heading) * HEAD_OFFSET_MM;
     const hz = s.z - Math.sin(s.heading) * HEAD_OFFSET_MM;
     setFoodContact(marksRef.current.some((m) => Math.hypot(m.x - hx, m.z - hz) < CONTACT_MM));
-    setStatus({ timeMs: f.activity.timeMs, realtimeFactor: f.realtimeFactor, behaviors: f.behaviors, setRatesHz, regions });
+    setStatus({ timeMs: f.activity.timeMs, realtimeFactor: f.realtimeFactor, behaviors: f.behaviors, setRatesHz, regions, command: { ...d.command } });
   }, []);
 
   const sim = useSimulation(onFrame);
@@ -215,9 +225,10 @@ export function LabPage() {
 
   const rates = status?.setRatesHz ?? {};
   const isOn = (id: string) => status?.behaviors.find((b) => b.id === id)?.active ?? false;
-  const cmd = locomotionFromRates(rates);
+  const cmd = status?.command ?? { speed: 0, turnRate: 0 };
   const walking: Array<{ id: StringKey; on: boolean }> = [
-    { id: 'beh.walk_forward', on: cmd.speed > WALK_SPEED_MIN },
+    { id: 'beh.walk_forward', on: cmd.speed > WALK_SPEED_MIN && cmd.speed <= RUN_MIN_MM_S },
+    { id: 'beh.run', on: cmd.speed > RUN_MIN_MM_S },
     { id: 'beh.walk_backward', on: cmd.speed < -WALK_SPEED_MIN },
     { id: 'beh.turn_right', on: cmd.turnRate > TURN_MIN },
     { id: 'beh.turn_left', on: cmd.turnRate < -TURN_MIN },
@@ -283,7 +294,8 @@ export function LabPage() {
           ))}
         </ul>
         <p className="mt-2 font-mono text-xs text-muted" data-testid="walk-readout">
-          {t('walk.readout', { l: hz('dnp09_l'), r: hz('dnp09_r'), mdn: hz('mdn'), al: hz('dna02_l'), ar: hz('dna02_r') })}
+          {t('walk.readout', { l: hz('dnp09_l'), r: hz('dnp09_r'), mdn: hz('mdn'), al: hz('dna02_l'), ar: hz('dna02_r') })} ·{' '}
+          {t('walk.speed', { v: n(Math.abs(cmd.speed), 1) })}
         </p>
         <p className="text-xs text-muted">{t('walk.note')}</p>
         {notReproduced.map((s) => (

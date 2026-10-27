@@ -96,6 +96,9 @@ async function handle(msg: ToWorker): Promise<void> {
       sim.reset(msg.seed);
       postFrame(0, 0);
       break;
+    case 'connections':
+      post({ type: 'connections', requestId: msg.requestId, result: sim.connections(msg.neuron) });
+      break;
   }
 }
 

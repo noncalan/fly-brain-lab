@@ -1,4 +1,4 @@
-import type { ActivitySnapshot, NeuronSet, PruningParams, SilenceTarget } from './types';
+import type { ActivitySnapshot, NeuronConnections, NeuronSet, PruningParams, SilenceTarget } from './types';
 
 /** Messages from the main thread to the simulation worker. */
 export type ToWorker =
@@ -11,7 +11,8 @@ export type ToWorker =
   /** Simulated ms per wall-clock ms; 0 pauses. */
   | { type: 'setSpeed'; speed: number }
   | { type: 'stepOnce'; ms: number }
-  | { type: 'reset'; seed: number };
+  | { type: 'reset'; seed: number }
+  | { type: 'connections'; requestId: number; neuron: number };
 
 export interface ConnectomeInfo {
   neuronCount: number;
@@ -33,4 +34,5 @@ export type FromWorker =
       speed: number;
       activeEdges: number;
     }
+  | { type: 'connections'; requestId: number; result: NeuronConnections }
   | { type: 'error'; message: string };

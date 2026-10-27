@@ -1,5 +1,5 @@
 import type { ConnectomeInfo, FromWorker, ToWorker } from './protocol';
-import type { PruningParams, SilenceTarget } from './types';
+import type { NeuronConnections, PruningParams, SilenceTarget } from './types';
 
 type FrameMessage = Extract<FromWorker, { type: 'frame' }>;
 
@@ -18,6 +18,8 @@ export class SimClient {
     error: new Set(),
   };
   readonly ready: Promise<ConnectomeInfo>;
+  private nextRequest = 1;
+  private readonly pending = new Map<number, (r: NeuronConnections) => void>();
 
   constructor(baseUrl = `${import.meta.env.BASE_URL}data/`, seed = 1) {
     this.worker = new Worker(new URL('./sim.worker.ts', import.meta.url), { type: 'module' });
@@ -33,6 +35,10 @@ export class SimClient {
             break;
           case 'frame':
             this.listeners.frame.forEach((f) => f(msg));
+            break;
+          case 'connections':
+            this.pending.get(msg.requestId)?.(msg.result);
+            this.pending.delete(msg.requestId);
             break;
           case 'error':
             reject(new Error(msg.message));
@@ -84,6 +90,15 @@ export class SimClient {
 
   reset(seed = 1): void {
     this.send({ type: 'reset', seed });
+  }
+
+  /** Strongest inputs and outputs of a neuron (computed in the worker). */
+  connections(neuron: number): Promise<NeuronConnections> {
+    const requestId = this.nextRequest++;
+    return new Promise((resolve) => {
+      this.pending.set(requestId, resolve);
+      this.send({ type: 'connections', requestId, neuron });
+    });
   }
 
   dispose(): void {

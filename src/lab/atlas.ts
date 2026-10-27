@@ -9,6 +9,9 @@ export interface Atlas {
   classOf: Uint8Array;
   /** 0 unknown, 1 left, 2 right, 3 center */
   sideOf: Uint8Array;
+  nts: string[];
+  ntOf: Uint8Array;
+  rootIdsFile: string;
   /** unit-cube positions in the same frame as the neuropil meshes (front view) */
   positions: Float32Array;
   /** neuron indices per type index, built lazily */
@@ -26,7 +29,7 @@ async function gunzipIfNeeded(buf: ArrayBuffer): Promise<ArrayBuffer> {
 export function parseAtlas(buf: ArrayBuffer, neuronCount: number): Atlas {
   const view = new DataView(buf);
   const jsonLen = view.getUint32(0, true);
-  const header = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 4, jsonLen))) as { types: string[]; classes: string[] };
+  const header = JSON.parse(new TextDecoder().decode(new Uint8Array(buf, 4, jsonLen))) as { types: string[]; classes: string[]; nts: string[]; rootIdsFile: string };
   const n = neuronCount;
   let off = 4 + jsonLen;
   const typeOf = new Uint16Array(buf.slice(off, off + 2 * n));
@@ -35,11 +38,13 @@ export function parseAtlas(buf: ArrayBuffer, neuronCount: number): Atlas {
   off += n;
   const sideOf = new Uint8Array(buf.slice(off, off + n));
   off += n;
+  const ntOf = new Uint8Array(buf.slice(off, off + n));
+  off += n;
   off += off % 2;
   const q = new Int16Array(buf.slice(off, off + 6 * n));
   const positions = new Float32Array(3 * n);
   for (let i = 0; i < positions.length; i++) positions[i] = -q[i] / 32767; // same inversion as the meshes
-  return { types: header.types, typeOf, classes: header.classes, classOf, sideOf, positions, byType: new Map() };
+  return { types: header.types, typeOf, classes: header.classes, classOf, sideOf, nts: header.nts, ntOf, rootIdsFile: header.rootIdsFile, positions, byType: new Map() };
 }
 
 let cached: Promise<Atlas> | null = null;
@@ -74,4 +79,16 @@ export function typeCounts(atlas: Atlas): Array<{ type: string; count: number }>
   const counts = new Uint32Array(atlas.types.length);
   for (const t of atlas.typeOf) counts[t]++;
   return atlas.types.map((type, i) => ({ type, count: counts[i] })).filter((x) => x.type !== '' && x.count > 0);
+}
+
+let rootIds: Promise<BigUint64Array> | null = null;
+
+/** FlyWire root IDs (u64), fetched only when the neuron inspector first needs them. */
+export function loadRootIds(baseUrl: string, atlas: Atlas): Promise<BigUint64Array> {
+  rootIds ??= (async () => {
+    const res = await fetch(`${baseUrl}${atlas.rootIdsFile}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status} loading root IDs`);
+    return new BigUint64Array(await gunzipIfNeeded(await res.arrayBuffer()));
+  })();
+  return rootIds;
 }

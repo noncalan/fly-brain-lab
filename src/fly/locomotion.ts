@@ -14,10 +14,11 @@ export interface LocomotionCommand {
 export const LOCOMOTION = {
   /** below this rate a descending neuron is treated as silent */
   minHz: 1,
-  forwardMmPerHz: 0.06,
-  backwardMmPerHz: 0.04,
+  forwardMmPerHz: 0.1,
+  backwardMmPerHz: 0.05,
   turnRadPerHz: 0.025,
-  maxSpeed: 25,
+  /** matches the fastest gait the 3D legs can draw without sliding (src/fly/gait.ts MAX_RUN_MM_S) */
+  maxSpeed: 21,
   maxTurn: 3,
 };
 

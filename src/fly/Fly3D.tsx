@@ -4,16 +4,17 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FlyRig } from './FlyRig';
 import { loadFlyModel, type FlyModelData } from './flyModel';
+import { LEGS, TRIPOD_OFFSET, gaitDrive, legAnglesAt, loadGait, type GaitData, type Leg, type LegAngles } from './gait';
 import { integrate, type FlyState, type LocomotionCommand } from './locomotion';
 
 export const ARENA_RADIUS_MM = 60;
 const TAKEOFF_S = 1.4;
 const TAKEOFF_HEIGHT_MM = 9;
 const TAKEOFF_DISTANCE_MM = 18;
-/** a full gait cycle covers about this much ground */
-const STRIDE_MM = 1.6;
 /** pause between hops while the Giant Fiber stays above threshold */
 const HOP_PAUSE_S = 0.6;
+/** in the recorded mid-stance pose the tarsi sit ~0.12 mm above the rig origin; lower the body onto the floor */
+const GROUND_OFFSET_MM = 0.12;
 
 /** Written by the lab page on every simulation frame; read here every animation frame. */
 export interface FlyDrive {
@@ -69,17 +70,30 @@ function Follow({ target, lift }: { target: MutableRefObject<FlyState>; lift: Mu
   return null;
 }
 
-function FlyActor({ model, drive, state, liftOut }: { model: FlyModelData; drive: MutableRefObject<FlyDrive>; state: MutableRefObject<FlyState>; liftOut: MutableRefObject<number> }) {
+function FlyActor({
+  model,
+  gait,
+  drive,
+  state,
+  liftOut,
+}: {
+  model: FlyModelData;
+  gait: GaitData;
+  drive: MutableRefObject<FlyDrive>;
+  state: MutableRefObject<FlyState>;
+  liftOut: MutableRefObject<number>;
+}) {
   const rig = useMemo(() => new FlyRig(model), [model]);
   const holder = useRef<THREE.Group>(null);
-  const anim = useRef({ phase: 0, proboscis: 0, groom: 0, wings: 0, takeoff: -1, pause: 0, from: { x: 0, z: 0 }, to: { x: 0, z: 0 } });
+  const anim = useRef({ phase: 0, left: 0, right: 0, proboscis: 0, groom: 0, wings: 0, takeoff: -1, pause: 0, from: { x: 0, z: 0 }, to: { x: 0, z: 0 } });
 
   useFrame((_, dtWall) => {
     const d = drive.current;
     const a = anim.current;
     const simS = d.pendingSimMs / 1000;
     d.pendingSimMs = 0;
-    const ease = (cur: number, target: number) => cur + (target - cur) * Math.min(1, dtWall * 6);
+    const k = Math.min(1, dtWall * 6);
+    const ease = (cur: number, target: number) => cur + (target - cur) * k;
 
     // a hop starts whenever the escape behaviour (Giant Fiber above threshold) is on and the fly is on the ground
     a.pause = Math.max(0, a.pause - dtWall);
@@ -90,12 +104,14 @@ function FlyActor({ model, drive, state, liftOut }: { model: FlyModelData; drive
       const r = Math.min(TAKEOFF_DISTANCE_MM, ARENA_RADIUS_MM * 0.8);
       const tx = s.x + Math.cos(s.heading) * r;
       const tz = s.z - Math.sin(s.heading) * r;
-      const k = Math.min(1, (ARENA_RADIUS_MM * 0.85) / Math.max(1e-6, Math.hypot(tx, tz)));
-      a.to = { x: tx * k, z: tz * k };
+      const scale = Math.min(1, (ARENA_RADIUS_MM * 0.85) / Math.max(1e-6, Math.hypot(tx, tz)));
+      a.to = { x: tx * scale, z: tz * scale };
     }
 
     let lift = 0;
-    if (a.takeoff >= 0) {
+    const flying = a.takeoff >= 0;
+    const g = flying ? { frequency: 0, left: 0, right: 0 } : gaitDrive(gait, d.command.speed, d.command.turnRate);
+    if (flying) {
       a.takeoff += dtWall / TAKEOFF_S;
       const t = Math.min(1, a.takeoff);
       lift = Math.sin(Math.PI * t) * TAKEOFF_HEIGHT_MM;
@@ -105,27 +121,33 @@ function FlyActor({ model, drive, state, liftOut }: { model: FlyModelData; drive
         a.pause = HOP_PAUSE_S;
       }
     } else if (simS > 0) {
+      // body and legs advance with simulated time, so slow motion slows both and feet stay planted
       state.current = integrate(state.current, d.command, simS, ARENA_RADIUS_MM);
-      a.phase += ((2 * Math.PI * Math.abs(d.command.speed)) / STRIDE_MM) * simS + Math.abs(d.command.turnRate) * simS * 2;
+      a.phase += 2 * Math.PI * g.frequency * simS;
     }
+    a.left = ease(a.left, g.left);
+    a.right = ease(a.right, g.right);
+
+    const legs = {} as Record<Leg, LegAngles>;
+    for (const leg of LEGS) legs[leg] = legAnglesAt(gait, leg, a.phase + TRIPOD_OFFSET[leg], leg[0] === 'l' ? a.left : a.right);
 
     a.proboscis = ease(a.proboscis, d.feeding ? 1 : 0);
-    a.groom = ease(a.groom, d.grooming ? 1 : 0);
-    a.wings = ease(a.wings, a.takeoff >= 0 ? 1 : 0);
-    const moving = Math.abs(d.command.speed) > 0.05 || Math.abs(d.command.turnRate) > 0.05;
+    a.groom = ease(a.groom, d.grooming && !flying ? 1 : 0);
+    a.wings = ease(a.wings, flying ? 1 : 0);
     rig.pose({
-      gaitPhase: a.phase,
-      walkDirection: a.takeoff >= 0 || !moving ? 0 : d.command.speed !== 0 ? Math.sign(d.command.speed) : 0.6,
-      turn: Math.max(-1, Math.min(1, d.command.turnRate)),
+      legs,
       proboscis: a.proboscis,
       groom: a.groom,
       wings: a.wings,
+      airborne: a.wings,
+      gaitPhase: a.phase,
+      stepAmplitude: (Math.abs(a.left) + Math.abs(a.right)) / 2,
       timeS: performance.now() / 1000,
     });
     const h = holder.current;
     if (h) {
       const s = state.current;
-      h.position.set(s.x, lift, s.z);
+      h.position.set(s.x, lift - GROUND_OFFSET_MM, s.z);
       liftOut.current = lift;
       h.rotation.y = s.heading;
     }
@@ -219,9 +241,12 @@ export interface Fly3DProps {
 
 export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyClick, onModelError }: Fly3DProps) {
   const [model, setModel] = useState<FlyModelData | null>(null);
+  const [gait, setGait] = useState<GaitData | null>(null);
   const lift = useRef(0);
   useEffect(() => {
-    loadFlyModel(`${import.meta.env.BASE_URL}data/`).then(setModel, (e: Error) => onModelError?.(e.message));
+    const base = `${import.meta.env.BASE_URL}data/`;
+    loadFlyModel(base).then(setModel, (e: Error) => onModelError?.(e.message));
+    loadGait(base).then(setGait, (e: Error) => onModelError?.(e.message));
   }, [onModelError]);
   return (
     <Canvas shadows camera={{ position: [5, 4.5, 6.5], fov: 35, near: 0.1, far: 500 }} dpr={[1, 2]} role="img" aria-label={label}>
@@ -229,7 +254,7 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
       <FollowLight target={state} />
       <Arena onPick={onArenaClick} />
       <Marks marks={marks} />
-      {model && (
+      {model && gait && (
         <group
           onClick={(e) => {
             e.stopPropagation();
@@ -239,7 +264,7 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
             onFlyClick?.(along > 0.35 ? 'head' : 'body');
           }}
         >
-          <FlyActor model={model} drive={drive} state={state} liftOut={lift} />
+          <FlyActor model={model} gait={gait} drive={drive} state={state} liftOut={lift} />
         </group>
       )}
       <Follow target={state} lift={lift} />
