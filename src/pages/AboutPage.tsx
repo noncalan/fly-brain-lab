@@ -7,17 +7,22 @@ const CREDITS: Array<{ who: string; what: string; url: string }> = [
     url: 'https://doi.org/10.1038/s41586-024-07558-y',
   },
   {
-    who: 'Schlegel et al., Nature 634, 139–152 (2024)',
+    who: 'Schlegel et al., Nature (2024)',
     what: 'Cell type annotations (flywire_annotations v3.2.0)',
     url: 'https://doi.org/10.1038/s41586-024-07686-5',
   },
   {
-    who: 'Shiu et al., Nature 634, 210–219 (2024)',
+    who: 'Shiu et al., Nature (2024)',
     what: 'Leaky integrate-and-fire brain model, parameters and neuron sets (code: MIT)',
     url: 'https://doi.org/10.1038/s41586-024-07763-9',
   },
   {
-    who: 'FlyWire Codex (Matsliah et al.)',
+    who: 'Zheng, Lauritzen et al. (2018)',
+    what: 'FAFB electron microscopy volume underlying FlyWire (CC BY-NC 4.0)',
+    url: 'https://edit.flywire.ai/credits.html',
+  },
+  {
+    who: 'FlyWire Codex',
     what: 'Data downloads, neuropil meshes and region names',
     url: 'https://codex.flywire.ai',
   },
