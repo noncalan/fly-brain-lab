@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-10-27 — Step 4: 3D fly, walking neurons, detailed brain, many experiments
+
+- 3D fly: NeuroMechFly v2 body (flygym, Apache-2.0; 45 meshes, 69 segments, 451 kB) in an arena; joint rig with the
+  neutral pose; tripod gait, proboscis extension, antennal grooming and escape hops, each driven only by readout
+  neurons. Joint signs checked by computing segment world positions in Node.
+- Walking from descending neurons (DNp09, MDN, DNa02 with L/R) — sources verified and approved by Nurik.
+- Brain: all 139,255 neurons as points at their soma positions (FlyWire annotations), flashing on spikes, inside the
+  neuropil meshes.
+- Experiments: 21 data-backed stimuli in 5 modalities; optogenetics of any of 8,846 cell types (both/left/right,
+  50–200 Hz); lesions by region or cell type; experiment state in the URL with a copy-link button; Experiments page
+  with 15 cards (sources: Shiu 2024, Bidaye 2014/2020, Rayshubskiy 2025, von Reyn 2014); first-visit intro dialog.
+- Arena interactions: click to drop sugar (taste contact at the proboscis), click the head to touch the antennae.
+- Data: `neurons.*.bin.gz` (type, class, side, position; 1.1 MB), `fly.*.bin.gz`, new sets in `data/NEURON_SETS.md`,
+  calibration `tools/calibrate/results/matrix_all.json`.
+- Tests: 57 Vitest, 30 Playwright (every stimulus, optogenetic walking, lesion, experiments page, mobile, FPS).
+
 ## 2026-10-27 — Step 3: MVP, deployed to https://fly.noncalan.xyz
 
 - Lab page: stimuli (click or drag onto the fly), fly animation driven only by readout neurons, behaviour list with

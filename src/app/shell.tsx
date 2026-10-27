@@ -3,9 +3,10 @@ import { LANGS, useI18n, type StringKey } from '../i18n';
 import { FlyIcon } from './FlyIcon';
 
 const THEME_KEY = 'fbl.theme';
-export type Route = '/' | '/about';
+export type Route = '/' | '/experiments' | '/about';
 const ROUTES: Array<{ path: Route; label: StringKey }> = [
   { path: '/', label: 'nav.lab' },
+  { path: '/experiments', label: 'nav.experiments' },
   { path: '/about', label: 'nav.about' },
 ];
 
@@ -39,19 +40,21 @@ export function useTheme() {
 }
 
 function currentRoute(): Route {
-  return window.location.pathname === '/about' ? '/about' : '/';
+  const p = window.location.pathname;
+  return p === '/about' || p === '/experiments' ? p : '/';
 }
 
 /** Two-page client router on the History API; Vercel rewrites unknown paths to index.html. */
-export function useRoute(): [Route, (r: Route) => void] {
+export function useRoute(): [Route, (r: Route, query?: string) => void] {
   const [route, setRoute] = useState<Route>(currentRoute);
   useEffect(() => {
     const onPop = () => setRoute(currentRoute());
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
-  const navigate = useCallback((r: Route) => {
-    if (r !== currentRoute()) window.history.pushState({}, '', r + window.location.search);
+  const navigate = useCallback((r: Route, query?: string) => {
+    const search = query !== undefined ? (query ? `?${query}` : '') : r === '/' ? window.location.search : '';
+    if (r !== currentRoute() || query !== undefined) window.history.pushState({}, '', r + search);
     setRoute(r);
     window.scrollTo(0, 0);
   }, []);

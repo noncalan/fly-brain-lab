@@ -17,6 +17,21 @@ const CREDITS: Array<{ who: string; what: string; url: string }> = [
     url: 'https://doi.org/10.1038/s41586-024-07763-9',
   },
   {
+    who: 'NeuroMechFly v2, Nature Methods (2024)',
+    what: '3D body model of the fly (flygym, Apache-2.0)',
+    url: 'https://doi.org/10.1038/s41592-024-02497-y',
+  },
+  {
+    who: 'Bidaye et al., Science (2014); Bidaye et al., Neuron (2020); Rayshubskiy et al., eLife (2025)',
+    what: 'Roles of the walking descending neurons MDN, DNp09 (P9) and DNa02',
+    url: 'https://doi.org/10.1016/j.neuron.2020.07.032',
+  },
+  {
+    who: 'von Reyn et al., Nature Neuroscience (2014)',
+    what: 'Giant Fiber and escape takeoff',
+    url: 'https://doi.org/10.1038/nn.3741',
+  },
+  {
     who: 'Zheng, Lauritzen et al. (2018)',
     what: 'FAFB electron microscopy volume underlying FlyWire (CC BY-NC 4.0)',
     url: 'https://edit.flywire.ai/credits.html',

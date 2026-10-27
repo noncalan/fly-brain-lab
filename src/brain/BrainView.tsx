@@ -4,12 +4,73 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { NEUROPIL_NAMES, categoryOf, neuropilBase } from '../content/regions';
 import { useI18n } from '../i18n';
+import type { Atlas } from '../lab/atlas';
 import { loadNeuropilMeshes, type NeuropilMesh } from './meshes';
 
 /** Activity 0..1 per neuropil name, written every simulation frame without re-rendering React. */
 export type LevelsRef = MutableRefObject<Map<string, number>>;
+/** Spiked neuron indices per simulation frame; the brain view drains it. */
+export type SpikeQueueRef = MutableRefObject<Uint32Array[]>;
 
 const IDLE_OPACITY = 0.12;
+const POINT_DECAY = 0.88; // per animation frame
+const POINT_SIZE = 2.2;
+
+const POINT_VERTEX = `
+attribute float activity;
+uniform float size;
+varying float vActivity;
+void main() {
+  vActivity = activity;
+  vec4 mv = modelViewMatrix * vec4(position, 1.0);
+  gl_PointSize = size * (1.0 + 2.5 * activity) * (2.0 / -mv.z);
+  gl_Position = projectionMatrix * mv;
+}`;
+const POINT_FRAGMENT = `
+uniform vec3 idle;
+uniform vec3 accent;
+varying float vActivity;
+void main() {
+  vec2 c = gl_PointCoord - 0.5;
+  float d = dot(c, c);
+  if (d > 0.25) discard;
+  float a = mix(0.10, 1.0, vActivity) * (1.0 - d * 3.0);
+  gl_FragColor = vec4(mix(idle, accent, vActivity), a);
+}`;
+
+/** All neurons as points at their soma (or representative) position; a spike lights the point, then it fades. */
+function NeuronPoints({ atlas, spikes, idle, accent }: { atlas: Atlas; spikes: SpikeQueueRef; idle: THREE.Color; accent: THREE.Color }) {
+  const { geometry, activity } = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(atlas.positions, 3));
+    const act = new Float32Array(atlas.positions.length / 3);
+    g.setAttribute('activity', new THREE.BufferAttribute(act, 1).setUsage(THREE.DynamicDrawUsage));
+    return { geometry: g, activity: act };
+  }, [atlas]);
+  const material = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: POINT_VERTEX,
+        fragmentShader: POINT_FRAGMENT,
+        uniforms: { size: { value: POINT_SIZE }, idle: { value: idle }, accent: { value: accent } },
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+      }),
+    [idle, accent],
+  );
+  useFrame(() => {
+    for (let i = 0; i < activity.length; i++) if (activity[i] > 0) activity[i] = activity[i] < 0.02 ? 0 : activity[i] * POINT_DECAY;
+    for (const batch of spikes.current) for (const i of batch) activity[i] = 1;
+    spikes.current.length = 0;
+    (geometry.getAttribute('activity') as THREE.BufferAttribute).needsUpdate = true;
+  });
+  useEffect(() => () => {
+    geometry.dispose();
+    material.dispose();
+  }, [geometry, material]);
+  return <points geometry={geometry} material={material} />;
+}
 const ACTIVE_OPACITY = 0.85;
 
 function Controls() {
@@ -97,7 +158,7 @@ function cssColor(varName: string): THREE.Color {
   return new THREE.Color(v[0] / 255, v[1] / 255, v[2] / 255);
 }
 
-export default function BrainView({ levels, activeCount }: { levels: LevelsRef; activeCount: number }) {
+export default function BrainView({ levels, activeCount, atlas, spikes }: { levels: LevelsRef; activeCount: number; atlas: Atlas | null; spikes: SpikeQueueRef }) {
   const { t, lang } = useI18n();
   const [meshes, setMeshes] = useState<NeuropilMesh[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -130,6 +191,7 @@ export default function BrainView({ levels, activeCount }: { levels: LevelsRef; 
         {meshes?.map((m) => (
           <Region key={m.name} mesh={m} levels={levels} idleColor={palette.idle} accent={palette.accent} onHover={setHovered} />
         ))}
+        {atlas && <NeuronPoints atlas={atlas} spikes={spikes} idle={palette.idle} accent={palette.accent} />}
         <Controls />
       </Canvas>
       {hovered && (

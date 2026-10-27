@@ -3,6 +3,8 @@ import stimuliConfig from '../../config/stimuli.json';
 import { useI18n, type StringKey } from '../i18n';
 
 const DRAG_START_PX = 6;
+const CATEGORIES = ['taste', 'mechano', 'climate', 'vision', 'smell'] as const;
+const FALLBACK_ICON = 'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16';
 type Stimulus = (typeof stimuliConfig.stimuli)[number];
 
 const ICONS: Record<string, string> = {
@@ -12,6 +14,12 @@ const ICONS: Record<string, string> = {
   heat: 'M12 3v10a4 4 0 1 0 0 0M12 3a2 2 0 0 1 2 2v8',
   antenna_touch: 'M8 20c0-8 2-12 8-16M12 20c0-6 3-10 7-12M5 9l3 2',
   looming: 'M4 8h16M7 4h10M2 12h20 M12 15v6',
+  cold: 'M12 2v20M4 6l16 12M20 6L4 18',
+  sound: 'M4 10v4h4l5 4V6L8 10zM16 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12',
+  smell: 'M8 20c-2-4 2-6 0-10s2-6 0-8M14 20c-2-4 2-6 0-10s2-6 0-8',
+  climate: 'M3 12h18M6 8h12M9 16h6',
+  vision: 'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6',
+  mechano: 'M8 20c0-8 2-12 8-16',
 };
 
 interface Props {
@@ -34,10 +42,10 @@ export function StimulusPalette({ active, onToggle, onActivate, dropTarget, onDr
     return !!r && x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
   };
 
-  const groups: Array<{ key: StringKey; items: Stimulus[] }> = [
-    { key: 'stim.group.pleasant', items: stimuliConfig.stimuli.filter((s) => s.category === 'pleasant') },
-    { key: 'stim.group.danger', items: stimuliConfig.stimuli.filter((s) => s.category === 'danger') },
-  ];
+  const groups: Array<{ key: StringKey; items: Stimulus[] }> = CATEGORIES.map((c) => ({
+    key: `cat.${c}` as StringKey,
+    items: stimuliConfig.stimuli.filter((s) => s.category === c),
+  }));
 
   return (
     <div>
@@ -96,7 +104,7 @@ export function StimulusPalette({ active, onToggle, onActivate, dropTarget, onDr
                   }`}
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                    <path d={ICONS[s.id]} />
+                    <path d={ICONS[s.id] ?? ICONS[s.category] ?? FALLBACK_ICON} />
                   </svg>
                   {t(`stim.${s.id}` as StringKey)}
                 </button>

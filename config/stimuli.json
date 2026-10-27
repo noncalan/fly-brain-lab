@@ -1,11 +1,26 @@
 {
-  "$comment": "Only data-backed stimuli (data/NEURON_SETS.md). 'expects' is what the science predicts; the app shows the model's actual result, including 'model does not reproduce this'.",
+  "$comment": "Only data-backed stimuli (data/NEURON_SETS.md). 'expects' lists behaviours a cited study predicts (sources in config/experiments.json); empty = no claim. The app always shows what the model actually does.",
   "stimuli": [
-    { "id": "sugar", "set": "shiu_sugar_r", "category": "pleasant", "defaultRateHz": 150, "expects": ["feeding"] },
-    { "id": "water", "set": "grn_water", "category": "pleasant", "defaultRateHz": 150, "expects": ["feeding"] },
-    { "id": "bitter", "set": "shiu_bitter_r", "category": "danger", "defaultRateHz": 150, "expects": [] },
-    { "id": "heat", "set": "trn_heat", "category": "danger", "defaultRateHz": 150, "expects": [] },
-    { "id": "antenna_touch", "set": "jo_wind_gravity", "category": "danger", "defaultRateHz": 150, "expects": ["antennal_grooming"] },
-    { "id": "looming", "set": "vpn_looming", "category": "danger", "defaultRateHz": 150, "expects": ["escape"] }
+    { "id": "sugar", "set": "shiu_sugar_r", "category": "taste", "defaultRateHz": 150, "expects": ["feeding"] },
+    { "id": "water", "set": "grn_water", "category": "taste", "defaultRateHz": 150, "expects": ["feeding"] },
+    { "id": "bitter", "set": "shiu_bitter_r", "category": "taste", "defaultRateHz": 150, "expects": [] },
+    { "id": "salt", "set": "grn_salt", "category": "taste", "defaultRateHz": 150, "expects": [] },
+    { "id": "glutamate", "set": "grn_glutamate", "category": "taste", "defaultRateHz": 150, "expects": [] },
+    { "id": "taste_peg", "set": "grn_taste_peg", "category": "taste", "defaultRateHz": 150, "expects": [] },
+    { "id": "antenna_touch", "set": "jo_wind_gravity", "category": "mechano", "defaultRateHz": 150, "expects": ["antennal_grooming"] },
+    { "id": "sound", "set": "jo_auditory", "category": "mechano", "defaultRateHz": 150, "expects": [] },
+    { "id": "antenna_bristle", "set": "bm_antenna", "category": "mechano", "defaultRateHz": 150, "expects": [] },
+    { "id": "heat", "set": "trn_heat", "category": "climate", "defaultRateHz": 150, "expects": [] },
+    { "id": "cold", "set": "trn_cold", "category": "climate", "defaultRateHz": 150, "expects": [] },
+    { "id": "dry", "set": "hrn_dry", "category": "climate", "defaultRateHz": 150, "expects": [] },
+    { "id": "humid", "set": "hrn_moist", "category": "climate", "defaultRateHz": 150, "expects": [] },
+    { "id": "looming", "set": "vpn_looming", "category": "vision", "defaultRateHz": 150, "expects": ["escape"] },
+    { "id": "ocelli", "set": "photo_ocellar", "category": "vision", "defaultRateHz": 150, "expects": [] },
+    { "id": "polarized", "set": "photo_dra", "category": "vision", "defaultRateHz": 150, "expects": [] },
+    { "id": "odor_da1", "set": "orn_da1", "category": "smell", "defaultRateHz": 150, "expects": [] },
+    { "id": "odor_v", "set": "orn_v", "category": "smell", "defaultRateHz": 150, "expects": [] },
+    { "id": "odor_dm1", "set": "orn_dm1", "category": "smell", "defaultRateHz": 150, "expects": [] },
+    { "id": "odor_va2", "set": "orn_va2", "category": "smell", "defaultRateHz": 150, "expects": [] },
+    { "id": "odor_dl5", "set": "orn_dl5", "category": "smell", "defaultRateHz": 150, "expects": [] }
   ]
 }

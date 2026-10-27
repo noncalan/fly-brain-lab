@@ -31,6 +31,13 @@ Sources:
 | `bm_antenna` | Antennal bristle touch | `cell_type = BM_Ant` | 41 | A | DNa02 11.2 Hz |
 | `vpn_looming` | Shadow from above (looming) | `cell_type ∈ {LC4, LPLC2}` | 314 | A | Giant Fiber 187.7 Hz |
 
+### Added in step 4 (all source A, rule in `data/neuron_sets.json`)
+
+`grn_salt` (LB3d, 29), `grn_glutamate` (LB1e, 23), `grn_taste_peg` (73), `hrn_dry` (HRN_VP4, 29), `hrn_moist`
+(HRN_VP5, 16), `jo_auditory` (390), `photo_ocellar` (273), `photo_dra` (157), `orn_da1` (126), `orn_v` (67),
+`orn_dm1` (68), `orn_va2` (67), `orn_dl5` (42). The lab names them by receptor identity only; it makes no claim about
+which odour or behaviour they stand for. Optogenetics can additionally activate any of the 8,846 FlyWire cell types.
+
 ## Readouts (behaviour triggers)
 
 | Set id | Behaviour | Rule | n | Source |
@@ -39,9 +46,9 @@ Sources:
 | `giant_fiber` | Escape / takeoff | `cell_type = DNp01` (`hemibrain_type = Giant Fiber`) | 2 | A |
 | `adn1` | Antennal grooming (command) | `cell_type = DNg62` (= Shiu `id_DN1_1`) | 2 | A + S |
 | `abn1` | Antennal grooming (interneuron) | `cell_type = SAD093` (= Shiu `id_aBN1`) | 2 | A + S |
-| `mdn` | Backward walking (candidate) | `cell_type = MDN` | 4 | A — role from literature, **not yet allowed**, see below |
-| `dnp09` | Forward walking (candidate) | `cell_type = DNp09` | 2 | A — role from literature, **not yet allowed** |
-| `dna02` | Turning (candidate) | `cell_type = DNa02` | 2 | A — role from literature, **not yet allowed** |
+| `mdn`, `mdn_l/_r` | Backward walking | `cell_type = MDN` (+ side) | 4 | A + Bidaye et al. 2014 (approved by Nurik) |
+| `dnp09`, `dnp09_l/_r` | Forward walking, ipsilateral turning | `cell_type = DNp09` (+ side) | 2 | A + Bidaye et al. 2020 |
+| `dna02`, `dna02_l/_r` | Turning | `cell_type = DNa02` (+ side) | 2 | A + Rayshubskiy et al. 2025 |
 
 The FlyWire annotation gives identity (cell type, class, side), not behaviour. The behavioural role of MN9, aDN1 and
 aBN1 is stated in Shiu et al.; Giant Fiber's role is in its annotated name. For MDN, DNp09, DNa02 the role comes

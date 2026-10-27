@@ -110,3 +110,20 @@ looming → GF 180 Hz, JO wind → aBN1 19.5 Hz / aDN1 2.5 Hz. The effects survi
 * Speed (Node 24, this laptop, 1 s simulated): sugar 0.27 s, JO 0.96 s, looming 1.5 s, heat 4.6 s (heat recruits ~8.5 k
   neurons). In the browser at ×1 the measured speed was ×0.81 (sugar), ×0.32–0.40 (antenna), ×0.15 (looming + water).
   The UI shows the measured factor.
+
+## 6. Walking, more stimuli, and a common attractor (2026-10-27)
+
+* Walking is read from descending neurons with published roles: DNp09 (= P9, forward walking with ipsilateral
+  turning; Bidaye et al. 2020, Neuron, 10.1016/j.neuron.2020.07.032 — "This line labels DNp09 (henceforth referred to
+  as P9)"), MDN (backward walking; Bidaye et al. 2014, Science, 10.1126/science.1249964), DNa02 (turning follows the
+  right–left difference; Rayshubskiy et al. 2025, eLife, 10.7554/eLife.102230). Mapping in `src/fly/locomotion.ts`;
+  speed/turn gains are display scales, not fitted.
+* Full stimulus × readout matrix (`tools/calibrate/results/matrix_all.json`, 150 Hz, seeds 1–2): no sensory stimulus
+  drives DNp09 or MDN; walking appears only with optogenetic activation (as in the cited experiments). Right DNp09
+  activation also recruits right DNa02 (33 Hz observed in the browser) → forward walking with a right turn.
+* High salt (LB3d) drives MN9 at 89.8 Hz and taste pegs at 54.2 Hz (model prediction, no study cited for it here).
+  Auditory JO neurons drive the Giant Fiber to 37.5 Hz (below the 50 Hz escape threshold).
+* **Suspected artefact:** heat, cold, dry, humid, all five odour channels and the bilateral sugar class all switch on
+  the same large state (~8.5 k neurons, 2–3.4 s CPU per simulated second) in which left DNa02 fires ~56–65 Hz, so the
+  fly turns left for very different inputs. Same pattern on the full graph (§3). Not validated against Brian2; shown
+  as the model's output and listed here as a known limitation.

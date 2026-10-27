@@ -1,0 +1,27 @@
+{
+  "$comment": "Experiment cards. 'expect' is what the cited study reports; the lab shows the model's own result next to it. Every source was opened and its DOI checked (docs/CHANGELOG.md, step 4).",
+  "sources": {
+    "shiu2024": { "cite": "Shiu et al., Nature 2024", "doi": "10.1038/s41586-024-07763-9" },
+    "bidaye2014": { "cite": "Bidaye et al., Science 2014", "doi": "10.1126/science.1249964" },
+    "bidaye2020": { "cite": "Bidaye et al., Neuron 2020", "doi": "10.1016/j.neuron.2020.07.032" },
+    "rayshubskiy2025": { "cite": "Rayshubskiy et al., eLife 2025", "doi": "10.7554/eLife.102230" },
+    "vonreyn2014": { "cite": "von Reyn et al., Nature Neuroscience 2014", "doi": "10.1038/nn.3741" }
+  },
+  "experiments": [
+    { "id": "sugar_feeding", "query": "s=sugar:150", "expect": ["feeding"], "source": "shiu2024" },
+    { "id": "sugar_bitter", "query": "s=sugar:150,bitter:150", "expect": [], "source": "shiu2024" },
+    { "id": "water_feeding", "query": "s=water:150", "expect": ["feeding"], "source": "shiu2024" },
+    { "id": "antenna_grooming", "query": "s=antenna_touch:150", "expect": ["antennal_grooming"], "source": "shiu2024" },
+    { "id": "looming_escape", "query": "s=looming:150", "expect": ["escape"], "source": "vonreyn2014" },
+    { "id": "gf_direct", "query": "o=DNp01:150", "expect": ["escape"], "source": "vonreyn2014" },
+    { "id": "p9_forward", "query": "o=DNp09:150", "expect": ["walk_forward"], "source": "bidaye2020" },
+    { "id": "p9_right", "query": "o=DNp09.r:150", "expect": ["walk_forward", "turn_right"], "source": "bidaye2020" },
+    { "id": "mdn_backward", "query": "o=MDN:150", "expect": ["walk_backward"], "source": "bidaye2014" },
+    { "id": "dna02_right", "query": "o=DNa02.r:150", "expect": ["turn_right"], "source": "rayshubskiy2025" },
+    { "id": "mn9_direct", "query": "o=CB0701:150", "expect": ["feeding"], "source": "shiu2024" },
+    { "id": "lesion_gng", "query": "s=sugar:150&x=GNG", "expect": [], "source": null },
+    { "id": "salt_test", "query": "s=salt:150", "expect": [], "source": null },
+    { "id": "sound_test", "query": "s=sound:150", "expect": [], "source": null },
+    { "id": "smell_test", "query": "s=odor_v:150", "expect": [], "source": null }
+  ]
+}

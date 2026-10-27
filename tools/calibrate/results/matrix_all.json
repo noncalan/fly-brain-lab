@@ -1,0 +1,1860 @@
+{
+ "seeds": [
+  1,
+  2
+ ],
+ "durationMs": 1000,
+ "generatedBy": "src/sim/calibration.test.ts",
+ "rows": [
+  {
+   "stimulus": "none",
+   "hz": 0,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 0.8372499999999832
+  },
+  {
+   "stimulus": "grn_sugar",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 41.5,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 22,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 44,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     39,
+     44
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     21,
+     23
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     42,
+     46
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2072.98185
+  },
+  {
+   "stimulus": "grn_water",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 77.74099999999999
+  },
+  {
+   "stimulus": "grn_bitter",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 74.9679000000001
+  },
+  {
+   "stimulus": "grn_salt",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 89.75,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     86.5,
+     93
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 214.89220000000023
+  },
+  {
+   "stimulus": "grn_glutamate",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 55.18119999999999
+  },
+  {
+   "stimulus": "grn_taste_peg",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 54.25,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     57,
+     51.5
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 164.33305000000018
+  },
+  {
+   "stimulus": "trn_heat",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 32.5,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 65,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     33,
+     32
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     66,
+     64
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2936.4930000000004
+  },
+  {
+   "stimulus": "trn_cold",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 30.25,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 60.5,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     30,
+     30.5
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     60,
+     61
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2939.6255499999997
+  },
+  {
+   "stimulus": "hrn_dry",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 30.5,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 61,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     30.5,
+     30.5
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     61,
+     61
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 3340.8791500000007
+  },
+  {
+   "stimulus": "hrn_moist",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 28,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 56,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     29,
+     27
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     58,
+     54
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 3376.65035
+  },
+  {
+   "stimulus": "jo_wind_gravity",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 1.75,
+    "abn1": 17,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     2,
+     1.5
+    ],
+    "abn1": [
+     18,
+     16
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 553.4329999999991
+  },
+  {
+   "stimulus": "jo_auditory",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 37.5,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     36,
+     39
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 313.2750499999984
+  },
+  {
+   "stimulus": "jo_grooming",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 4,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     5,
+     3
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 97.48065000000133
+  },
+  {
+   "stimulus": "bm_antenna",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 5.75,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 2,
+    "dna02_r": 9.5
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     6.5,
+     5
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     2,
+     2
+    ],
+    "dna02_r": [
+     11,
+     8
+    ]
+   },
+   "wallMsPerSimSecond": 501.16919999999664
+  },
+  {
+   "stimulus": "vpn_looming",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 258.5,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0.25,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0.5
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     260.5,
+     256.5
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0.5
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     1
+    ]
+   },
+   "wallMsPerSimSecond": 1335.7844499999992
+  },
+  {
+   "stimulus": "photo_ocellar",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 50.79659999999785
+  },
+  {
+   "stimulus": "photo_dra",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 32.24725000000035
+  },
+  {
+   "stimulus": "orn_da1",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 30.75,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 61.5,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     31.5,
+     30
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     63,
+     60
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2874.6020999999964
+  },
+  {
+   "stimulus": "orn_v",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 31.25,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 62.5,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     33,
+     29.5
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     66,
+     59
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2890.435400000002
+  },
+  {
+   "stimulus": "orn_dm1",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 28.25,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 56,
+    "dna02_r": 0.5
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     28.5,
+     28
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     57,
+     55
+    ],
+    "dna02_r": [
+     0,
+     1
+    ]
+   },
+   "wallMsPerSimSecond": 3174.0732500000013
+  },
+  {
+   "stimulus": "orn_va2",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 29.75,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 59,
+    "dna02_r": 0.5
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     29.5,
+     30
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     58,
+     60
+    ],
+    "dna02_r": [
+     1,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 3419.186249999999
+  },
+  {
+   "stimulus": "orn_dl5",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 30.25,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 60,
+    "dna02_r": 0.5
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     30.5,
+     30
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     60,
+     60
+    ],
+    "dna02_r": [
+     1,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2894.2620499999975
+  },
+  {
+   "stimulus": "shiu_sugar_r",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 78.5,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     77,
+     80
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 194.3628499999977
+  },
+  {
+   "stimulus": "shiu_bitter_r",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0,
+    "mdn": 0,
+    "dnp09": 0,
+    "dna02": 0,
+    "mdn_l": 0,
+    "mdn_r": 0,
+    "dnp09_l": 0,
+    "dnp09_r": 0,
+    "dna02_l": 0,
+    "dna02_r": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0
+    ],
+    "mdn": [
+     0,
+     0
+    ],
+    "dnp09": [
+     0,
+     0
+    ],
+    "dna02": [
+     0,
+     0
+    ],
+    "mdn_l": [
+     0,
+     0
+    ],
+    "mdn_r": [
+     0,
+     0
+    ],
+    "dnp09_l": [
+     0,
+     0
+    ],
+    "dnp09_r": [
+     0,
+     0
+    ],
+    "dna02_l": [
+     0,
+     0
+    ],
+    "dna02_r": [
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 58.10375000000204
+  }
+ ]
+}

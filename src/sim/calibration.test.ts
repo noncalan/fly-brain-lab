@@ -7,10 +7,15 @@ import { describe, it } from 'vitest';
 import { Simulator } from './engine';
 import { loadBuiltConnectome } from './testing';
 
-const STIMULI = ['shiu_sugar_r', 'grn_sugar', 'grn_water', 'grn_bitter', 'trn_heat', 'jo_wind_gravity', 'bm_antenna', 'vpn_looming'];
-const READOUTS = ['mn9', 'giant_fiber', 'adn1', 'abn1'];
-const RATES_HZ = [50, 100, 150];
-const SEEDS = [1, 2, 3];
+// CALIBRATE_ALL=1: every stimulus and readout set in meta.json, one rate, two seeds -> matrix_all.json
+const ALL = process.env.CALIBRATE_ALL === '1';
+const SETS = loadBuiltConnectome().sets;
+const STIMULI = ALL
+  ? Object.keys(SETS).filter((k) => SETS[k].kind === 'stimulus')
+  : ['shiu_sugar_r', 'grn_sugar', 'grn_water', 'grn_bitter', 'trn_heat', 'jo_wind_gravity', 'bm_antenna', 'vpn_looming'];
+const READOUTS = ALL ? Object.keys(SETS).filter((k) => SETS[k].kind === 'readout') : ['mn9', 'giant_fiber', 'adn1', 'abn1'];
+const RATES_HZ = ALL ? [150] : [50, 100, 150];
+const SEEDS = ALL ? [1, 2] : [1, 2, 3];
 const DURATION_MS = 1000;
 
 describe.runIf(process.env.CALIBRATE === '1')('calibration matrix', () => {
@@ -37,7 +42,7 @@ describe.runIf(process.env.CALIBRATE === '1')('calibration matrix', () => {
     const out = resolve(__dirname, '../../tools/calibrate/results');
     mkdirSync(out, { recursive: true });
     writeFileSync(
-      resolve(out, 'matrix.json'),
+      resolve(out, ALL ? 'matrix_all.json' : 'matrix.json'),
       JSON.stringify({ seeds: SEEDS, durationMs: DURATION_MS, generatedBy: 'src/sim/calibration.test.ts', rows }, null, 1),
     );
     console.table(rows.map((r) => ({ stim: r.stimulus, hz: r.hz, ...Object.fromEntries(Object.entries(r.meanHz).map(([k, v]) => [k, v.toFixed(1)])) })));

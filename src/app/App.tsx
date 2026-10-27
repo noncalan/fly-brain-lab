@@ -1,6 +1,8 @@
 import { I18nProvider, useI18n } from '../i18n';
 import { AboutPage } from '../pages/AboutPage';
+import { ExperimentsPage } from '../pages/ExperimentsPage';
 import { LabPage } from '../pages/LabPage';
+import { IntroDialog } from './IntroDialog';
 import { Header, useRoute } from './shell';
 
 function Footer() {
@@ -13,7 +15,13 @@ export function App() {
   return (
     <I18nProvider>
       <Header route={route} navigate={navigate} />
-      <main id="main">{route === '/about' ? <AboutPage /> : <LabPage />}</main>
+      <main id="main">
+        {route === '/about' && <AboutPage />}
+        {route === '/experiments' && <ExperimentsPage open={(query) => navigate('/', query)} />}
+        {/* keyed by the query so opening another experiment starts a fresh lab */}
+        {route === '/' && <LabPage key={window.location.search} />}
+      </main>
+      <IntroDialog onExperiments={() => navigate('/experiments')} />
       <Footer />
     </I18nProvider>
   );

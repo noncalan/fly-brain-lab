@@ -55,11 +55,18 @@ export function useSimulation(onFrame: (frame: SimFrame) => void) {
   }, []);
 
   const stimulate = useCallback((setId: string, rateHz: number) => clientRef.current?.stimulate(setId, rateHz), []);
+  const stimulateIndices = useCallback(
+    (key: string, indices: number[], rateHz: number) => clientRef.current?.stimulateIndices(key, indices, rateHz),
+    [],
+  );
+  const silenceIndices = useCallback((indices: number[]) => clientRef.current?.silence({ indices }), []);
+  const silenceNeuropil = useCallback((neuropil: string) => clientRef.current?.silence({ neuropil }), []);
+  const clearSilence = useCallback(() => clientRef.current?.clearSilence(), []);
   const stepOnce = useCallback((ms: number) => clientRef.current?.stepOnce(ms), []);
   const reset = useCallback(() => {
     monitorRef.current.reset();
     clientRef.current?.reset(1);
   }, []);
 
-  return { load, speed, setSpeed, stimulate, stepOnce, reset };
+  return { load, speed, setSpeed, stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence, stepOnce, reset };
 }

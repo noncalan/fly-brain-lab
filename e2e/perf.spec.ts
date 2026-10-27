@@ -5,6 +5,7 @@ const MIN_FPS = 30;
 // Headless Chromium renders WebGL in software (SwiftShader), which measures the CPU, not a laptop GPU.
 // Use the real GPU through ANGLE/D3D11 so the number reflects what a user's laptop does.
 test.use({ launchOptions: { args: ['--enable-gpu', '--use-angle=d3d11', '--ignore-gpu-blocklist'] } });
+test.beforeEach(async ({ page }) => page.addInitScript(() => localStorage.setItem('fbl.introSeen', '1')));
 
 test('UI stays above 30 FPS while the heaviest stimulus runs', async ({ page }) => {
   await page.goto('/');

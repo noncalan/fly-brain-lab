@@ -16,24 +16,43 @@ from pathlib import Path
 ANNOTATIONS_REF = "flyconnectome/flywire_annotations@a83b2776 (release v3.2.0), Supplemental_file1_neuron_annotations.tsv"
 SHIU_REF = "philshiu/Drosophila_brain_model@91bdd1e7 figures.ipynb (FlyWire v630 IDs; only IDs unchanged in v783 kept)"
 
-# (set_id, kind, column, allowed values, note)
-ANNOTATION_SETS: list[tuple[str, str, str, tuple[str, ...], str]] = [
-    ("grn_sugar", "stimulus", "cell_sub_class", ("sugar", "sugar/low_salt"), "labellar sugar GRNs, both sides"),
-    ("grn_water", "stimulus", "cell_sub_class", ("water",), "labellar water GRNs, both sides"),
-    ("grn_bitter", "stimulus", "cell_sub_class", ("bitter",), "labellar bitter GRNs, both sides"),
-    ("trn_heat", "stimulus", "cell_type", ("TRN_VP2",), "antennal heating-sensing thermosensory neurons"),
-    ("trn_cold", "stimulus", "cell_type", ("TRN_VP3a", "TRN_VP3b"), "antennal cold-sensing thermosensory neurons"),
-    ("jo_wind_gravity", "stimulus", "cell_sub_class", ("wind_gravity",), "Johnston's organ neurons, wind/gravity"),
-    ("jo_grooming", "stimulus", "cell_sub_class", ("grooming",), "Johnston's organ neurons tagged grooming"),
-    ("bm_antenna", "stimulus", "cell_type", ("BM_Ant",), "antennal bristle mechanosensory neurons"),
-    ("vpn_looming", "stimulus", "cell_type", ("LC4", "LPLC2"), "visual projection neurons (no photoreceptor input modelled)"),
-    ("mn9", "readout", "cell_type", ("CB0701",), "MN9 = CB0701 (Shiu MN9 v630 ID 720575940660219265 maps to CB0701 in v783)"),
-    ("giant_fiber", "readout", "cell_type", ("DNp01",), "DNp01, hemibrain_type 'Giant Fiber'"),
-    ("adn1", "readout", "cell_type", ("DNg62",), "Shiu id_DN1_1 720575940616185531 is DNg62 in v783"),
-    ("abn1", "readout", "cell_type", ("SAD093",), "Shiu id_aBN1 720575940630907434 is SAD093 in v783"),
-    ("mdn", "readout", "cell_type", ("MDN",), "MDN descending neurons"),
-    ("dnp09", "readout", "cell_type", ("DNp09",), "DNp09 descending neurons"),
-    ("dna02", "readout", "cell_type", ("DNa02",), "DNa02 descending neurons"),
+# (set_id, kind, {column: allowed values}, note). All conditions must hold.
+ANNOTATION_SETS: list[tuple[str, str, dict[str, tuple[str, ...]], str]] = [
+    ("grn_sugar", "stimulus", {"cell_sub_class": ("sugar", "sugar/low_salt")}, "labellar sugar GRNs, both sides"),
+    ("grn_water", "stimulus", {"cell_sub_class": ("water",)}, "labellar water GRNs, both sides"),
+    ("grn_bitter", "stimulus", {"cell_sub_class": ("bitter",)}, "labellar bitter GRNs, both sides"),
+    ("grn_salt", "stimulus", {"cell_sub_class": ("high_salt/heavy_metal",)}, "labellar high-salt / heavy-metal GRNs (LB3d)"),
+    ("grn_glutamate", "stimulus", {"cell_sub_class": ("glutamate",)}, "labellar GRNs annotated glutamate (LB1e)"),
+    ("grn_taste_peg", "stimulus", {"cell_class": ("gustatory",), "cell_sub_class": ("taste peg",)}, "taste peg GRNs"),
+    ("trn_heat", "stimulus", {"cell_type": ("TRN_VP2",)}, "antennal heating-sensing thermosensory neurons"),
+    ("trn_cold", "stimulus", {"cell_type": ("TRN_VP3a", "TRN_VP3b")}, "antennal cold-sensing thermosensory neurons"),
+    ("hrn_dry", "stimulus", {"cell_type": ("HRN_VP4",)}, "hygrosensory neurons annotated dry"),
+    ("hrn_moist", "stimulus", {"cell_type": ("HRN_VP5",)}, "hygrosensory neurons annotated moist"),
+    ("jo_wind_gravity", "stimulus", {"cell_sub_class": ("wind_gravity",)}, "Johnston's organ neurons, wind/gravity"),
+    ("jo_auditory", "stimulus", {"cell_class": ("mechanosensory",), "cell_sub_class": ("auditory",)}, "Johnston's organ neurons, auditory"),
+    ("jo_grooming", "stimulus", {"cell_sub_class": ("grooming",)}, "Johnston's organ neurons tagged grooming"),
+    ("bm_antenna", "stimulus", {"cell_type": ("BM_Ant",)}, "antennal bristle mechanosensory neurons"),
+    ("vpn_looming", "stimulus", {"cell_type": ("LC4", "LPLC2")}, "visual projection neurons (no photoreceptor input modelled)"),
+    ("photo_ocellar", "stimulus", {"cell_class": ("visual",), "cell_sub_class": ("ocellar",)}, "ocellar photoreceptors"),
+    ("photo_dra", "stimulus", {"cell_class": ("visual",), "cell_sub_class": ("DRA",)}, "dorsal rim area photoreceptors"),
+    ("orn_da1", "stimulus", {"cell_type": ("ORN_DA1",)}, "olfactory receptor neurons of glomerulus DA1"),
+    ("orn_v", "stimulus", {"cell_type": ("ORN_V",)}, "olfactory receptor neurons of glomerulus V"),
+    ("orn_dm1", "stimulus", {"cell_type": ("ORN_DM1",)}, "olfactory receptor neurons of glomerulus DM1"),
+    ("orn_va2", "stimulus", {"cell_type": ("ORN_VA2",)}, "olfactory receptor neurons of glomerulus VA2"),
+    ("orn_dl5", "stimulus", {"cell_type": ("ORN_DL5",)}, "olfactory receptor neurons of glomerulus DL5"),
+    ("mn9", "readout", {"cell_type": ("CB0701",)}, "MN9 = CB0701 (Shiu MN9 v630 ID 720575940660219265 maps to CB0701 in v783)"),
+    ("giant_fiber", "readout", {"cell_type": ("DNp01",)}, "DNp01, hemibrain_type 'Giant Fiber'"),
+    ("adn1", "readout", {"cell_type": ("DNg62",)}, "Shiu id_DN1_1 720575940616185531 is DNg62 in v783"),
+    ("abn1", "readout", {"cell_type": ("SAD093",)}, "Shiu id_aBN1 720575940630907434 is SAD093 in v783"),
+    ("mdn", "readout", {"cell_type": ("MDN",)}, "MDN, backward walking (Bidaye et al. 2014)"),
+    ("dnp09", "readout", {"cell_type": ("DNp09",)}, "DNp09 = P9, forward walking with ipsilateral turning (Bidaye et al. 2020)"),
+    ("dna02", "readout", {"cell_type": ("DNa02",)}, "DNa02, steering (Rayshubskiy et al. 2025)"),
+    ("mdn_l", "readout", {"cell_type": ("MDN",), "side": ("left",)}, "MDN, left"),
+    ("mdn_r", "readout", {"cell_type": ("MDN",), "side": ("right",)}, "MDN, right"),
+    ("dnp09_l", "readout", {"cell_type": ("DNp09",), "side": ("left",)}, "DNp09, left"),
+    ("dnp09_r", "readout", {"cell_type": ("DNp09",), "side": ("right",)}, "DNp09, right"),
+    ("dna02_l", "readout", {"cell_type": ("DNa02",), "side": ("left",)}, "DNa02, left"),
+    ("dna02_r", "readout", {"cell_type": ("DNa02",), "side": ("right",)}, "DNa02, right"),
 ]
 
 # Exact v630 ID lists copied from Shiu et al. figures.ipynb (MIT). Kept for "replicate Shiu" experiments.
@@ -72,12 +91,12 @@ def main() -> None:
         rows = [r for r in csv.DictReader(f, delimiter="\t") if r["root_id"] in known]
 
     sets = {}
-    for set_id, kind, column, values, note in ANNOTATION_SETS:
-        members = sorted(r["root_id"] for r in rows if r[column] in values)
+    for set_id, kind, filters, note in ANNOTATION_SETS:
+        members = sorted(r["root_id"] for r in rows if all(r[c] in v for c, v in filters.items()))
         if not members:
-            raise SystemExit(f"{set_id}: no neurons match {column} in {values}")
-        sets[set_id] = {"kind": kind, "source": ANNOTATIONS_REF, "rule": f"{column} in {list(values)}",
-                        "note": note, "root_ids": members}
+            raise SystemExit(f"{set_id}: no neurons match {filters}")
+        rule = " and ".join(f"{c} in {list(v)}" for c, v in filters.items())
+        sets[set_id] = {"kind": kind, "source": ANNOTATIONS_REF, "rule": rule, "note": note, "root_ids": members}
     for set_id, ids in SHIU_SETS.items():
         members = sorted(i for i in ids if i in known)
         sets[set_id] = {"kind": "stimulus", "source": SHIU_REF, "rule": "explicit ID list",

@@ -13,6 +13,7 @@ Checked 2026-10-27.
 | Eon `eonsystemspbc/fly-brain` | GPL-2.0 | GitHub API | **Nothing copied.** Read only for comparison. |
 | FlyWire neuropil meshes `gs://flywire_neuropil_meshes/neuropils/neuropil_mesh_v141_v3` | FlyWire data terms (treated as CC BY-NC 4.0) | public bucket used by Codex | Shipped as a derived, quantised file. |
 | Codex `murthylab/codex` (neuropil ID → name map, region categories) | Apache-2.0 | GitHub API | Mapping copied into `build_meshes.py` and `src/content/regions.ts` with attribution. |
+| NeuroMechFly v2 body meshes and rig (`NeLy-EPFL/flygym`, NeuroMechFly v2, Nature Methods 2024, 10.1038/s41592-024-02497-y) | Apache-2.0 | GitHub API + LICENSE | Shipped as a quantised derived file (`public/data/fly.*.bin.gz`) with attribution. |
 | Fork `snedea/flybrain` | MIT | `license.md` | Kept, our copyright added below. |
 
 ## Decision

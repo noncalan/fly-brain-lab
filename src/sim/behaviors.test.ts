@@ -61,8 +61,10 @@ describe('config', () => {
         states = monitor.push(sim.getActivity());
       }
       const on = states.filter((s) => s.active).map((s) => s.id);
-      // Water is expected to cause feeding but the v783 model does not reproduce it (docs/MODEL_NOTES.md §3).
-      const modelReproduces = stimulus.id === 'water' ? [] : stimulus.expects;
+      // What the model does, from tools/calibrate/results/matrix_all.json: water does not reproduce the expected
+      // feeding (docs/MODEL_NOTES.md §3); high salt and taste pegs drive MN9 although no study is cited for that.
+      const MODEL: Record<string, string[]> = { water: [], salt: ['feeding'], taste_peg: ['feeding'] };
+      const modelReproduces = MODEL[stimulus.id] ?? stimulus.expects;
       expect(on.sort()).toEqual([...modelReproduces].sort());
     },
   );

@@ -1,5 +1,6 @@
 // UI strings. English is the reference; ru and kk must have the same keys (enforced by the type).
 // Kazakh text needs review by a native speaker before v1.
+import { extraEn, extraKk, extraRu, type ExtraKey } from './extra';
 
 export const LANGS = ['ru', 'kk', 'en'] as const;
 export type Lang = (typeof LANGS)[number];
@@ -85,8 +86,9 @@ const en = {
   'footer.model': 'Model: Shiu et al. 2024 on FlyWire v783. Not a living fly.',
 } as const;
 
-export type StringKey = keyof typeof en;
-type Dict = Record<StringKey, string>;
+type BaseKey = keyof typeof en;
+export type StringKey = BaseKey | ExtraKey;
+type Dict = Record<BaseKey, string>;
 
 const ru: Dict = {
   'app.title': 'Fly Brain Lab',
@@ -250,4 +252,8 @@ const kk: Dict = {
   'footer.model': 'Модель: FlyWire v783 деректеріндегі Shiu et al. 2024. Бұл тірі шыбын емес.',
 };
 
-export const STRINGS: Record<Lang, Dict> = { en, ru, kk };
+export const STRINGS: Record<Lang, Record<StringKey, string>> = {
+  en: { ...en, ...extraEn },
+  ru: { ...ru, ...extraRu },
+  kk: { ...kk, ...extraKk },
+};

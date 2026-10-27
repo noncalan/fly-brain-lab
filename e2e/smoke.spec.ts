@@ -7,6 +7,7 @@ test('loads in every language, has no horizontal scroll and no console errors', 
   page.on('console', (m) => m.type() === 'error' && !m.text().startsWith('Failed to load resource') && errors.push(m.text()));
   page.on('response', (r) => r.status() >= 400 && !r.url().includes('/_vercel/') && errors.push(`${r.status()} ${r.url()}`));
   await page.goto('/');
+  await page.getByTestId('intro-start').click();
   await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
   for (const [lang, word] of [['ru', 'Сахар'], ['kk', 'Қант'], ['en', 'Sugar']] as const) {
     await page.getByRole('button', { name: lang, exact: true }).click();
@@ -15,12 +16,18 @@ test('loads in every language, has no horizontal scroll and no console errors', 
   }
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
+  await page.getByRole('link', { name: 'Experiments' }).click();
+  await expect(page.getByTestId('exp-p9_right')).toBeVisible();
+  await page.getByTestId('exp-mdn_backward').getByRole('link', { name: 'Open in the lab' }).click();
+  await expect(page).toHaveURL(/o=MDN/);
+  await expect(page.locator('[data-behavior="walk_backward"]')).toHaveAttribute('data-active', 'true', { timeout: 60_000 });
   await page.getByRole('link', { name: 'About' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('About');
   expect(errors).toEqual([]);
 });
 
 test('time controls pause and step the simulation', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('fbl.introSeen', '1'));
   await page.goto('/');
   await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
   await page.getByTestId('pause').click();
