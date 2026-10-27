@@ -1,0 +1,5 @@
+# node probe3.js 5  (captured stdout, 2026-10-27, Windows 11, Node v24.18.0, seed 1, 1 trial)
+min syn 5 edges 2700513
+sugarShiu active 353 {"MN9":64,"GF":0,"aDN1":0,"aBN1":0}
+looming active 1036 {"MN9":0,"GF":180,"aDN1":0,"aBN1":0}
+jo_wind active 981 {"MN9":0,"GF":0,"aDN1":2.5,"aBN1":19.5}

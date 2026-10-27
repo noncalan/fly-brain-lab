@@ -1,0 +1,5 @@
+# node probe2.js  (captured stdout, 2026-10-27, Windows 11, Node v24.18.0, seeds 1..3)
+100 Hz stim n 20 active 343 MN9 Hz [ 69, 51 ]
+150 Hz stim n 20 active 370 MN9 Hz [ 85, 59 ]
+sugar+bitter 150Hz MN9 mean Hz 9.5 bitter n 20
+sugar alone 150Hz MN9 mean Hz 70.7
