@@ -11,6 +11,8 @@ Checked 2026-10-27.
 | flywire_annotations (Schlegel et al.) | repository has no licence file | GitHub API `license: null` | Use as data with citation; ask the authors before any commercial use. |
 | Shiu et al. code `philshiu/Drosophila_brain_model` | MIT | `LICENSE` in repo | Equations, constants and ID lists may be reused with the copyright notice. |
 | Eon `eonsystemspbc/fly-brain` | GPL-2.0 | GitHub API | **Nothing copied.** Read only for comparison. |
+| FlyWire neuropil meshes `gs://flywire_neuropil_meshes/neuropils/neuropil_mesh_v141_v3` | FlyWire data terms (treated as CC BY-NC 4.0) | public bucket used by Codex | Shipped as a derived, quantised file. |
+| Codex `murthylab/codex` (neuropil ID → name map, region categories) | Apache-2.0 | GitHub API | Mapping copied into `build_meshes.py` and `src/content/regions.ts` with attribution. |
 | Fork `snedea/flybrain` | MIT | `license.md` | Kept, our copyright added below. |
 
 ## Decision

@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-10-27 — Step 3: MVP, deployed to https://fly.noncalan.xyz
+
+- Lab page: stimuli (click or drag onto the fly), fly animation driven only by readout neurons, behaviour list with
+  live rates and thresholds, "model does not reproduce" notices (water; heat/bitter show no reaction).
+- 3D brain (react-three-fiber) from FlyWire neuropil meshes `neuropil_mesh_v141_v3` (78 regions, 510 kB,
+  `tools/build-data/build_meshes.py`); regions glow with live spike rate; hover shows name and role in RU/KK/EN.
+- Signal path receptor → processing → motor/descending neuron → action, lit by live rates.
+- Region bars, 139k-neuron activity map, time controls (pause, ×0.1/0.25/0.5/1, +10 ms, measured real-time factor).
+- Dark "lab" and light themes, Inter + JetBrains Mono, one accent colour, RU/KK/EN with browser default.
+- About page (what it is / is not, attribution, author, licence), SEO meta, OG image 1200×630, fly favicon.
+- Deploy: Vercel project `fly-brain-lab`, GitHub auto-deploy from `main`, previews from branches,
+  domain `fly.noncalan.xyz` (DNS on Vercel), content-hashed data served `immutable`, Vercel Web Analytics.
+- Playwright: every stimulus, drag-and-drop, 3 languages, mobile, no horizontal scroll, pause/step,
+  UI ≥30 FPS under the heaviest stimulus (GPU). 13/13 pass against production.
+
 ## 2026-10-27 — Step 2: Vite + React + TypeScript, new simulation core
 
 - New simulation core `src/sim/` (TypeScript): event-driven LIF with Shiu et al. equations and parameters, exact
