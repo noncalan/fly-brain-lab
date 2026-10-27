@@ -60,6 +60,7 @@ function FlyColumn({ title, stimuli, mods, atlas, onBehaviors, onInfo }: {
   const sim = useSimulation(onFrame);
   const { stimulate, stimulateIndices, silenceNeuropil, clearSilence, setPruning } = sim;
   const info = sim.load.status === 'ready' ? sim.load.info : null;
+  const loadError = sim.load.status === 'error' ? sim.load.message : null;
 
   useEffect(() => {
     if (info) onInfo?.(info.neuronCount, info.neuropils);
@@ -84,7 +85,9 @@ function FlyColumn({ title, stimuli, mods, atlas, onBehaviors, onInfo }: {
             <Fly3D drive={drive} state={fly} marks={NO_MARKS} label={title} />
           </Suspense>
         ) : (
-          <div className="flex h-full items-center justify-center font-mono text-sm text-muted">{t('load.parsing')}</div>
+          <div className="flex h-full items-center justify-center p-4 text-center font-mono text-sm text-muted" role="status">
+            {loadError ? t('load.error', { message: loadError }) : t('load.parsing')}
+          </div>
         )}
       </div>
       <ul className="mt-2 flex min-h-[1.75rem] flex-wrap gap-2 text-sm" aria-live="polite" data-testid={mods ? 'beh-b' : 'beh-a'}>
@@ -112,8 +115,12 @@ export function ComparePage() {
   const [a, setA] = useState<string[]>([]);
   const [b, setB] = useState<string[]>([]);
   const [optoQuery, setOptoQuery] = useState('');
+  // fly B starts after fly A has loaded, so its connectome comes from the HTTP cache instead of a second
+  // simultaneous download of the same 9.5 MB file (Chrome can fail that one with ERR_CACHE_WRITE_FAILURE)
+  const [aReady, setAReady] = useState(false);
 
   const onInfo = useCallback((count: number, nps: string[]) => {
+    setAReady(true);
     setNeuropils(nps);
     loadAtlas(`${import.meta.env.BASE_URL}data/`, count).then(setAtlas, () => setAtlas(null));
   }, []);
@@ -156,7 +163,13 @@ export function ComparePage() {
       <div className="grid gap-4 lg:grid-cols-2">
         <FlyColumn title={t('cmp.a')} stimuli={stimuli} mods={null} atlas={atlas} onBehaviors={onA} onInfo={onInfo} />
         <div className="space-y-4">
-          <FlyColumn title={t('cmp.b')} stimuli={stimuli} mods={mods} atlas={atlas} onBehaviors={onB} />
+          {aReady ? (
+            <FlyColumn title={t('cmp.b')} stimuli={stimuli} mods={mods} atlas={atlas} onBehaviors={onB} />
+          ) : (
+            <Panel title={t('cmp.b')}>
+              <div className="flex h-64 items-center justify-center font-mono text-sm text-muted sm:h-80">{t('load.parsing')}</div>
+            </Panel>
+          )}
           <Panel title={t('cmp.b')}>
             <div className="space-y-3 text-sm">
               <label className="flex flex-wrap items-center gap-2">

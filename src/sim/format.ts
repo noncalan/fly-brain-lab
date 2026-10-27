@@ -51,8 +51,32 @@ async function gunzip(buffer: ArrayBuffer): Promise<ArrayBuffer> {
   return new Response(stream).arrayBuffer();
 }
 
-/** Fetch meta.json and the gzipped connectome from `baseUrl` (e.g. "/data/"). */
-export async function loadConnectome(
+const FETCH_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 800;
+
+/** Retry transient network/cache failures (e.g. two tabs or workers fetching the same file at once). */
+async function withRetry<T>(work: () => Promise<T>): Promise<T> {
+  let last: unknown;
+  for (let attempt = 0; attempt < FETCH_ATTEMPTS; attempt++) {
+    try {
+      return await work();
+    } catch (err) {
+      last = err;
+      await new Promise((r) => setTimeout(r, RETRY_DELAY_MS * (attempt + 1)));
+    }
+  }
+  throw last instanceof Error ? last : new Error(String(last));
+}
+
+/** Fetch meta.json and the gzipped connectome from `baseUrl` (e.g. "/data/"), retrying transient failures. */
+export function loadConnectome(
+  baseUrl: string,
+  onProgress?: (loadedBytes: number, totalBytes: number) => void,
+): Promise<Connectome> {
+  return withRetry(() => loadConnectomeOnce(baseUrl, onProgress));
+}
+
+async function loadConnectomeOnce(
   baseUrl: string,
   onProgress?: (loadedBytes: number, totalBytes: number) => void,
 ): Promise<Connectome> {
