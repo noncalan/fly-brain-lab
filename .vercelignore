@@ -1,0 +1,8 @@
+legacy/
+data/
+tools/
+e2e/
+docs/
+test-results/
+playwright-report/
+.cache/
