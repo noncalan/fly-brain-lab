@@ -10,3 +10,5 @@ data/*
 !data/shiu_signs_783.csv.gz
 test-results/
 playwright-report/
+.cache/
+*.tsbuildinfo

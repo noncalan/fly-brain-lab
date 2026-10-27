@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Design tokens. One accent colour marks neural activity; everything else is neutral. */
+:root {
+  --bg: 246 247 248;
+  --surface: 255 255 255;
+  --surface-2: 238 240 242;
+  --border: 218 222 226;
+  --text: 22 26 30;
+  --muted: 88 96 104;
+  --accent: 13 122 106;
+  --accent-soft: 13 122 106;
+  --accent-contrast: 255 255 255;
+  --warn: 160 82 0;
+  --fly-body: 196 160 104;
+  --fly-dark: 59 47 34;
+  color-scheme: light;
+}
+
+:root.dark {
+  --bg: 11 13 15;
+  --surface: 19 22 25;
+  --surface-2: 28 32 36;
+  --border: 44 50 56;
+  --text: 232 236 239;
+  --muted: 150 160 168;
+  --accent: 52 226 186;
+  --accent-soft: 52 226 186;
+  --accent-contrast: 6 20 17;
+  --warn: 245 180 80;
+  --fly-body: 200 164 106;
+  --fly-dark: 30 24 18;
+  color-scheme: dark;
+}
+
+html {
+  font-family: 'Inter Variable', system-ui, sans-serif;
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
+}
+
+body {
+  background: rgb(var(--bg));
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.signal-dot {
+  animation: signal-travel 0.9s linear infinite;
+}
+
+@keyframes signal-travel {
+  from {
+    transform: translateX(-4px);
+  }
+  to {
+    transform: translateX(10px);
+  }
+}

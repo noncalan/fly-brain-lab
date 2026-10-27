@@ -1,13 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fly Brain Lab</title>
-    <meta name="description" content="Stimulate a simulated fruit fly brain built from the FlyWire connectome and watch which neurons respond." />
+    <title>Fly Brain Lab — мозг мухи по настоящей схеме связей</title>
+    <meta name="description" content="Interactive lab on the real fruit fly connectome (FlyWire, 139,255 neurons): give a stimulus, watch neurons and brain regions respond. RU / KK / EN." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://fly.noncalan.xyz/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fly.noncalan.xyz/" />
+    <meta property="og:title" content="Fly Brain Lab" />
+    <meta property="og:description" content="Stimulate a simulated fruit fly built from the FlyWire connectome and watch its brain respond." />
+    <meta property="og:image" content="https://fly.noncalan.xyz/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0b0d0f" />
+    <link rel="preload" href="/data/meta.json" as="fetch" crossorigin />
+    <script>
+      // apply the saved or system theme before first paint
+      (function () {
+        var t = null;
+        try { t = localStorage.getItem('fbl.theme'); } catch (e) {}
+        if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        if (t === 'dark') document.documentElement.classList.add('dark');
+      })();
+    </script>
   </head>
-  <body class="bg-neutral-950 text-neutral-100">
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-surface focus:p-2">Skip to content</a>
     <div id="root"></div>
+    <noscript>Fly Brain Lab needs JavaScript to run the brain simulation.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

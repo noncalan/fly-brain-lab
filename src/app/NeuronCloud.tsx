@@ -5,8 +5,10 @@ export interface NeuronCloudHandle {
 }
 
 const DECAY = 0.86; // per animation frame
-const ACCENT = [56, 220, 180];
-const BASE = 26;
+
+function token(name: string): number[] {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim().split(/\s+/).map(Number);
+}
 
 /**
  * Every neuron is one pixel, laid out in columns grouped by primary neuropil (port of the fork's WebGL point panel).
@@ -41,6 +43,13 @@ export const NeuronCloud = forwardRef<NeuronCloudHandle, { primaryNeuropil: Uint
       canvas.height = h;
       const ctx = canvas.getContext('2d')!;
       const img = ctx.createImageData(w, h);
+      let base = token('--surface-2');
+      let accent = token('--accent');
+      const obs = new MutationObserver(() => {
+        base = token('--surface-2');
+        accent = token('--accent');
+      });
+      obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
       let raf = 0;
       const draw = () => {
         const b = brightness.current;
@@ -49,9 +58,9 @@ export const NeuronCloud = forwardRef<NeuronCloudHandle, { primaryNeuropil: Uint
         for (let i = 0; i < n; i++) {
           const v = b[i];
           const o = px[i] * 4;
-          data[o] = BASE + (ACCENT[0] - BASE) * v;
-          data[o + 1] = BASE + (ACCENT[1] - BASE) * v;
-          data[o + 2] = BASE + (ACCENT[2] - BASE) * v;
+          data[o] = base[0] + (accent[0] - base[0]) * v;
+          data[o + 1] = base[1] + (accent[1] - base[1]) * v;
+          data[o + 2] = base[2] + (accent[2] - base[2]) * v;
           data[o + 3] = 255;
           if (v > 0) b[i] = v < 0.02 ? 0 : v * DECAY;
         }
@@ -59,13 +68,16 @@ export const NeuronCloud = forwardRef<NeuronCloudHandle, { primaryNeuropil: Uint
         raf = requestAnimationFrame(draw);
       };
       raf = requestAnimationFrame(draw);
-      return () => cancelAnimationFrame(raf);
+      return () => {
+        cancelAnimationFrame(raf);
+        obs.disconnect();
+      };
     }, [primaryNeuropil]);
 
     return (
       <canvas
         ref={canvasRef}
-        className="h-full w-full rounded bg-neutral-900"
+        className="h-full w-full rounded bg-surface-2"
         style={{ imageRendering: 'pixelated' }}
         role="img"
         aria-label={label}

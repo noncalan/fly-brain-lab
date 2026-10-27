@@ -13,16 +13,24 @@
     "test:watch": "vitest",
     "typecheck": "tsc -b",
     "data:sets": "python tools/neuron-sets/build_sets.py",
-    "data:build": "uv run --no-project --with numpy==2.1.3 python -I tools/build-data/build_connectome.py"
+    "data:build": "uv run --no-project --with numpy==2.1.3 python -I tools/build-data/build_connectome.py",
+    "data:meshes": "uv run --no-project --with numpy==2.1.3 python -I tools/build-data/build_meshes.py"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "5.1.0",
+    "@fontsource/jetbrains-mono": "5.1.0",
+    "@react-three/fiber": "8.17.10",
+    "@vercel/analytics": "1.3.1",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "three": "0.169.0"
   },
   "devDependencies": {
+    "@playwright/test": "1.48.2",
     "@types/node": "22.9.0",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
+    "@types/three": "0.169.0",
     "@vitejs/plugin-react": "4.3.3",
     "autoprefixer": "10.4.20",
     "postcss": "8.4.47",

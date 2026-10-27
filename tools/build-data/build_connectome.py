@@ -7,8 +7,8 @@ Inputs (FlyWire Codex v783, already in data/):
   data/shiu_signs_783.csv.gz  outgoing sign per neuron from Shiu et al. Connectivity_783 (MIT)
 
 Outputs (public/data/):
-  connectome.fbl1.bin.gz   gzip of the binary below
-  meta.json                neuron count, edge count, neuropil names, sets as indices, provenance
+  connectome.<hash>.fbl1.bin.gz   gzip of the binary below (content-hashed, served immutable)
+  meta.json                       file name of the binary, counts, neuropil names, sets as indices, provenance
 
 Binary, little-endian:
   char[4]  magic "FBL1"
@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import csv
 import gzip
+import hashlib
 import json
 import struct
 import sys
@@ -126,11 +127,15 @@ def main() -> None:
         row_ptr.astype("<u4").tobytes(), col.astype("<u4").tobytes(), w.astype("<i2").tobytes(),
         primary.tobytes(),
     ])
-    out_bin = args.out_dir / "connectome.fbl1.bin.gz"
-    out_bin.write_bytes(gzip.compress(blob, compresslevel=9, mtime=0))
+    packed = gzip.compress(blob, compresslevel=9, mtime=0)
+    for old in args.out_dir.glob("connectome.*.fbl1.bin.gz"):
+        old.unlink()
+    out_bin = args.out_dir / f"connectome.{hashlib.sha256(packed).hexdigest()[:10]}.fbl1.bin.gz"
+    out_bin.write_bytes(packed)
 
     meta = {
         "format": "FBL1",
+        "file": out_bin.name,
         "neuron_count": n,
         "edge_count": e,
         "synapse_count": int(np.abs(w.astype(np.int64)).sum()),

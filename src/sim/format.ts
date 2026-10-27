@@ -3,6 +3,8 @@ import type { Connectome, NeuronSet } from './types';
 /** Shape of public/data/meta.json written by tools/build-data/build_connectome.py. */
 export interface ConnectomeMeta {
   format: 'FBL1';
+  /** Content-hashed name of the gzipped binary next to meta.json. */
+  file: string;
   neuron_count: number;
   edge_count: number;
   synapse_count: number;
@@ -58,7 +60,7 @@ export async function loadConnectome(
   if (!metaRes.ok) throw new Error(`HTTP ${metaRes.status} loading meta.json`);
   const meta = (await metaRes.json()) as ConnectomeMeta;
 
-  const binRes = await fetch(`${baseUrl}connectome.fbl1.bin.gz`);
+  const binRes = await fetch(`${baseUrl}${meta.file}`);
   if (!binRes.ok || !binRes.body) throw new Error(`HTTP ${binRes.status} loading connectome`);
   const total = Number(binRes.headers.get('content-length') ?? 0);
   const reader = binRes.body.getReader();

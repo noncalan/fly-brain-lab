@@ -11,7 +11,7 @@ export function loadBuiltConnectome(): Connectome {
   if (cached) return cached;
   const dir = resolve(__dirname, '../../public/data');
   const meta = JSON.parse(readFileSync(resolve(dir, 'meta.json'), 'utf8')) as ConnectomeMeta;
-  const raw = gunzipSync(readFileSync(resolve(dir, 'connectome.fbl1.bin.gz')));
+  const raw = gunzipSync(readFileSync(resolve(dir, meta.file)));
   const buffer = raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength) as ArrayBuffer;
   cached = parseFbl1(buffer, meta);
   return cached;
