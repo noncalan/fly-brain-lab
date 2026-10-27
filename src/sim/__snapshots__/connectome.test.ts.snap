@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`golden snapshots (exact, fixed seeds) > jo_wind_gravity @ 150 Hz, seed 3 1`] = `
+{
+  "active": 1043,
+  "readouts": {
+    "abn1": 19,
+    "adn1": 4,
+    "giant_fiber": 0,
+    "mn9": 0,
+  },
+  "totalSpikes": 43158,
+}
+`;
+
+exports[`golden snapshots (exact, fixed seeds) > shiu_sugar_r @ 100 Hz, seed 1 1`] = `
+{
+  "active": 327,
+  "readouts": {
+    "abn1": 0,
+    "adn1": 0,
+    "giant_fiber": 0,
+    "mn9": 55,
+  },
+  "totalSpikes": 4344,
+}
+`;
+
+exports[`golden snapshots (exact, fixed seeds) > vpn_looming @ 150 Hz, seed 2 1`] = `
+{
+  "active": 1081,
+  "readouts": {
+    "abn1": 0,
+    "adn1": 0,
+    "giant_fiber": 256,
+    "mn9": 0,
+  },
+  "totalSpikes": 41317,
+}
+`;

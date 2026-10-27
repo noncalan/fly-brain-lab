@@ -1,13 +1,12 @@
-weights.txt
-extract_weights_to_json.py
-.vscode/
 node_modules/
-caretaker.log
-caretaker-decisions.log
-data/
-
-# Xcode
-ios/FlyBrain.xcodeproj/xcuserdata/
-ios/FlyBrain.xcodeproj/project.xcworkspace/xcuserdata/
-ios/build/
-DerivedData/
+dist/
+*.local
+.vercel
+weights.txt
+.vscode/
+data/*
+!data/neuron_sets.json
+!data/NEURON_SETS.md
+!data/shiu_signs_783.csv.gz
+test-results/
+playwright-report/

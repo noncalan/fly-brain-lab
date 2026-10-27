@@ -1,0 +1,11 @@
+{
+  "$comment": "Only data-backed stimuli (data/NEURON_SETS.md). 'expects' is what the science predicts; the app shows the model's actual result, including 'model does not reproduce this'.",
+  "stimuli": [
+    { "id": "sugar", "set": "shiu_sugar_r", "category": "pleasant", "defaultRateHz": 150, "expects": ["feeding"] },
+    { "id": "water", "set": "grn_water", "category": "pleasant", "defaultRateHz": 150, "expects": ["feeding"] },
+    { "id": "bitter", "set": "shiu_bitter_r", "category": "danger", "defaultRateHz": 150, "expects": [] },
+    { "id": "heat", "set": "trn_heat", "category": "danger", "defaultRateHz": 150, "expects": [] },
+    { "id": "antenna_touch", "set": "jo_wind_gravity", "category": "danger", "defaultRateHz": 150, "expects": ["antennal_grooming"] },
+    { "id": "looming", "set": "vpn_looming", "category": "danger", "defaultRateHz": 150, "expects": ["escape"] }
+  ]
+}

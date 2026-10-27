@@ -1,0 +1,29 @@
+{
+  "$comment": "A behaviour is shown only while the mean spike rate of its readout set over the last windowMs of simulated time exceeds thresholdHz. Thresholds chosen from tools/calibrate/results/matrix.json (no stimulus: all readouts 0 Hz; no cross-talk between stimuli).",
+  "behaviors": [
+    {
+      "id": "feeding",
+      "readout": "mn9",
+      "thresholdHz": 10,
+      "windowMs": 300,
+      "source": "Shiu et al. 2024: MN9 drives proboscis extension; sugar GRNs activate MN9",
+      "calibration": "shiu_sugar_r 100 Hz -> 53.7 Hz, 50 Hz -> 1.7 Hz; bitter added -> suppressed"
+    },
+    {
+      "id": "escape",
+      "readout": "giant_fiber",
+      "thresholdHz": 50,
+      "windowMs": 300,
+      "source": "FlyWire annotation DNp01, hemibrain_type 'Giant Fiber'",
+      "calibration": "vpn_looming 50/100/150 Hz -> 137.8/215.3/258.7 Hz"
+    },
+    {
+      "id": "antennal_grooming",
+      "readout": "adn1",
+      "thresholdHz": 0.5,
+      "windowMs": 1000,
+      "source": "Shiu et al. 2024: Johnston's organ neurons -> aBN1 -> aDN1 (antennal grooming)",
+      "calibration": "jo_wind_gravity 150 Hz -> aDN1 2.5 Hz (aBN1 18.3 Hz); 0 Hz with no stimulus and with every other stimulus, so 0.5 Hz (>= 1 spike of the pair per second) stays specific. Weak on the >=5-synapse graph, 15 Hz on the full graph (docs/MODEL_NOTES.md)"
+    }
+  ]
+}

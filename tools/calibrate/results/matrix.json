@@ -1,0 +1,836 @@
+{
+ "seeds": [
+  1,
+  2,
+  3
+ ],
+ "durationMs": 1000,
+ "generatedBy": "src/sim/calibration.test.ts",
+ "rows": [
+  {
+   "stimulus": "none",
+   "hz": 0,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 1.2086666666666588
+  },
+  {
+   "stimulus": "shiu_sugar_r",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 1.6666666666666667,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     1.5,
+     3.5
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 68.70510000000002
+  },
+  {
+   "stimulus": "shiu_sugar_r",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 53.666666666666664,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     49.5,
+     56,
+     55.5
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 199.6284333333334
+  },
+  {
+   "stimulus": "shiu_sugar_r",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 77,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     77,
+     80,
+     74
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 228.7301
+  },
+  {
+   "stimulus": "grn_sugar",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 30.333333333333332,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     30.5,
+     28.5,
+     32
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 137.50156666666666
+  },
+  {
+   "stimulus": "grn_sugar",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 46.333333333333336,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     47,
+     70,
+     22
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2519.9552999999996
+  },
+  {
+   "stimulus": "grn_sugar",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 41.5,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     39,
+     44,
+     41.5
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 3965.0032333333343
+  },
+  {
+   "stimulus": "grn_water",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 67.71490000000024
+  },
+  {
+   "stimulus": "grn_water",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 172.72093333333518
+  },
+  {
+   "stimulus": "grn_water",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 152.1969333333327
+  },
+  {
+   "stimulus": "grn_bitter",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 73.23803333333247
+  },
+  {
+   "stimulus": "grn_bitter",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 113.1878333333334
+  },
+  {
+   "stimulus": "grn_bitter",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 155.64220000000083
+  },
+  {
+   "stimulus": "trn_heat",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 5204.1038
+  },
+  {
+   "stimulus": "trn_heat",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 5873.300433333333
+  },
+  {
+   "stimulus": "trn_heat",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 4971.027233333334
+  },
+  {
+   "stimulus": "jo_wind_gravity",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 642.853666666672
+  },
+  {
+   "stimulus": "jo_wind_gravity",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 7.666666666666667
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     9,
+     6,
+     8
+    ]
+   },
+   "wallMsPerSimSecond": 913.748966666671
+  },
+  {
+   "stimulus": "jo_wind_gravity",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 2.5,
+    "abn1": 18.333333333333332
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     2,
+     1.5,
+     4
+    ],
+    "abn1": [
+     18,
+     16,
+     21
+    ]
+   },
+   "wallMsPerSimSecond": 974.1620666666616
+  },
+  {
+   "stimulus": "bm_antenna",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 273.7950666666632
+  },
+  {
+   "stimulus": "bm_antenna",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 665.3655666666697
+  },
+  {
+   "stimulus": "bm_antenna",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 0,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     0,
+     0,
+     0
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 907.3131333333295
+  },
+  {
+   "stimulus": "vpn_looming",
+   "hz": 50,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 137.83333333333334,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     138,
+     138.5,
+     137
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 1685.7870333333365
+  },
+  {
+   "stimulus": "vpn_looming",
+   "hz": 100,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 215.33333333333334,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     215.5,
+     216.5,
+     214
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2308.9688999999976
+  },
+  {
+   "stimulus": "vpn_looming",
+   "hz": 150,
+   "meanHz": {
+    "mn9": 0,
+    "giant_fiber": 258.6666666666667,
+    "adn1": 0,
+    "abn1": 0
+   },
+   "perSeedHz": {
+    "mn9": [
+     0,
+     0,
+     0
+    ],
+    "giant_fiber": [
+     260.5,
+     256.5,
+     259
+    ],
+    "adn1": [
+     0,
+     0,
+     0
+    ],
+    "abn1": [
+     0,
+     0,
+     0
+    ]
+   },
+   "wallMsPerSimSecond": 2570.958733333338
+  }
+ ]
+}

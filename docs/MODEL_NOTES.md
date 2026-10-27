@@ -93,3 +93,20 @@ looming → GF 180 Hz, JO wind → aBN1 19.5 Hz / aDN1 2.5 Hz. The effects survi
   `time node probe.js shiu` run). Real-time needs an event-driven update (only neurons with v ≠ v0 or g ≠ 0) and probably a coarser dt
   (0.25–0.5 ms, to be validated). Until then the UI shows "×0.2 of real time" honestly.
 * Determinism: seeded PRNG (mulberry32) in the worker; Vitest compares against stored spike counts for fixed seeds.
+
+## 5. Implementation in Fly Brain Lab (step 2, 2026-10-27)
+
+* Graph: `public/data/connectome.fbl1.bin.gz`, 2,700,513 edges. Compared edge by edge with Shiu's
+  Connectivity_783 at ≥5 synapses: same pairs, same signed weights (2,700,513 / 2,700,513). Using Codex
+  `neurons.csv` nt_type instead would flip the sign of 101,200 edges (3.7 %), mostly from 5,722 neurons whose Codex
+  nt_type is empty; Shiu's per-neuron signs are therefore shipped in `data/shiu_signs_783.csv.gz` (MIT).
+* Engine `src/sim/engine.ts` fixes the probe caveats: exact integration (Brian2 "linear" equivalent, verified against
+  the closed form in `engine.test.ts`) and synaptic input is added to `g` during refractoriness as in Brian2.
+* Results with the engine (seed 1, 1 s, `src/sim/connectome.test.ts`): Shiu sugar set @100 Hz → MN9 49.5 Hz,
+  343 neurons active (Shiu: "about 400"); sugar @150 Hz MN9 77.0 Hz → with bitter 8.5 Hz; looming → GF 260.5 Hz;
+  JO wind/gravity → aBN1 18.0 Hz, aDN1 2.0 Hz.
+* Calibration over 3 seeds (`tools/calibrate/results/matrix.json`): with no stimulus every readout is 0 Hz and no
+  stimulus activates another stimulus's readout. Water, bitter alone, heat, antennal bristles: no readout activity.
+* Speed (Node 24, this laptop, 1 s simulated): sugar 0.27 s, JO 0.96 s, looming 1.5 s, heat 4.6 s (heat recruits ~8.5 k
+  neurons). In the browser at ×1 the measured speed was ×0.81 (sugar), ×0.32–0.40 (antenna), ×0.15 (looming + water).
+  The UI shows the measured factor.

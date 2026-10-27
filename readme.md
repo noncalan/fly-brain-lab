@@ -1,40 +1,27 @@
-# FlyBrain
+# Fly Brain Lab
 
-Interactive browser simulation of the *Drosophila melanogaster* (fruit fly) brain. 139,255 neurons and 2.7M connections from the [FlyWire FAFB v783](https://codex.flywire.ai) connectome run in real time via a leaky integrate-and-fire model in a Web Worker.
+Interactive teaching lab: give a simulated fruit fly a stimulus, see which neurons and brain regions respond and
+whether the model produces a behaviour. The model is a simplified leaky integrate-and-fire network on the real wiring
+diagram (FlyWire v783), not a living fly; it has no consciousness or pain.
 
-The fly is not scripted. Behavior emerges from signal propagation through weighted neural connections: place food and watch it seek, touch it and watch it startle, change the light and watch it navigate.
+* 139,255 neurons, 2,700,513 connections (pairs with ≥5 synapses), signs and LIF parameters from Shiu et al. 2024.
+* The simulation runs in a Web Worker (`src/sim/`); behaviours switch on only when named readout neurons
+  (MN9, Giant Fiber, aDN1) exceed thresholds in `config/behaviors.json`.
+* Every neuron set has a source: `data/NEURON_SETS.md`. Model details and limits: `docs/MODEL_NOTES.md`.
 
-## Usage
+## Develop
 
-Open `index.html` in a browser (or visit the hosted version). The fly loads the full connectome and begins exploring. Use the toolbar to interact:
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm test           # Vitest: engine, real-connectome golden tests, behaviour config
+npm run build
+```
 
-- **Feed** -- click to place food. The fly seeks and eats it when hungry.
-- **Touch** -- click on the fly. Head, thorax, abdomen, and legs trigger different responses.
-- **Air** -- click and drag near the fly to blow wind.
-- **Light** -- cycle through Bright, Dim, Dark. The fly exhibits phototaxis.
-- **Temp** -- cycle through Neutral, Warm, Cool.
+Rebuild data (needs `uv`): `npm run data:build` → `public/data/connectome.fbl1.bin.gz` + `meta.json`.
 
-The bottom panel shows all 139K neurons firing in real time (WebGL), grouped by region: Sensory, Central, Drives, Motor.
+## Credits
 
-## Data Source
-
-Connectome data from the FlyWire Whole-Brain Connectome:
-
-> Dorkenwald, S., Matsliah, A., Sterling, A.R. *et al.* Neuronal wiring diagram of an adult brain. *Nature* **634**, 124--138 (2024). https://doi.org/10.1038/s41586-024-07558-y
-
-The binary connectome file (`data/neuron_meta.bin.gz`) is derived from the [FlyWire Codex](https://codex.flywire.ai) public dataset (FAFB v783). Neurons are classified into functional groups (sensory, central, drives, motor) based on FlyWire cell type annotations.
-
-## Origin
-
-Forked from [heyseth/worm-sim](https://github.com/heyseth/worm-sim), which simulated the 302-neuron *C. elegans* connectome in the browser. FlyBrain replaces the worm with a fruit fly and scales from 302 neurons to 139,255.
-
-## License
-
-MIT License -- see [license.md](license.md) for details.
-
-## Acknowledgments
-
-- **FlyWire Consortium** -- for mapping the complete adult *Drosophila* brain connectome and making the data publicly available.
-- **Timothy Busbice, Gabriel Garrett, Geoffrey Churchill** and contributors to the [GoPiGo Connectome](https://github.com/Connectome/GoPiGo) -- original connectome-driven robot concept.
-- **[Zach Rispoli](https://github.com/zrispo)** -- porting the *C. elegans* connectome to JavaScript.
-- **[Seth Miller](https://github.com/heyseth)** -- creating worm-sim, the browser simulation this project is forked from.
+FlyWire Consortium (Dorkenwald et al., Nature 2024; Schlegel et al., Nature 2024); Shiu et al., Nature 2024
+(model and code, MIT); flybrain by snedea and worm-sim by Seth Miller (MIT), from which this project is forked.
+Data licences: `docs/DATA_LICENSES.md` (non-commercial). Code: MIT, see `license.md`.
