@@ -141,7 +141,8 @@ export function StimulusChips({ stimuli, onChange }: { stimuli: Record<string, n
   const { t } = useI18n();
   return (
     <Panel title={t('stim.title')}>
-      <div className="flex flex-wrap gap-2">
+      {/* one scrolling row on phones, so the chips do not fill the whole first screen */}
+      <div className="-mx-4 flex gap-2 overflow-x-auto whitespace-nowrap px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:whitespace-normal sm:px-0 sm:pb-0">
         {stimuliConfig.stimuli.map((s) => (
           <button
             key={s.id}
