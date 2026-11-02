@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-02 — v2 wrap-up
+
+- About page lists the new sources (Zheng 2018 by DOI, Herculano-Houzel 2006, Azevedo 2009, Shapson-Coe 2024, MICrONS 2025).
+- `tools/og/screens.mjs` also shoots the v2 pages (desktop and phone) and takes a name filter.
+- `docs/STATUS.md` updated. Last full run: 89 Vitest passed (+2 probes skipped), 40/40 Playwright on the production
+  build (desktop + mobile).
+
 ## 2026-11-02 — v2: lessons, quiz and teacher mode
 
 - New page `/lessons` with 6 step-by-step lessons (RU/KK/EN): what a neuron is; receptor neurons; a signal's path

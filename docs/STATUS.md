@@ -1,25 +1,25 @@
 # Status
 
-Last update: 2026-10-27. Steps 1–3 done, step 4 (v1 core) deployed: https://fly.noncalan.xyz
+Last update: 2026-11-02. v1 and v2 deployed at https://fly.noncalan.xyz. Next: STOP for Nurik's review of v2, then the
+final check (step 6). Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md` (its §9 v2 list is now done).
 
-Step 4 adds: 3D NeuroMechFly body in an arena, walking from DNp09/MDN/DNa02, neuron points in the 3D brain,
-21 stimuli, optogenetics of 8,846 cell types, lesions, URL state + share link, Experiments page (15 cards), intro dialog.
-Tests: 57 Vitest, 30 Playwright (all pass against production). Screenshots: `docs/screenshots/`.
+## v2 (2026-11-02) — see CHANGELOG for details
+- `/compress` "Compress the brain": pruning, weight bits, merging neurons by cell type + side; honest model size
+  (bit-packed CSR); readout rates; kept/partly/lost verdict. Probe: `tools/calibrate/results/compression.json`,
+  notes in `docs/MODEL_NOTES.md` §7 (merge + 4 bits = 1.82 MB vs 10.85 MB keeps feeding, escape, grooming).
+- Spike sonification under the 3D brain (clicks per spike of a chosen region).
+- `/scale`: neuron counts and EM dataset sizes, every number with DOI and location in the paper.
+- `/lessons`: 6 lessons with demos, quizzes and a full-screen teacher mode.
+- Mobile: shared FPS governor lowers pixel ratio / shadows / neuron points below 30 FPS; phones start at medium;
+  one-row time bar (~5 % of the screen); nav scrolls on phones.
+- Tests: Vitest unit tests (+2 probes skipped by default) and the e2e suite in `e2e/` (smoke, stimuli, perf, v1, v2);
+  counts of the last run are in the CHANGELOG.
+- Screenshots: `node tools/og/screens.mjs` → `docs/screenshots/` (lab, compress, scale, lessons; desktop and phone).
 
-Known issues / next:
-- Many unrelated stimuli (heat, cold, humidity, odours) fall into one ~8.5k-neuron state with left DNa02 ~60 Hz, so the
-  fly turns left; flagged as a suspected model artefact (MODEL_NOTES §6). Needs a Brian2 reference run.
-- No sensory stimulus drives DNp09 or MDN; walking appears only via optogenetics.
-- Gait and grooming poses are procedural approximations on the NeuroMechFly rig (not NeuroMechFly kinematics data).
-- Load ~2 s warm CDN; first load after a deploy can be much slower (cold CDN). Connectome still 9.5 MB.
-- Phone: time bar takes ~15 % of the screen.
-- Kazakh strings need native review.
-- Remaining v1: neuron inspector (click a point), spike raster/heatmap, two flies side by side, exports (PNG/GIF/CSV).
-- v2 not started. `legacy/` still not deleted (hook blocks deletion).
-
-## Step 5 (2026-10-27): realistic gait + rest of v1 — see CHANGELOG
-Remaining from the plan: v2 (compress-the-brain page with model size MB, lessons + quiz + teacher mode, spike
-sonification, Scale page, mobile auto-quality), final Lighthouse/a11y pass. Gait is recorded-step playback
-(NeuroMechFly CPG style), not a physics simulation; turning and backward walking reuse the forward step.
-
-Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md`.
+## Known issues / not done
+- Final check (step 6) not started: Lighthouse ≥ 90, every stimulus/experiment e2e, three languages, phone review, final report.
+- Kazakh text (v1 and v2) needs a native speaker.
+- Suspected attractor artefact (heat, cold, humidity, odours → ~8.5k-neuron state, left turn): not checked against Brian2.
+- The merged model changes rates (MN9 higher, aDN1 much higher): it is a coarser model, not a lossless one.
+- Connectome download is still 9.5 MB (delta+varint idea not measured). `legacy/` still present (deletion needs Nurik).
+- On the Lessons page, the nav link "Lessons" does nothing while a lesson is open (use "All lessons").

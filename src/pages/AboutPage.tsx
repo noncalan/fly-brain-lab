@@ -32,9 +32,19 @@ const CREDITS: Array<{ who: string; what: string; url: string }> = [
     url: 'https://doi.org/10.1038/nn.3741',
   },
   {
-    who: 'Zheng, Lauritzen et al. (2018)',
-    what: 'FAFB electron microscopy volume underlying FlyWire (CC BY-NC 4.0)',
-    url: 'https://edit.flywire.ai/credits.html',
+    who: 'Zheng, Lauritzen et al., Cell (2018)',
+    what: 'FAFB electron microscopy volume underlying FlyWire (CC BY-NC 4.0); its size on the Scale page',
+    url: 'https://doi.org/10.1016/j.cell.2018.06.019',
+  },
+  {
+    who: 'Herculano-Houzel, Mota & Lent, PNAS (2006); Azevedo et al., J. Comp. Neurol. (2009)',
+    what: 'Neuron counts of the mouse and human brain (Scale page, lessons)',
+    url: 'https://doi.org/10.1002/cne.21974',
+  },
+  {
+    who: 'Shapson-Coe et al., Science (2024); MICrONS Consortium, Nature (2025)',
+    what: 'H01 human cortex and MICrONS mouse cortex datasets (Scale page)',
+    url: 'https://doi.org/10.1126/science.adk4858',
   },
   {
     who: 'FlyWire Codex',
