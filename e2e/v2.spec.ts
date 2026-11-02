@@ -35,3 +35,11 @@ test('compress: merged 4-bit model is smaller and keeps sugar feeding; strong-on
   await expect(page.getByTestId('beh-b')).not.toContainText(/feeding/, { timeout: 30_000 });
   await expect(page.getByTestId('zip-verdict')).toContainText(/lost|partly/i);
 });
+
+test('scale page lists sourced numbers with DOI links', async ({ page }) => {
+  await page.goto('/scale');
+  await expect(page.getByTestId('scale-brains')).toContainText('139,255');
+  await expect(page.getByTestId('scale-brains')).toContainText('86,100,000,000');
+  await expect(page.getByTestId('scale-datasets').getByRole('link', { name: /Zheng/ })).toHaveAttribute('href', 'https://doi.org/10.1016/j.cell.2018.06.019');
+  await expect(page.getByTestId('scale-ratio')).toContainText(/10 million times less/);
+});

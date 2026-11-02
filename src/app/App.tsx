@@ -4,6 +4,7 @@ import { ComparePage } from '../pages/ComparePage';
 import { CompressPage } from '../pages/CompressPage';
 import { ExperimentsPage } from '../pages/ExperimentsPage';
 import { LabPage } from '../pages/LabPage';
+import { ScalePage } from '../pages/ScalePage';
 import { IntroDialog } from './IntroDialog';
 import { Header, useRoute } from './shell';
 
@@ -21,6 +22,7 @@ export function App() {
         {route === '/about' && <AboutPage />}
         {route === '/compare' && <ComparePage />}
         {route === '/compress' && <CompressPage />}
+        {route === '/scale' && <ScalePage />}
         {route === '/experiments' && <ExperimentsPage open={(query) => navigate('/', query)} />}
         {/* keyed by the query so opening another experiment starts a fresh lab */}
         {route === '/' && <LabPage key={window.location.search} />}

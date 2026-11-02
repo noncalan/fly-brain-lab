@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-02 — v2: Scale page
+
+- New page `/scale`: neurons in a fly (139,255), a mouse (70.89 ± 10.41 million) and a human (86.1 ± 8.1 billion) on a
+  log scale, and how much data maps a brain: FAFB fly EM ≈ 106 TB, FlyWire (≈ 5×10⁷ synapses), MICrONS (> 200,000
+  cells, 0.5 billion synapses), H01 (1 mm³ of human cortex, 1.4 PB), and this site's model (10.85 MB; 1.82 MB merged).
+  Every number links to its DOI and says where in the paper it is (`src/content/scale.ts`); sources opened via Europe
+  PMC / PMC: Dorkenwald 2024, Herculano-Houzel 2006 (Table 1), Azevedo 2009, Zheng 2018, MICrONS 2025,
+  Shapson-Coe 2024. Ratios are computed and rounded to two significant digits.
+- Tests: unit test ties the model sizes to `compression.json` and the fly count to `meta.json`; e2e for the page.
+
 ## 2026-11-02 — v2: mobile version and automatic 3D quality
 
 - Automatic quality for every 3D view (`src/app/quality.ts`): phones start at "medium" (pixel ratio ≤ 1.25), and
