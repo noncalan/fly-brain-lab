@@ -47,7 +47,8 @@ export function App() {
       <PageHead route={route} />
       <Header route={route} navigate={navigate} />
       <main id="main">
-        <Suspense fallback={<div className="mx-auto h-64 max-w-7xl animate-pulse p-4" />}>
+        {/* a full-height placeholder: the footer stays below the fold while a page chunk loads (no layout shift) */}
+        <Suspense fallback={<div className="min-h-[100svh]" />}>
           {route === '/about' && <AboutPage />}
           {route === '/compare' && <ComparePage />}
           {route === '/compress' && <CompressPage />}
