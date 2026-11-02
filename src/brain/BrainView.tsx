@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { useQuality } from '../app/quality';
 import { NEUROPIL_NAMES, categoryOf, neuropilBase } from '../content/regions';
 import { useI18n } from '../i18n';
 import type { Atlas } from '../lab/atlas';
@@ -39,14 +40,16 @@ void main() {
 }`;
 
 /** All neurons as points at their soma (or representative) position; a spike lights the point, then it fades. */
-function NeuronPoints({ atlas, spikes, idle, accent, onPick }: { atlas: Atlas; spikes: SpikeQueueRef; idle: THREE.Color; accent: THREE.Color; onPick?: (neuron: number) => void }) {
+function NeuronPoints({ atlas, spikes, idle, accent, stride, onPick }: { atlas: Atlas; spikes: SpikeQueueRef; idle: THREE.Color; accent: THREE.Color; stride: number; onPick?: (neuron: number) => void }) {
   const { geometry, activity } = useMemo(() => {
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.BufferAttribute(atlas.positions, 3));
     const act = new Float32Array(atlas.positions.length / 3);
     g.setAttribute('activity', new THREE.BufferAttribute(act, 1).setUsage(THREE.DynamicDrawUsage));
+    // lower quality draws every n-th neuron; picking still reports the real neuron index
+    if (stride > 1) g.setIndex(new THREE.BufferAttribute(Uint32Array.from({ length: Math.ceil(act.length / stride) }, (_, k) => k * stride), 1));
     return { geometry: g, activity: act };
-  }, [atlas]);
+  }, [atlas, stride]);
   const material = useMemo(
     () =>
       new THREE.ShaderMaterial({
@@ -210,13 +213,14 @@ export default function BrainView({
     return () => obs.disconnect();
   }, []);
 
+  const quality = useQuality();
   const category = hovered ? categoryOf(hovered) : undefined;
   return (
     <div className="relative h-full w-full">
       {error && <p className="p-4 text-sm text-warn">{error}</p>}
       <Canvas
         camera={{ position: [0, 0.15, 2.4], fov: 40 }}
-        dpr={[1, 2]}
+        dpr={quality.dpr}
         aria-label={t('brain.canvasLabel', { active: activeCount })}
         role="img"
         onPointerMissed={() => setHovered(null)}
@@ -228,7 +232,7 @@ export default function BrainView({
         {meshes?.map((m) => (
           <Region key={m.name} mesh={m} levels={levels} idleColor={palette.idle} accent={palette.accent} onHover={setHovered} />
         ))}
-        {atlas && <NeuronPoints atlas={atlas} spikes={spikes} idle={palette.idle} accent={palette.accent} onPick={onPickNeuron} />}
+        {atlas && <NeuronPoints atlas={atlas} spikes={spikes} idle={palette.idle} accent={palette.accent} stride={quality.pointStride} onPick={onPickNeuron} />}
         {atlas && selected !== null && <Selection atlas={atlas} neuron={selected} color={palette.accent} />}
         <Controls />
       </Canvas>

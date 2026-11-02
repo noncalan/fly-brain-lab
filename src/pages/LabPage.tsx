@@ -451,7 +451,7 @@ export function LabPage() {
         </div>
       </div>
 
-      <section aria-label={t('time.title')} className="sticky bottom-2 z-10 rounded-xl border border-line bg-surface/95 p-2 shadow-lg backdrop-blur lg:col-span-2">
+      <section aria-label={t('time.title')} className="sticky bottom-1 z-10 rounded-xl border border-line bg-surface/95 px-1.5 py-1 shadow-lg backdrop-blur sm:bottom-2 sm:p-2 lg:col-span-2">
         <TimeControls
           speed={speed}
           paused={paused}

@@ -46,9 +46,9 @@ export function SonifyControl({ sonifier, neuropils, suggest }: { sonifier: Spik
       >
         {on ? t('snd.off') : t('snd.on')}
       </button>
-      <label className="flex items-center gap-1">
-        <span className="text-muted">{t('snd.region')}</span>
-        <select value={region} onChange={(e) => setRegion(e.target.value)} className="rounded-md border border-line bg-surface-2 px-2 py-1" data-testid="sonify-region">
+      <label className="flex min-w-0 max-w-full items-center gap-1">
+        <span className="shrink-0 text-muted">{t('snd.region')}</span>
+        <select value={region} onChange={(e) => setRegion(e.target.value)} className="w-44 rounded-md border sm:w-64 border-line bg-surface-2 px-2 py-1" data-testid="sonify-region">
           <option value="all">{t('snd.all')}</option>
           {neuropils
             .filter((x) => x !== 'UNASGD')

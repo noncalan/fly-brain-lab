@@ -37,3 +37,20 @@ test('time controls pause and step the simulation', async ({ page }) => {
   await page.getByRole('button', { name: /10 (ms|мс)/ }).click();
   await expect(status).not.toHaveText(before ?? '');
 });
+
+test('pages fit the screen width and the time bar is one compact row', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('fbl.introSeen', '1');
+    localStorage.setItem('fbl.lang', 'ru');
+  });
+  const { width, height } = page.viewportSize()!;
+  await page.goto('/');
+  await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
+  // compare with the device width: on phones the layout viewport (clientWidth) grows with overflowing content
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  const bar = await page.getByTestId('pause').evaluate((el) => el.closest('section')!.getBoundingClientRect().height);
+  expect(bar / height).toBeLessThan(width < 640 ? 0.08 : 0.15);
+  await page.goto('/compress');
+  await expect(page.getByTestId('zip-size-a')).toBeVisible({ timeout: 60_000 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+});

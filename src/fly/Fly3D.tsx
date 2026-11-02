@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { useQuality } from '../app/quality';
 import { FlyRig } from './FlyRig';
 import { loadFlyModel, type FlyModelData } from './flyModel';
 import { LEGS, TRIPOD_OFFSET, gaitDrive, legAnglesAt, loadGait, type GaitData, type Leg, type LegAngles } from './gait';
@@ -161,7 +162,7 @@ function FlyActor({
 }
 
 /** Sun that travels with the fly so its shadow stays inside the shadow camera. */
-function FollowLight({ target }: { target: MutableRefObject<FlyState> }) {
+function FollowLight({ target, castShadow }: { target: MutableRefObject<FlyState>; castShadow: boolean }) {
   const light = useRef<THREE.DirectionalLight>(null);
   useFrame(() => {
     const l = light.current;
@@ -175,7 +176,7 @@ function FollowLight({ target }: { target: MutableRefObject<FlyState> }) {
     <directionalLight
       ref={light}
       intensity={1.6}
-      castShadow
+      castShadow={castShadow}
       shadow-mapSize={[1024, 1024]}
       shadow-camera-left={-8}
       shadow-camera-right={8}
@@ -243,15 +244,16 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
   const [model, setModel] = useState<FlyModelData | null>(null);
   const [gait, setGait] = useState<GaitData | null>(null);
   const lift = useRef(0);
+  const quality = useQuality();
   useEffect(() => {
     const base = `${import.meta.env.BASE_URL}data/`;
     loadFlyModel(base).then(setModel, (e: Error) => onModelError?.(e.message));
     loadGait(base).then(setGait, (e: Error) => onModelError?.(e.message));
   }, [onModelError]);
   return (
-    <Canvas shadows camera={{ position: [5, 4.5, 6.5], fov: 35, near: 0.1, far: 500 }} dpr={[1, 2]} role="img" aria-label={label} gl={{ preserveDrawingBuffer: true }} data-testid="fly-canvas">
+    <Canvas shadows camera={{ position: [5, 4.5, 6.5], fov: 35, near: 0.1, far: 500 }} dpr={quality.dpr} role="img" aria-label={label} gl={{ preserveDrawingBuffer: true }} data-testid="fly-canvas">
       <ambientLight intensity={0.7} />
-      <FollowLight target={state} />
+      <FollowLight target={state} castShadow={quality.shadows} />
       <Arena onPick={onArenaClick} />
       <Marks marks={marks} />
       {model && gait && (

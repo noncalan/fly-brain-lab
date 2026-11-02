@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-11-02 — v2: mobile version and automatic 3D quality
+
+- Automatic quality for every 3D view (`src/app/quality.ts`): phones start at "medium" (pixel ratio ≤ 1.25), and
+  when the page holds less than 30 FPS for 2 s (after a 4 s loading grace) all 3D views step down together:
+  high (pixel ratio ≤ 2, shadows, all 139,255 neuron points) → medium → low (pixel ratio 1, no shadows, every 3rd
+  neuron point; clicking a point still picks the real neuron). `?quality=high|medium|low` forces a level.
+- Phone time bar is one compact row (icons, short status): 40 px, ~5 % of a Pixel 7 screen instead of ~15 %.
+- Header navigation scrolls sideways on phones instead of widening the page; the sound region picker no longer
+  widens the lab on phones.
+- Tests: governor and initial-quality unit tests; e2e "pages fit the screen width" compares with the device width
+  (the old check compared with `clientWidth`, which grows with the overflow on phones and so missed it).
+
 ## 2026-11-02 — v2: spike sonification
 
 - Lab page, under the 3D brain: "Listen to spikes" plays one short click per spike of the chosen brain region (or the

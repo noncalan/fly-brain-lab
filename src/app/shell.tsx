@@ -80,7 +80,7 @@ export function Header({ route, navigate }: { route: Route; navigate: (r: Route)
           <FlyIcon className="h-6 w-6 text-accent" />
           {t('app.title')}
         </a>
-        <nav aria-label={t('nav.main')} className="flex gap-4 text-sm">
+        <nav aria-label={t('nav.main')} className="-mx-4 flex w-[calc(100%+2rem)] gap-4 overflow-x-auto whitespace-nowrap px-4 pb-1 text-sm sm:mx-0 sm:w-auto sm:overflow-visible sm:px-0 sm:pb-0">
           {ROUTES.map((r) => (
             <a
               key={r.path}

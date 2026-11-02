@@ -16,16 +16,18 @@ interface Props {
   onReset: () => void;
 }
 
+/** One compact row on phones (icons, short status); full labels from the `sm` breakpoint up. */
 export function TimeControls({ speed, paused, timeMs, realtimeFactor, onPause, onSpeed, onStep, onReset }: Props) {
   const { t, n } = useI18n();
   const slow = !paused && realtimeFactor < speed * SLOW_FRACTION;
-  const btn = 'rounded-md border border-line bg-surface-2 px-3 py-1.5 hover:border-accent disabled:opacity-40';
+  const btn = 'shrink-0 rounded-md border border-line bg-surface-2 px-2 py-1 hover:border-accent disabled:opacity-40 sm:px-3 sm:py-1.5';
   return (
-    <div className="flex flex-wrap items-center gap-3 text-sm">
-      <button type="button" className={btn} onClick={() => onPause(!paused)} data-testid="pause">
-        {paused ? `▶ ${t('time.play')}` : `❚❚ ${t('time.pause')}`}
+    <div className="flex items-center gap-1.5 text-sm sm:flex-wrap sm:gap-3">
+      <button type="button" className={btn} onClick={() => onPause(!paused)} aria-label={paused ? t('time.play') : t('time.pause')} data-testid="pause">
+        <span aria-hidden="true">{paused ? '▶' : '❚❚'}</span>
+        <span className="hidden sm:inline"> {paused ? t('time.play') : t('time.pause')}</span>
       </button>
-      <div role="radiogroup" aria-label={t('time.speed')} className="flex overflow-hidden rounded-md border border-line">
+      <div role="radiogroup" aria-label={t('time.speed')} className="flex shrink-0 overflow-hidden rounded-md border border-line">
         {SPEEDS.map((s) => (
           <button
             key={s}
@@ -33,7 +35,7 @@ export function TimeControls({ speed, paused, timeMs, realtimeFactor, onPause, o
             role="radio"
             aria-checked={speed === s}
             onClick={() => onSpeed(s)}
-            className={`px-2.5 py-1.5 font-mono ${speed === s ? 'bg-ink text-bg' : 'text-muted hover:text-ink'}`}
+            className={`px-1.5 py-1 font-mono text-xs sm:px-2.5 sm:py-1.5 sm:text-sm ${speed === s ? 'bg-ink text-bg' : 'text-muted hover:text-ink'}`}
           >
             ×{s}
           </button>
@@ -42,13 +44,21 @@ export function TimeControls({ speed, paused, timeMs, realtimeFactor, onPause, o
       <button type="button" className={btn} onClick={() => onStep(STEP_MS)} disabled={!paused} aria-label={t('time.stepLabel')}>
         {t('time.step')}
       </button>
-      <button type="button" className={btn} onClick={onReset}>
-        {t('time.reset')}
+      <button type="button" className={btn} onClick={onReset} aria-label={t('time.reset')}>
+        <span aria-hidden="true" className="sm:hidden">↺</span>
+        <span className="hidden sm:inline">{t('time.reset')}</span>
       </button>
-      <p className="ml-auto font-mono text-xs text-muted" aria-live="off" data-testid="time-status">
-        {t('time.simTime', { t: n(timeMs / 1000, 2) })} ·{' '}
+      <p className="ml-auto min-w-0 truncate text-right font-mono text-xs text-muted" aria-live="off" data-testid="time-status">
+        <span className="hidden sm:inline">{t('time.simTime', { t: n(timeMs / 1000, 2) })} · </span>
         <span className={slow ? 'text-warn' : ''} title={slow ? t('time.slow') : undefined}>
-          {paused ? t('time.paused') : t('time.realtime', { factor: n(realtimeFactor, 2) })}
+          {paused ? (
+            t('time.paused')
+          ) : (
+            <>
+              <span className="sm:hidden">×{n(realtimeFactor, 2)}</span>
+              <span className="hidden sm:inline">{t('time.realtime', { factor: n(realtimeFactor, 2) })}</span>
+            </>
+          )}
         </span>
       </p>
     </div>
