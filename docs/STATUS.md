@@ -1,7 +1,7 @@
 # Status
 
-Last update: 2026-11-02. v1 and v2 deployed at https://fly.noncalan.xyz. Next: STOP for Nurik's review of v2, then the
-final check (step 6). Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md` (its §9 v2 list is now done).
+Last update: 2026-11-03. v1, v2 and the final check (step 6) are done and deployed at https://fly.noncalan.xyz.
+Final report: `docs/FINAL_REPORT.md`. Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md` (its §9 v2 list is now done).
 
 ## v2 (2026-11-02) — see CHANGELOG for details
 - `/compress` "Compress the brain": pruning, weight bits, merging neurons by cell type + side; honest model size
@@ -19,7 +19,6 @@ final check (step 6). Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md`
 - Screenshots: `node tools/og/screens.mjs` → `docs/screenshots/` (lab, compress, scale, lessons; desktop and phone).
 
 ## Known issues / not done
-- Final check (step 6) not started: Lighthouse ≥ 90, every stimulus/experiment e2e, three languages, phone review, final report.
 - Kazakh text (v1 and v2) needs a native speaker.
 - Suspected attractor artefact (heat, cold, humidity, odours → ~8.5k-neuron state, left turn): not checked against Brian2.
 - The merged model changes rates (MN9 higher, aDN1 much higher): it is a coarser model, not a lossless one.

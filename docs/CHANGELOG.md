@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-03 — Final check (step 6)
+
+- Lighthouse on production after the fixes (`tools/lighthouse/results/2026-11-03.json`): mobile, all 7 pages —
+  performance 98–99, accessibility 100, best practices 100, SEO 100; desktop 100 across the board.
+- Layout shift fixed: a full-height placeholder while a lazily loaded page arrives (CLS 0.78 → 0.001 on Experiments).
+- New e2e: every experiment card opens the lab with its query and shows the model's response (water: "the model does
+  not reproduce this"; sugar + bitter and GNG lesion: no feeding); every page in RU/KK/EN has no untranslated keys,
+  fits the screen width and logs no console errors (desktop and phone).
+- Last full run: 97 Vitest passed (+2 probes skipped), 59/59 Playwright on the production build (desktop + mobile).
+- Final report: `docs/FINAL_REPORT.md`.
+
 ## 2026-11-02 — Quality pass (Lighthouse)
 
 - Lighthouse on production before this pass (mobile / desktop, lab page): performance 95 / 100, accessibility 100,

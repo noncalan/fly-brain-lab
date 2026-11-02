@@ -54,3 +54,30 @@ test('pages fit the screen width and the time bar is one compact row', async ({ 
   await expect(page.getByTestId('zip-size-a')).toBeVisible({ timeout: 60_000 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
 });
+
+test('every page in every language: translated, fits the screen, no console errors', async ({ page }) => {
+  test.setTimeout(240_000);
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  page.on('console', (m) => m.type() === 'error' && !m.text().startsWith('Failed to load resource') && errors.push(m.text()));
+  const { width } = page.viewportSize()!;
+  // an untranslated string shows up as its key, e.g. "zip.title"
+  const RAW_KEY = /\b(app|nav|load|stim|beh|brain|time|about|footer|cat|tab|opto|lesion|walk|exp|intro|arena|insp|hist|export|cmp|zip|snd|scale|les|play|life|hint|path|share)\.[a-zA-Z_]+/;
+  for (const lang of ['ru', 'kk', 'en']) {
+    await page.addInitScript((l) => {
+      localStorage.setItem('fbl.lang', l);
+      localStorage.setItem('fbl.introSeen', '1');
+    }, lang);
+    for (const path of ['/', '/experiments', '/compare', '/compress', '/scale', '/lessons', '/lessons?l=neuron', '/about']) {
+      await page.goto(path);
+      await expect(page.locator('html')).toHaveAttribute('lang', lang);
+      await expect(page.locator('main')).not.toBeEmpty({ timeout: 60_000 });
+      if (path === '/') await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
+      await page.waitForTimeout(500);
+      const text = await page.locator('body').innerText();
+      expect(text.match(RAW_KEY)?.[0], `${lang} ${path}`).toBeUndefined();
+      expect(await page.evaluate(() => document.documentElement.scrollWidth), `${lang} ${path}`).toBeLessThanOrEqual(width);
+    }
+  }
+  expect(errors).toEqual([]);
+});

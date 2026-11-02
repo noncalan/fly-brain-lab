@@ -20,6 +20,8 @@ const shots = [
   ['lessons-desktop', 'lessons?l=switching', desktop, 1000, 'lesson-step'],
   ['lessons-phone', 'lessons?l=pathway', phone, 1000, 'lesson-step'],
   ['lab-desktop-alive', '', desktop, 6000, 'life-needs'],
+  ['experiments-phone', 'experiments', phone, 1500, null],
+  ['about-phone', 'about', phone, 1000, null],
 ];
 for (const [name, path, opts, wait, ready] of shots) {
   if (only && !name.includes(only)) continue;

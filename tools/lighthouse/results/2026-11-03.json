@@ -1,0 +1,125 @@
+{
+ "generatedBy": "npx lighthouse@12.2.1 against https://fly.noncalan.xyz (commit f5fc2a8), default throttling",
+ "runs": [
+  {
+   "url": "https://fly.noncalan.xyz/compare",
+   "formFactor": "desktop",
+   "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 412.812,
+   "tbt": 0,
+   "cls": 0.0029416154941164572,
+   "fetchTime": "2026-11-02T19:06:20.627Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/about",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 1719.636,
+   "tbt": 0,
+   "cls": 0.0010200570110900614,
+   "fetchTime": "2026-11-02T19:06:04.402Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/compare",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 98,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 1897.7350000000001,
+   "tbt": 0,
+   "cls": 0.001044334792815185,
+   "fetchTime": "2026-11-02T19:04:53.214Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/compress",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 98,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 1888.501,
+   "tbt": 0,
+   "cls": 0.02459568023350646,
+   "fetchTime": "2026-11-02T19:05:10.919Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/experiments",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 1701.0895,
+   "tbt": 0,
+   "cls": 0.0010506210041547259,
+   "fetchTime": "2026-11-02T19:04:36.087Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 98,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 2024.4719999999998,
+   "tbt": 0,
+   "cls": 0.02408465977679221,
+   "fetchTime": "2026-11-02T19:04:16.523Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/lessons",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 1827.3195,
+   "tbt": 0,
+   "cls": 0.0010200570110900614,
+   "fetchTime": "2026-11-02T19:05:46.962Z",
+   "lighthouseVersion": "12.2.1"
+  },
+  {
+   "url": "https://fly.noncalan.xyz/scale",
+   "formFactor": "mobile",
+   "scores": {
+    "performance": 99,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+   },
+   "lcp": 1717,
+   "tbt": 0,
+   "cls": 0.0018095582777387948,
+   "fetchTime": "2026-11-02T19:05:29.628Z",
+   "lighthouseVersion": "12.2.1"
+  }
+ ]
+}
