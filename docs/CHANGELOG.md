@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-02 — v2: spike sonification
+
+- Lab page, under the 3D brain: "Listen to spikes" plays one short click per spike of the chosen brain region (or the
+  whole brain), like an electrophysiology audio monitor (Web Audio, capped at 400 clicks per second, clicks spread
+  over the frame's wall time). Turning it on picks the most active region. Off by default; RU/KK/EN.
+- Tests: unit test for the click cap, e2e for switching the sound on and off.
+
 ## 2026-11-02 — v2: "Compress the brain" page
 
 - New page `/compress`: an original fly and a compressed fly side by side with the same stimuli. Controls: drop

@@ -40,6 +40,12 @@ export const v2En = {
   'zip.why.title': 'Why compress a brain?',
   'zip.why.text':
     'To emulate a brain, a computer has to store its wiring diagram, and even this fly model holds 2.7 million connections. Bigger brains have far more. Compression asks which details of the wiring a behaviour really depends on. If the fly still feeds, escapes and grooms on a model ten times smaller, those details were not needed — for these behaviours and these stimuli. Finding compressions that keep behaviour is an open research question; this page is a toy version of it.',
+  'snd.on': 'Listen to spikes',
+  'snd.off': 'Stop the sound',
+  'snd.region': 'Region',
+  'snd.all': 'Whole brain',
+  'snd.hint': 'One click per spike in the chosen region, like a neuroscientist’s audio monitor (at most {max} clicks per second). Turn the volume down first.',
+  'snd.failed': 'This browser did not allow sound.',
 } as const;
 
 export type V2Key = keyof typeof v2En;
@@ -84,6 +90,12 @@ export const v2Ru: V2Dict = {
   'zip.why.title': 'Зачем сжимать мозг?',
   'zip.why.text':
     'Чтобы эмулировать мозг, компьютер должен хранить его схему связей, и даже в этой модели мухи 2,7 млн связей. У мозгов побольше их несравнимо больше. Сжатие спрашивает: от каких деталей схемы поведение действительно зависит? Если муха всё ещё ест, убегает и чистится на модели в десять раз меньше, эти детали не были нужны — для этих поведений и этих стимулов. Как сжимать, сохраняя поведение, — открытый исследовательский вопрос; эта страница — его игрушечная версия.',
+  'snd.on': 'Слушать спайки',
+  'snd.off': 'Выключить звук',
+  'snd.region': 'Область',
+  'snd.all': 'Весь мозг',
+  'snd.hint': 'Один щелчок на каждый спайк в выбранной области, как в аудиомониторе нейрофизиолога (не больше {max} щелчков в секунду). Сначала убавьте громкость.',
+  'snd.failed': 'Браузер не разрешил звук.',
 };
 
 export const v2Kk: V2Dict = {
@@ -125,4 +137,10 @@ export const v2Kk: V2Dict = {
   'zip.why.title': 'Миды неге сығу керек?',
   'zip.why.text':
     'Миды эмуляциялау үшін компьютер оның байланыс сызбасын сақтауы керек, тіпті осы шыбын моделінде 2,7 млн байланыс бар. Үлкенірек мида олар әлдеқайда көп. Сығу мынаны сұрайды: әрекет сызбаның қандай бөлшектеріне шынымен тәуелді? Егер шыбын он есе кіші модельде де қоректеніп, қашып, тазаланса, ол бөлшектер қажет болмаған — осы әрекеттер мен осы тітіркендіргіштер үшін. Әрекетті сақтай отырып сығу — ашық зерттеу сұрағы; бұл бет оның ойыншық нұсқасы.',
+  'snd.on': 'Спайктарды тыңдау',
+  'snd.off': 'Дыбысты өшіру',
+  'snd.region': 'Аймақ',
+  'snd.all': 'Бүкіл ми',
+  'snd.hint': 'Таңдалған аймақтағы әр спайкқа бір шертпе, нейрофизиологтың аудиомониторындағыдай (секундына {max} шертпеден аспайды). Алдымен дыбысты азайтыңыз.',
+  'snd.failed': 'Браузер дыбысқа рұқсат бермеді.',
 };

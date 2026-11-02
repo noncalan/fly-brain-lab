@@ -8,6 +8,18 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
+test('spike sound switches on, picks the most active region and switches off', async ({ page }) => {
+  await page.goto('/?s=sugar:150');
+  await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
+  await page.waitForTimeout(2000);
+  const toggle = page.getByTestId('sonify-toggle');
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByTestId('sonify-region')).not.toHaveValue('all');
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+});
+
 test('compress: merged 4-bit model is smaller and keeps sugar feeding; strong-only pruning loses it', async ({ page }) => {
   await page.goto('/compress');
   await expect(page.getByTestId('zip-size-b-ratio')).toContainText(/smaller/, { timeout: 60_000 });

@@ -17,6 +17,8 @@ import { NeuronInspector } from '../lab/NeuronInspector';
 import { decodeState, encodeState, type LabState, type OptoTarget } from '../lab/labState';
 import { RegionBars, type RegionRate } from '../lab/RegionBars';
 import { SignalPath } from '../lab/SignalPath';
+import { SpikeSonifier } from '../lab/sonify';
+import { SonifyControl } from '../lab/SonifyControl';
 import { TimeControls } from '../lab/TimeControls';
 import type { BehaviorState } from '../sim';
 
@@ -94,9 +96,11 @@ export function LabPage() {
   const [gifProgress, setGifProgress] = useState<number | null>(null);
   const history = useRef(new History());
   const lastSpike = useRef<Float64Array | null>(null);
+  const sonifier = useMemo(() => new SpikeSonifier(), []);
 
   const onFrame = useCallback((f: SimFrame) => {
     cloudRef.current?.addSpikes(f.activity.spikedIndices);
+    sonifier.push(f.activity);
     history.current.push(f.activity.timeMs, f.activity.windowMs, f.activity.neuropilSpikes, f.activity.setRatesHz, f.activity.spikedIndices);
     const ls = lastSpike.current;
     if (ls) for (const i of f.activity.spikedIndices) ls[i] = f.activity.timeMs;
@@ -133,7 +137,7 @@ export function LabPage() {
     const hz = s.z - Math.sin(s.heading) * HEAD_OFFSET_MM;
     setFoodContact(marksRef.current.some((m) => Math.hypot(m.x - hx, m.z - hz) < CONTACT_MM));
     setStatus({ timeMs: f.activity.timeMs, realtimeFactor: f.realtimeFactor, behaviors: f.behaviors, setRatesHz, regions, command: { ...d.command } });
-  }, []);
+  }, [sonifier]);
 
   const sim = useSimulation(onFrame);
   const { stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence } = sim;
@@ -350,6 +354,9 @@ export function LabPage() {
           </Suspense>
         </div>
         <p className="mt-2 text-xs text-muted">{t('brain.disclaimer')}</p>
+        <div className="mt-3">
+          <SonifyControl sonifier={sonifier} neuropils={info.neuropils} suggest={() => status?.regions.find((r) => r.hz > 0.5)?.name ?? null} />
+        </div>
         <div className="mt-3">
           {selected !== null && atlas ? (
             <NeuronInspector
