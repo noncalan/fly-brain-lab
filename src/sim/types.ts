@@ -15,8 +15,11 @@ export interface Connectome {
   rowPtr: Uint32Array;
   /** Postsynaptic index per edge. */
   col: Uint32Array;
-  /** Signed synapse count per edge (negative = inhibitory). */
-  weight: Int16Array;
+  /**
+   * Signed synapse count per edge (negative = inhibitory). Merged graphs (compress.ts) carry fractional
+   * synapse-equivalents in a Float32Array.
+   */
+  weight: Int16Array | Float32Array;
   /** Index into `neuropils` per neuron, 255 = none. */
   primaryNeuropil: Uint8Array;
   neuropils: string[];
@@ -38,7 +41,7 @@ export interface ModelParams {
 }
 
 export interface PruningParams {
-  /** Drop connections with fewer synapses than this (the loaded graph already has >= 5). */
+  /** Drop connections with fewer synapses than this (the loaded graph already has >= 5; 0 keeps every edge). */
   minSynapses: number;
   /** Quantise |synapse count| to 2^bits log-spaced levels; null keeps exact counts. */
   weightBits: number | null;

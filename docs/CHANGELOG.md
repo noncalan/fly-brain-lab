@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-11-02 — v2: "Compress the brain" page
+
+- New page `/compress`: an original fly and a compressed fly side by side with the same stimuli. Controls: drop
+  connections weaker than N synapses (5–80), bits per weight (exact/8/4/2/1), and merge neurons of one cell type
+  (per side) into one node; presets. Shows model size in MB for both flies and the ratio, nodes, connections, bits per
+  weight, smoothed rates of the readout neurons (MN9, Giant Fiber, aDN1, DNp09, MDN), and the verdict
+  "kept / partly / lost". Explains how the size is counted and why compression matters for brain emulation.
+- Engine: neuron merging by cell type and side (`src/sim/compress.ts`, mean-field weights = synapse sum / target
+  group size), honest model size (bit-packed CSR, before gzip). The worker runs the merged graph instead of the full
+  one when merging is on and reports spikes as original neuron indices. `minSynapses: 0` now keeps every edge;
+  the log quantiser spans the weights actually present (unchanged for the integer graph).
+- Measured (`tools/calibrate/results/compression.json`): merge + 4 bits = 1.82 MB vs 10.85 MB (6.0×) keeps feeding,
+  escape and grooming; dropping edges < 40 synapses loses feeding. Details in `docs/MODEL_NOTES.md` §7.
+- Refactor: the fly column and stimulus chips moved from the Compare page to `src/lab/FlyColumn.tsx`.
+- Tests: 77 Vitest (+ compression probe, skipped by default), new e2e `e2e/v2.spec.ts`.
+
 ## 2026-10-27 — Step 5: realistic walking and running, rest of v1
 
 - Gait: the 3D legs now replay a recorded walking step of a real fly (NeuroMechFly preprogrammed steps, flygym,

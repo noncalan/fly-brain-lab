@@ -127,3 +127,28 @@ looming → GF 180 Hz, JO wind → aBN1 19.5 Hz / aDN1 2.5 Hz. The effects survi
   the same large state (~8.5 k neurons, 2–3.4 s CPU per simulated second) in which left DNa02 fires ~56–65 Hz, so the
   fly turns left for very different inputs. Same pattern on the full graph (§3). Not validated against Brian2; shown
   as the model's output and listed here as a known limitation.
+
+## 7. Compressing the connectome (v2, 2026-11-02)
+
+Code: `src/sim/compress.ts` (merging, model size), used by the worker for the "Compress the brain" page.
+Numbers below: `tools/calibrate/results/compression.json` (`COMPRESSION=1 npx vitest run src/sim/compression.probe.test.ts`;
+150 Hz stimulus, 1 s, mean of seeds 1–2).
+
+* **Model size** = bit-packed CSR a simulator needs, before gzip: (nodes+1) row pointers of ⌈log2(edges+1)⌉ bits,
+  per edge a target of ⌈log2 nodes⌉ bits and a weight (exact counts: ⌈log2(max+1)⌉ + sign = 13 bits; quantised:
+  bits + sign plus a 2^bits × 32-bit codebook; merged exact: 32-bit float). Identities/positions are not counted.
+  The full ≥5-synapse graph is 10.85 MB by this count (the shipped FBL1 file is 9.5 MB gzip of a looser layout).
+* **Merging** (new): one node per (FlyWire cell type, side); untyped neurons stay single. 139,255 neurons → 19,065
+  nodes, 2,700,513 → 709,490 edges. Weight A→B = signed synapse sum / |B| (mean input to one member of B when every
+  member of A spikes once): exact only if a type fires as a unit. Pruning is applied before merging. Stimulating part
+  of a type drives the whole node — a real source of error, visible on the page.
+* Results (MN9 under sugar / Giant Fiber under looming / aDN1 under antenna touch, Hz; original 78.5 / 258.5 / 1.8):
+  - prune <10: 4.50 MB, 71.3 / 154.5 / 0.0 (grooming lost); <20: 1.75 MB, 49.5 / 71.3 / 0.0; <40: 0.69 MB, 0.0 / 52.8 / 0.0.
+  - 4 bits: 8.15 MB, 81.0 / 247.8 / 1.8 (all kept); 2 bits: 7.47 MB, 88.5 / 113.0 / 1.5, but sugar now also drives
+    right DNa02 18.5 Hz; 1 bit: 7.13 MB, 0.0 / 75.3 / 0.0.
+  - merge: 4.22 MB, 115.5 / 209.8 / 13.0; **merge + 4 bits: 1.82 MB (6.0× smaller), 105.0 / 228.0 / 16.8 — all three
+    behaviours kept** (grooming much stronger than in the full model); merge + prune <20 + 4 bits: 0.42 MB,
+    128.5 / 36.5 / 0.0 (escape and grooming lost).
+* Reading: pruning weak edges removes grooming first (the JO → aBN1 → aDN1 path is carried by many weak edges);
+  weight precision barely matters down to 4 bits; type-level merging keeps these three reflexes but changes rates,
+  so it is a coarser model, not a lossless one. Only three stimuli and three readouts were tested.

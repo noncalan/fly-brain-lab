@@ -1,6 +1,7 @@
 // UI strings. English is the reference; ru and kk must have the same keys (enforced by the type).
 // Kazakh text needs review by a native speaker before v1.
 import { extraEn, extraKk, extraRu, type ExtraKey } from './extra';
+import { v2En, v2Kk, v2Ru, type V2Key } from './v2';
 
 export const LANGS = ['ru', 'kk', 'en'] as const;
 export type Lang = (typeof LANGS)[number];
@@ -87,7 +88,7 @@ const en = {
 } as const;
 
 type BaseKey = keyof typeof en;
-export type StringKey = BaseKey | ExtraKey;
+export type StringKey = BaseKey | ExtraKey | V2Key;
 type Dict = Record<BaseKey, string>;
 
 const ru: Dict = {
@@ -253,7 +254,7 @@ const kk: Dict = {
 };
 
 export const STRINGS: Record<Lang, Record<StringKey, string>> = {
-  en: { ...en, ...extraEn },
-  ru: { ...ru, ...extraRu },
-  kk: { ...kk, ...extraKk },
+  en: { ...en, ...extraEn, ...v2En },
+  ru: { ...ru, ...extraRu, ...v2Ru },
+  kk: { ...kk, ...extraKk, ...v2Kk },
 };

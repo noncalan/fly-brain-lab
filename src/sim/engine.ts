@@ -110,7 +110,7 @@ export class Simulator {
 
   setPruning(params: Partial<PruningParams>): void {
     const next = { ...this.pruning, ...params };
-    if (!(next.minSynapses >= 1)) throw new Error('minSynapses must be >= 1');
+    if (!(next.minSynapses >= 0)) throw new Error('minSynapses must be >= 0');
     if (next.weightBits !== null && !(Number.isInteger(next.weightBits) && next.weightBits >= 1 && next.weightBits <= 15)) {
       throw new Error('weightBits must be an integer 1..15 or null');
     }
@@ -230,7 +230,7 @@ export class Simulator {
     for (let e = 0; e < weight.length; e++) {
       const w = weight[e];
       const mag = Math.abs(w);
-      if (mag < minSynapses) {
+      if (mag === 0 || mag < minSynapses) {
         this.effWeight[e] = 0;
         continue;
       }
@@ -321,14 +321,24 @@ export class Simulator {
   }
 }
 
-/** Map a synapse count to one of 2^bits levels spaced evenly in log space between minSynapses and the max count. */
-export function makeLogQuantiser(weight: Int16Array, minSynapses: number, bits: number): (mag: number) => number {
-  let max = minSynapses;
-  for (let e = 0; e < weight.length; e++) max = Math.max(max, Math.abs(weight[e]));
+/**
+ * Map a synapse count to one of 2^bits levels spaced evenly in log space between the smallest and the largest
+ * magnitude that survive pruning (for the integer graph the smallest is minSynapses itself).
+ */
+export function makeLogQuantiser(weight: ArrayLike<number>, minSynapses: number, bits: number): (mag: number) => number {
+  let min = Infinity;
+  let max = 0;
+  for (let e = 0; e < weight.length; e++) {
+    const mag = Math.abs(weight[e]);
+    if (mag === 0 || mag < minSynapses) continue;
+    if (mag < min) min = mag;
+    if (mag > max) max = mag;
+  }
+  if (max === 0) return (mag) => mag;
   const levels = 2 ** bits;
-  const lo = Math.log(minSynapses);
+  const lo = Math.log(min);
   const span = Math.log(max) - lo;
-  if (span === 0 || levels === 1) return () => Math.sqrt(minSynapses * max);
+  if (span === 0 || levels === 1) return () => Math.sqrt(min * max);
   const step = span / (levels - 1);
   return (mag) => Math.exp(lo + Math.round((Math.log(mag) - lo) / step) * step);
 }

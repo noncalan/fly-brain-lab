@@ -1,0 +1,128 @@
+// Strings for v2 pages. English is the reference; ru and kk must have the same keys (enforced by the type).
+// Kazakh text needs review by a native speaker.
+
+export const v2En = {
+  'nav.compress': 'Compress',
+  'zip.title': 'Compress the brain',
+  'zip.intro':
+    'Fly B runs on a compressed copy of the wiring diagram. Drop weak connections, store each weight in fewer bits, or merge neurons of one type into a single node — then see how much smaller the model becomes and whether the fly still does the same things.',
+  'zip.a': 'Original fly',
+  'zip.b': 'Compressed fly',
+  'zip.controls': 'Compression',
+  'zip.prune': 'Drop connections weaker than {n} synapses',
+  'zip.bits': 'Bits per weight',
+  'zip.merge': 'Merge neurons of one cell type (each side separately)',
+  'zip.mergeWait': 'Loading cell types…',
+  'zip.mergeHint': '{groups} nodes instead of {neurons} neurons. A node fires for all neurons of its type on one side; the connection to it is the average input one of its neurons gets.',
+  'zip.presets': 'Try',
+  'zip.preset.original': 'No compression',
+  'zip.preset.merge4': 'Merge types + 4 bits',
+  'zip.preset.strong': 'Only strong connections (≥ 40)',
+  'zip.preset.bit1': '1 bit per weight',
+  'zip.size': 'Model size',
+  'zip.mb': '{mb} MB',
+  'zip.ratio': '{x}× smaller than the original',
+  'zip.nodes': 'Nodes',
+  'zip.edges': 'Connections',
+  'zip.wbits': 'Bits per weight',
+  'zip.readouts': 'Readout neurons (Hz, smoothed)',
+  'zip.col.neuron': 'Neuron',
+  'zip.ro.mn9': 'MN9 · proboscis (feeding)',
+  'zip.ro.giant_fiber': 'Giant Fiber · escape',
+  'zip.ro.adn1': 'aDN1 · antennal grooming',
+  'zip.ro.dnp09': 'DNp09 · walking forward',
+  'zip.ro.mdn': 'MDN · walking backward',
+  'zip.caveat':
+    'The verdict compares only what this model can show (feeding, escape, grooming, walking) for the stimuli switched on now. A compressed brain can keep a behaviour for one stimulus and lose it for another — try several.',
+  'zip.how.title': 'How the size is counted',
+  'zip.how.text':
+    'The size is the bit-packed graph a simulator needs, before gzip: for every node a pointer to its first connection, and for every connection its target node and its weight. Exact weights are whole synapse counts with a sign; merged weights are fractions stored as 32-bit numbers; quantised weights take the chosen bits plus a sign bit, and a small table of levels. Neuron names and 3D positions are not counted: the simulation does not need them.',
+  'zip.why.title': 'Why compress a brain?',
+  'zip.why.text':
+    'To emulate a brain, a computer has to store its wiring diagram, and even this fly model holds 2.7 million connections. Bigger brains have far more. Compression asks which details of the wiring a behaviour really depends on. If the fly still feeds, escapes and grooms on a model ten times smaller, those details were not needed — for these behaviours and these stimuli. Finding compressions that keep behaviour is an open research question; this page is a toy version of it.',
+} as const;
+
+export type V2Key = keyof typeof v2En;
+type V2Dict = Record<V2Key, string>;
+
+export const v2Ru: V2Dict = {
+  'nav.compress': 'Сожми мозг',
+  'zip.title': 'Сожми мозг',
+  'zip.intro':
+    'Муха B работает на сжатой копии схемы связей. Выкиньте слабые связи, храните каждый вес меньшим числом бит или объедините нейроны одного типа в один узел — и посмотрите, насколько меньше стала модель и делает ли муха то же самое.',
+  'zip.a': 'Исходная муха',
+  'zip.b': 'Сжатая муха',
+  'zip.controls': 'Сжатие',
+  'zip.prune': 'Выкинуть связи слабее {n} синапсов',
+  'zip.bits': 'Бит на вес',
+  'zip.merge': 'Объединить нейроны одного типа клеток (каждую сторону отдельно)',
+  'zip.mergeWait': 'Загружаю типы клеток…',
+  'zip.mergeHint': '{groups} узлов вместо {neurons} нейронов. Узел срабатывает за все нейроны своего типа на одной стороне; связь к нему — средний вход, который получает один его нейрон.',
+  'zip.presets': 'Попробуйте',
+  'zip.preset.original': 'Без сжатия',
+  'zip.preset.merge4': 'Объединить типы + 4 бита',
+  'zip.preset.strong': 'Только сильные связи (≥ 40)',
+  'zip.preset.bit1': '1 бит на вес',
+  'zip.size': 'Объём модели',
+  'zip.mb': '{mb} МБ',
+  'zip.ratio': 'в {x} раза меньше исходной',
+  'zip.nodes': 'Узлы',
+  'zip.edges': 'Связи',
+  'zip.wbits': 'Бит на вес',
+  'zip.readouts': 'Считывающие нейроны (Гц, сглажено)',
+  'zip.col.neuron': 'Нейрон',
+  'zip.ro.mn9': 'MN9 · хоботок (питание)',
+  'zip.ro.giant_fiber': 'Гигантское волокно · побег',
+  'zip.ro.adn1': 'aDN1 · чистка антенн',
+  'zip.ro.dnp09': 'DNp09 · ходьба вперёд',
+  'zip.ro.mdn': 'MDN · ходьба назад',
+  'zip.caveat':
+    'Вердикт сравнивает только то, что эта модель умеет показать (питание, побег, чистка, ходьба), и только для включённых сейчас стимулов. Сжатый мозг может сохранить поведение для одного стимула и потерять для другого — попробуйте несколько.',
+  'zip.how.title': 'Как считается объём',
+  'zip.how.text':
+    'Объём — это упакованный по битам граф, который нужен симулятору, до gzip: для каждого узла указатель на его первую связь, для каждой связи — целевой узел и вес. Точные веса — целые числа синапсов со знаком; веса после объединения — дробные, хранятся как 32-битные числа; квантованные веса занимают выбранное число бит плюс бит знака и маленькую таблицу уровней. Имена нейронов и их 3D-позиции не считаются: симуляции они не нужны.',
+  'zip.why.title': 'Зачем сжимать мозг?',
+  'zip.why.text':
+    'Чтобы эмулировать мозг, компьютер должен хранить его схему связей, и даже в этой модели мухи 2,7 млн связей. У мозгов побольше их несравнимо больше. Сжатие спрашивает: от каких деталей схемы поведение действительно зависит? Если муха всё ещё ест, убегает и чистится на модели в десять раз меньше, эти детали не были нужны — для этих поведений и этих стимулов. Как сжимать, сохраняя поведение, — открытый исследовательский вопрос; эта страница — его игрушечная версия.',
+};
+
+export const v2Kk: V2Dict = {
+  'nav.compress': 'Миды сығу',
+  'zip.title': 'Миды сығыңыз',
+  'zip.intro':
+    'B шыбыны байланыс сызбасының сығылған көшірмесінде жұмыс істейді. Әлсіз байланыстарды алып тастаңыз, әр салмақты азырақ битпен сақтаңыз немесе бір түрдегі нейрондарды бір түйінге біріктіріңіз — модель қаншалықты кішірейгенін және шыбын бұрынғыдай әрекет ете ме, соны көріңіз.',
+  'zip.a': 'Бастапқы шыбын',
+  'zip.b': 'Сығылған шыбын',
+  'zip.controls': 'Сығу',
+  'zip.prune': '{n} синапстан әлсіз байланыстарды алып тастау',
+  'zip.bits': 'Бір салмаққа бит',
+  'zip.merge': 'Бір жасуша түріндегі нейрондарды біріктіру (әр жағын бөлек)',
+  'zip.mergeWait': 'Жасуша түрлері жүктелуде…',
+  'zip.mergeHint': '{neurons} нейронның орнына {groups} түйін. Түйін бір жақтағы өз түріндегі барлық нейрон үшін іске қосылады; оған келетін байланыс — оның бір нейроны алатын орташа кіріс.',
+  'zip.presets': 'Байқап көріңіз',
+  'zip.preset.original': 'Сығусыз',
+  'zip.preset.merge4': 'Түрлерді біріктіру + 4 бит',
+  'zip.preset.strong': 'Тек күшті байланыстар (≥ 40)',
+  'zip.preset.bit1': 'Бір салмаққа 1 бит',
+  'zip.size': 'Модель көлемі',
+  'zip.mb': '{mb} МБ',
+  'zip.ratio': 'бастапқыдан {x} есе кіші',
+  'zip.nodes': 'Түйіндер',
+  'zip.edges': 'Байланыстар',
+  'zip.wbits': 'Бір салмаққа бит',
+  'zip.readouts': 'Есептеуші нейрондар (Гц, тегістелген)',
+  'zip.col.neuron': 'Нейрон',
+  'zip.ro.mn9': 'MN9 · тұмсықша (қоректену)',
+  'zip.ro.giant_fiber': 'Алып талшық · қашу',
+  'zip.ro.adn1': 'aDN1 · мұртшаларды тазалау',
+  'zip.ro.dnp09': 'DNp09 · алға жүру',
+  'zip.ro.mdn': 'MDN · артқа жүру',
+  'zip.caveat':
+    'Қорытынды осы модель көрсете алатын әрекеттерді ғана (қоректену, қашу, тазалану, жүру) және тек қазір қосылған тітіркендіргіштер үшін салыстырады. Сығылған ми бір тітіркендіргіш үшін әрекетті сақтап, басқасы үшін жоғалтуы мүмкін — бірнешеуін байқап көріңіз.',
+  'zip.how.title': 'Көлем қалай есептеледі',
+  'zip.how.text':
+    'Көлем — симуляторға қажет, gzip-ке дейінгі битпен буып-түйілген граф: әр түйін үшін оның бірінші байланысына сілтеме, әр байланыс үшін нысана түйін мен салмақ. Дәл салмақтар — таңбасы бар бүтін синапс сандары; біріктірілген салмақтар — бөлшек, 32 биттік сан ретінде сақталады; кванттелген салмақтар таңдалған бит пен таңба битін және деңгейлердің шағын кестесін алады. Нейрон атаулары мен 3D орындары есептелмейді: симуляцияға олар қажет емес.',
+  'zip.why.title': 'Миды неге сығу керек?',
+  'zip.why.text':
+    'Миды эмуляциялау үшін компьютер оның байланыс сызбасын сақтауы керек, тіпті осы шыбын моделінде 2,7 млн байланыс бар. Үлкенірек мида олар әлдеқайда көп. Сығу мынаны сұрайды: әрекет сызбаның қандай бөлшектеріне шынымен тәуелді? Егер шыбын он есе кіші модельде де қоректеніп, қашып, тазаланса, ол бөлшектер қажет болмаған — осы әрекеттер мен осы тітіркендіргіштер үшін. Әрекетті сақтай отырып сығу — ашық зерттеу сұрағы; бұл бет оның ойыншық нұсқасы.',
+};

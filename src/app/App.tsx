@@ -1,6 +1,7 @@
 import { I18nProvider, useI18n } from '../i18n';
 import { AboutPage } from '../pages/AboutPage';
 import { ComparePage } from '../pages/ComparePage';
+import { CompressPage } from '../pages/CompressPage';
 import { ExperimentsPage } from '../pages/ExperimentsPage';
 import { LabPage } from '../pages/LabPage';
 import { IntroDialog } from './IntroDialog';
@@ -19,6 +20,7 @@ export function App() {
       <main id="main">
         {route === '/about' && <AboutPage />}
         {route === '/compare' && <ComparePage />}
+        {route === '/compress' && <CompressPage />}
         {route === '/experiments' && <ExperimentsPage open={(query) => navigate('/', query)} />}
         {/* keyed by the query so opening another experiment starts a fresh lab */}
         {route === '/' && <LabPage key={window.location.search} />}

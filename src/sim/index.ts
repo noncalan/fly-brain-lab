@@ -5,4 +5,6 @@ export { BehaviorMonitor } from './behaviors';
 export type { BehaviorRule, BehaviorState } from './behaviors';
 export { SimClient } from './client';
 export type * from './types';
-export type { ConnectomeInfo } from './protocol';
+export type { CompressionSettings, ConnectomeInfo } from './protocol';
+export { groupByTypeAndSide } from './compress';
+export type { ModelSize } from './compress';

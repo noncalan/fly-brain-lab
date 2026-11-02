@@ -90,7 +90,9 @@ describe('Simulator on synthetic networks', () => {
     expect(sim.activeEdgeCount()).toBe(2);
     sim.setPruning({ minSynapses: 10 });
     expect(sim.activeEdgeCount()).toBe(1);
-    expect(() => sim.setPruning({ minSynapses: 0 })).toThrow();
+    sim.setPruning({ minSynapses: 0 });
+    expect(sim.activeEdgeCount()).toBe(2);
+    expect(() => sim.setPruning({ minSynapses: -1 })).toThrow();
     expect(() => sim.setPruning({ weightBits: 0 })).toThrow();
   });
 

@@ -1,119 +1,22 @@
-import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import behaviorsConfig from '../../config/behaviors.json';
-import stimuliConfig from '../../config/stimuli.json';
+import { useCallback, useMemo, useState } from 'react';
 import { Panel } from '../app/shell';
-import { useSimulation, type SimFrame } from '../app/useSimulation';
 import { categoryOf } from '../content/regions';
-import type { ArenaMark, FlyDrive } from '../fly/Fly3D';
-import { locomotionFromRates, type FlyState } from '../fly/locomotion';
 import { useI18n, type StringKey } from '../i18n';
-import { indicesOfType, loadAtlas, typeCounts, type Atlas } from '../lab/atlas';
+import { loadAtlas, typeCounts, type Atlas } from '../lab/atlas';
+import { FlyColumn, StimulusChips, behaviourVerdict, type FlyMods, type FlyStats } from '../lab/FlyColumn';
 
-const Fly3D = lazy(() => import('../fly/Fly3D'));
-const NO_MARKS: ArenaMark[] = [];
 const PRUNE_STEPS = [5, 10, 20, 40, 80];
 const BIT_STEPS: Array<number | null> = [null, 8, 4, 2, 1];
-const WALK_MIN = 0.3;
-
-interface Mods {
-  lesion: string;
-  opto: string;
-  minSynapses: number;
-  weightBits: number | null;
-}
-
-/** One simulated fly: its own worker, the shared stimuli, and optional changes. Reports what it does. */
-function FlyColumn({ title, stimuli, mods, atlas, onBehaviors, onInfo }: {
-  title: string;
-  stimuli: Record<string, number>;
-  mods: Mods | null;
-  atlas: Atlas | null;
-  onBehaviors: (active: string[]) => void;
-  onInfo?: (neuronCount: number, neuropils: string[]) => void;
-}) {
-  const { t, n } = useI18n();
-  const drive = useRef<FlyDrive>({ command: { speed: 0, turnRate: 0 }, feeding: false, escape: false, grooming: false, pendingSimMs: 0 });
-  const fly = useRef<FlyState>({ x: 0, z: 0, heading: Math.PI / 2 });
-  const [active, setActive] = useState<string[]>([]);
-  const [edges, setEdges] = useState(0);
-  const onBehaviorsRef = useRef(onBehaviors);
-  onBehaviorsRef.current = onBehaviors;
-
-  const onFrame = useCallback((f: SimFrame) => {
-    const on = (id: string) => f.behaviors.find((b) => b.id === id)?.active ?? false;
-    const cmd = locomotionFromRates(f.activity.setRatesHz);
-    const d = drive.current;
-    d.command = cmd;
-    d.feeding = on('feeding');
-    d.escape = on('escape');
-    d.grooming = on('antennal_grooming');
-    d.pendingSimMs += f.activity.windowMs;
-    const list = [
-      ...behaviorsConfig.behaviors.filter((b) => on(b.id)).map((b) => b.id),
-      ...(cmd.speed > WALK_MIN ? ['walk_forward'] : []),
-      ...(cmd.speed < -WALK_MIN ? ['walk_backward'] : []),
-    ];
-    setActive((prev) => (prev.join() === list.join() ? prev : list));
-    setEdges(f.activeEdges);
-    onBehaviorsRef.current(list);
-  }, []);
-  const sim = useSimulation(onFrame);
-  const { stimulate, stimulateIndices, silenceNeuropil, clearSilence, setPruning } = sim;
-  const info = sim.load.status === 'ready' ? sim.load.info : null;
-  const loadError = sim.load.status === 'error' ? sim.load.message : null;
-
-  useEffect(() => {
-    if (info) onInfo?.(info.neuronCount, info.neuropils);
-  }, [info, onInfo]);
-  useEffect(() => {
-    if (!info) return;
-    for (const st of stimuliConfig.stimuli) stimulate(st.set, stimuli[st.id] ?? 0);
-  }, [info, stimuli, stimulate]);
-  useEffect(() => {
-    if (!info || !mods) return;
-    clearSilence();
-    if (mods.lesion) silenceNeuropil(mods.lesion);
-    stimulateIndices('cmp:opto', mods.opto && atlas ? indicesOfType(atlas, mods.opto) : [], mods.opto ? 150 : 0);
-    setPruning({ minSynapses: mods.minSynapses, weightBits: mods.weightBits });
-  }, [info, mods, atlas, clearSilence, silenceNeuropil, stimulateIndices, setPruning]);
-
-  return (
-    <Panel title={title}>
-      <div className="h-64 overflow-hidden rounded-lg sm:h-80" data-testid={mods ? 'fly-b' : 'fly-a'}>
-        {info ? (
-          <Suspense fallback={<div className="h-full animate-pulse bg-surface-2" />}>
-            <Fly3D drive={drive} state={fly} marks={NO_MARKS} label={title} />
-          </Suspense>
-        ) : (
-          <div className="flex h-full items-center justify-center p-4 text-center font-mono text-sm text-muted" role="status">
-            {loadError ? t('load.error', { message: loadError }) : t('load.parsing')}
-          </div>
-        )}
-      </div>
-      <ul className="mt-2 flex min-h-[1.75rem] flex-wrap gap-2 text-sm" aria-live="polite" data-testid={mods ? 'beh-b' : 'beh-a'}>
-        {active.length === 0 ? (
-          <li className="text-muted">{t('beh.none')}</li>
-        ) : (
-          active.map((b) => (
-            <li key={b} className="rounded-full bg-accent/15 px-2 py-0.5 text-accent">
-              {t(`beh.${b}` as StringKey)}
-            </li>
-          ))
-        )}
-      </ul>
-      {mods && info && <p className="mt-1 font-mono text-xs text-muted" data-testid="cmp-edges">{t('cmp.edges', { n: n(edges) })}</p>}
-    </Panel>
-  );
-}
 
 export function ComparePage() {
-  const { t, lang } = useI18n();
+  const { t, n, lang } = useI18n();
   const [stimuli, setStimuli] = useState<Record<string, number>>({ sugar: 150 });
-  const [mods, setMods] = useState<Mods>({ lesion: 'GNG', opto: '', minSynapses: 5, weightBits: null });
+  const [mods, setMods] = useState<FlyMods>({ lesion: 'GNG', opto: '', minSynapses: 5, weightBits: null, merge: false });
   const [atlas, setAtlas] = useState<Atlas | null>(null);
   const [neuropils, setNeuropils] = useState<string[]>([]);
   const [a, setA] = useState<string[]>([]);
   const [b, setB] = useState<string[]>([]);
+  const [edgesB, setEdgesB] = useState(0);
   const [optoQuery, setOptoQuery] = useState('');
   // fly B starts after fly A has loaded, so its connectome comes from the HTTP cache instead of a second
   // simultaneous download of the same 9.5 MB file (Chrome can fail that one with ERR_CACHE_WRITE_FAILURE)
@@ -126,11 +29,10 @@ export function ComparePage() {
   }, []);
   const onA = useCallback((x: string[]) => setA((p) => (p.join() === x.join() ? p : x)), []);
   const onB = useCallback((x: string[]) => setB((p) => (p.join() === x.join() ? p : x)), []);
+  const onStatsB = useCallback((s: FlyStats) => setEdgesB(s.model.edges), []);
   const types = useMemo(() => (atlas ? typeCounts(atlas) : []), [atlas]);
   const matches = optoQuery ? types.filter((x) => x.type.toLowerCase().includes(optoQuery.toLowerCase())).slice(0, 8) : [];
-
-  const kept = a.filter((x) => b.includes(x)).length;
-  const verdict = kept === a.length && b.length === a.length ? 'yes' : kept > 0 ? 'partly' : 'no';
+  const verdict = behaviourVerdict(a, b);
 
   return (
     <div className="mx-auto max-w-7xl space-y-4 p-4">
@@ -138,33 +40,20 @@ export function ComparePage() {
         <h1 className="text-2xl font-semibold">{t('cmp.title')}</h1>
         <p className="mt-1 max-w-3xl text-muted">{t('cmp.intro')}</p>
       </div>
-      <Panel title={t('stim.title')}>
-        <div className="flex flex-wrap gap-2">
-          {stimuliConfig.stimuli.map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              aria-pressed={s.id in stimuli}
-              onClick={() =>
-                setStimuli((p) => {
-                  const next = { ...p };
-                  if (s.id in next) delete next[s.id];
-                  else next[s.id] = s.defaultRateHz;
-                  return next;
-                })
-              }
-              className={`rounded-full border px-3 py-1 text-sm ${s.id in stimuli ? 'border-accent bg-accent text-accent-contrast' : 'border-line bg-surface-2'}`}
-            >
-              {t(`stim.${s.id}` as StringKey)}
-            </button>
-          ))}
-        </div>
-      </Panel>
+      <StimulusChips stimuli={stimuli} onChange={setStimuli} />
       <div className="grid gap-4 lg:grid-cols-2">
         <FlyColumn title={t('cmp.a')} stimuli={stimuli} mods={null} atlas={atlas} onBehaviors={onA} onInfo={onInfo} />
         <div className="space-y-4">
           {aReady ? (
-            <FlyColumn title={t('cmp.b')} stimuli={stimuli} mods={mods} atlas={atlas} onBehaviors={onB} />
+            <FlyColumn
+              title={t('cmp.b')}
+              stimuli={stimuli}
+              mods={mods}
+              atlas={atlas}
+              onBehaviors={onB}
+              onStats={onStatsB}
+              footer={<p className="mt-1 font-mono text-xs text-muted" data-testid="cmp-edges">{t('cmp.edges', { n: n(edgesB) })}</p>}
+            />
           ) : (
             <Panel title={t('cmp.b')}>
               <div className="flex h-64 items-center justify-center font-mono text-sm text-muted sm:h-80">{t('load.parsing')}</div>

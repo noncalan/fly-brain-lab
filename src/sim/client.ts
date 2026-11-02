@@ -1,4 +1,4 @@
-import type { ConnectomeInfo, FromWorker, ToWorker } from './protocol';
+import type { CompressionSettings, ConnectomeInfo, FromWorker, ToWorker } from './protocol';
 import type { NeuronConnections, PruningParams, SilenceTarget } from './types';
 
 type FrameMessage = Extract<FromWorker, { type: 'frame' }>;
@@ -77,6 +77,15 @@ export class SimClient {
 
   setPruning(params: Partial<PruningParams>): void {
     this.send({ type: 'setPruning', params });
+  }
+
+  /** Neuron → group labels for merging (copied to the worker). */
+  setGrouping(groupOf: Uint32Array, groupCount: number): void {
+    this.send({ type: 'setGrouping', groupOf, groupCount });
+  }
+
+  setCompression(settings: CompressionSettings): void {
+    this.send({ type: 'setCompression', settings });
   }
 
   /** Simulated time per real time, 0 = pause, max 1. */

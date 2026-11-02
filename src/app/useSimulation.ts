@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import behaviorsConfig from '../../config/behaviors.json';
 import { BehaviorMonitor, SimClient, type BehaviorState, type ConnectomeInfo } from '../sim';
-import type { ActivitySnapshot } from '../sim';
+import type { ActivitySnapshot, CompressionSettings, ModelSize } from '../sim';
 
 export interface SimFrame {
   activity: ActivitySnapshot;
   realtimeFactor: number;
   behaviors: BehaviorState[];
   activeEdges: number;
+  model: ModelSize;
 }
 
 export type LoadState =
@@ -32,7 +33,7 @@ export function useSimulation(onFrame: (frame: SimFrame) => void) {
     );
     const offFrame = client.on('frame', (f) => {
       const behaviors = monitorRef.current.push(f.activity);
-      onFrameRef.current({ activity: f.activity, realtimeFactor: f.realtimeFactor, behaviors, activeEdges: f.activeEdges });
+      onFrameRef.current({ activity: f.activity, realtimeFactor: f.realtimeFactor, behaviors, activeEdges: f.activeEdges, model: f.model });
     });
     const offError = client.on('error', (message) => setLoad({ status: 'error', message }));
     client.ready
@@ -70,5 +71,9 @@ export function useSimulation(onFrame: (frame: SimFrame) => void) {
     clientRef.current?.reset(1);
   }, []);
 
-  return { load, speed, setSpeed, stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence, stepOnce, reset, connections, setPruning: (p: Parameters<SimClient['setPruning']>[0]) => clientRef.current?.setPruning(p) };
+  const setPruning = useCallback((p: Parameters<SimClient['setPruning']>[0]) => clientRef.current?.setPruning(p), []);
+  const setGrouping = useCallback((groupOf: Uint32Array, groupCount: number) => clientRef.current?.setGrouping(groupOf, groupCount), []);
+  const setCompression = useCallback((s: CompressionSettings) => clientRef.current?.setCompression(s), []);
+
+  return { load, speed, setSpeed, stimulate, stimulateIndices, silenceIndices, silenceNeuropil, clearSilence, stepOnce, reset, connections, setPruning, setGrouping, setCompression };
 }

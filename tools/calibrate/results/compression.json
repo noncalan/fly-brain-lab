@@ -1,0 +1,442 @@
+{
+ "seeds": [
+  1,
+  2
+ ],
+ "durationMs": 1000,
+ "rateHz": 150,
+ "groups": 19065,
+ "generatedBy": "src/sim/compression.probe.test.ts",
+ "rows": [
+  {
+   "minSynapses": 5,
+   "weightBits": null,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 2700513,
+    "weightBits": 13,
+    "bytes": 10847442
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 78.5,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 258.5,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0.5
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 1.75,
+     "abn1": 17,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    }
+   }
+  },
+  {
+   "minSynapses": 10,
+   "weightBits": null,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 1066822,
+    "weightBits": 13,
+    "bytes": 4499483
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 71.25,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 154.5,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 7,
+     "dna02_r": 18.5
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 9.5,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    }
+   }
+  },
+  {
+   "minSynapses": 20,
+   "weightBits": null,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 366864,
+    "weightBits": 13,
+    "bytes": 1752331
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 49.5,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 71.25,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 3.5,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 12
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    }
+   }
+  },
+  {
+   "minSynapses": 40,
+   "weightBits": null,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 101739,
+    "weightBits": 13,
+    "bytes": 690158
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 52.75,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    }
+   }
+  },
+  {
+   "minSynapses": 5,
+   "weightBits": 4,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 2700513,
+    "weightBits": 5,
+    "bytes": 8146993
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 81,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 247.75,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0.125,
+     "dna02_l": 0.5,
+     "dna02_r": 0
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 1.75,
+     "abn1": 17.75,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    }
+   }
+  },
+  {
+   "minSynapses": 5,
+   "weightBits": 2,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 2700513,
+    "weightBits": 3,
+    "bytes": 7471817
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 88.5,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 18.5
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 113,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 2,
+     "dna02_r": 14
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 1.5,
+     "abn1": 28.75,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 29,
+     "dna02_r": 18.5
+    }
+   }
+  },
+  {
+   "minSynapses": 5,
+   "weightBits": 1,
+   "merge": false,
+   "size": {
+    "nodes": 139255,
+    "edges": 2700513,
+    "weightBits": 2,
+    "bytes": 7134245
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 75.25,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0.5,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    }
+   }
+  },
+  {
+   "minSynapses": 5,
+   "weightBits": null,
+   "merge": true,
+   "size": {
+    "nodes": 19065,
+    "edges": 709490,
+    "weightBits": 32,
+    "bytes": 4215919
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 115.5,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 209.75,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 2.75,
+     "dna02_l": 16.5,
+     "dna02_r": 6
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 5.5,
+     "adn1": 13,
+     "abn1": 25.75,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 7
+    }
+   }
+  },
+  {
+   "minSynapses": 5,
+   "weightBits": 4,
+   "merge": true,
+   "size": {
+    "nodes": 19065,
+    "edges": 709490,
+    "weightBits": 5,
+    "bytes": 1821454
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 105,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 228,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 1.25,
+     "dna02_l": 2.5,
+     "dna02_r": 1
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 1.5,
+     "adn1": 16.75,
+     "abn1": 27.5,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0,
+     "dna02_r": 7.5
+    }
+   }
+  },
+  {
+   "minSynapses": 20,
+   "weightBits": 4,
+   "merge": true,
+   "size": {
+    "nodes": 19065,
+    "edges": 151225,
+    "weightBits": 5,
+    "bytes": 421025
+   },
+   "meanHz": {
+    "sugar": {
+     "mn9": 128.5,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 4,
+     "dna02_r": 0
+    },
+    "looming": {
+     "mn9": 0,
+     "giant_fiber": 36.5,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0.5,
+     "mdn": 0,
+     "dna02_l": 1,
+     "dna02_r": 6.5
+    },
+    "antenna_touch": {
+     "mn9": 0,
+     "giant_fiber": 0,
+     "adn1": 0,
+     "abn1": 0,
+     "dnp09": 0,
+     "mdn": 0,
+     "dna02_l": 0.5,
+     "dna02_r": 0.5
+    }
+   }
+  }
+ ]
+}
