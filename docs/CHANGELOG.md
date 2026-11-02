@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-11-02 — Game fly (Nurik's request) and rate bars in the lab
+
+- Nurik asked for a lively fly with hunger, fear, pain and chaotic flight, and chose: keep the Lab honest and add a
+  separate, clearly labelled game. New page `/play` "Game fly": a scripted fly (`src/play/gameFly.ts`, not the brain
+  model) with six needs — hunger, thirst, fear, pain, tiredness, curiosity — and modes: wandering, standing, grooming,
+  exploring, flying, fleeing, landing, resting, looking for and eating food / water. Flight is straight stretches with
+  sudden turns, climbing and sinking, banking into turns, inside the arena and under a 30 mm ceiling. Click the fly to
+  hit it (pain + fear → it bolts), drop sugar or water, tap the floor or clap to scare it; counters for hits, meals,
+  drinks and time in the air. A banner says it is a game, not the model, and that the fly feels nothing.
+- Fly3D: optional externally set pose (game only; the lab never sets it) and a "wide" camera that follows smoothly.
+- Lab: each behaviour row now has a bar of its readout neuron's rate with a tick at the threshold.
+- Tests: 6 unit tests for the game fly, e2e for the game page.
+
 ## 2026-11-02 — v2 wrap-up
 
 - About page lists the new sources (Zheng 2018 by DOI, Herculano-Houzel 2006, Azevedo 2009, Shapson-Coe 2024, MICrONS 2025).

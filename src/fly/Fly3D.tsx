@@ -25,7 +25,27 @@ export interface FlyDrive {
   grooming: boolean;
   /** simulated ms not yet applied to the fly's position */
   pendingSimMs: number;
+  /**
+   * Game mode only: the body pose is set from outside (a script, not neurons). The actor then just draws it —
+   * legs step with `command`, wings beat while `y` is above the floor. The lab never sets this.
+   */
+  pose?: ExternalPose | null;
 }
+
+export interface ExternalPose {
+  x: number;
+  /** height above the floor, mm */
+  y: number;
+  z: number;
+  heading: number;
+  /** nose up, rad */
+  pitch: number;
+  /** right wing down, rad */
+  roll: number;
+}
+
+/** Above this height (mm) an externally posed fly counts as airborne. */
+export const AIRBORNE_MM = 0.3;
 
 export interface ArenaMark {
   id: string;
@@ -39,7 +59,13 @@ function token(name: string): THREE.Color {
   return new THREE.Color(v[0] / 255, v[1] / 255, v[2] / 255);
 }
 
-function Follow({ target, lift }: { target: MutableRefObject<FlyState>; lift: MutableRefObject<number> }) {
+/** close: the camera sits near the fly and keeps it centred; wide: farther away, follows smoothly (game flights). */
+export type CameraView = 'close' | 'wide';
+const CAMERA_START: Record<CameraView, [number, number, number]> = { close: [5, 4.5, 6.5], wide: [12, 17, 23] };
+/** fraction of the remaining offset the wide camera closes per second */
+const WIDE_FOLLOW_PER_S = 2.5;
+
+function Follow({ target, lift, view }: { target: MutableRefObject<FlyState>; lift: MutableRefObject<number>; view: CameraView }) {
   const { camera, gl } = useThree();
   const controls = useRef<OrbitControls | null>(null);
   useEffect(() => {
@@ -47,19 +73,20 @@ function Follow({ target, lift }: { target: MutableRefObject<FlyState>; lift: Mu
     c.enableDamping = true;
     c.enablePan = false;
     c.minDistance = 3;
-    c.maxDistance = 60;
+    c.maxDistance = view === 'wide' ? 140 : 60;
     c.maxPolarAngle = Math.PI * 0.48;
     controls.current = c;
     return () => c.dispose();
-  }, [camera, gl]);
-  useFrame(() => {
+  }, [camera, gl, view]);
+  useFrame((_, dtWall) => {
     const c = controls.current;
     if (!c) return;
     const t = target.current;
-    // keep the fly centred: move target and camera together so the user's orbit angle is kept
-    const dx = t.x - c.target.x;
-    const dy = lift.current * 0.85 - c.target.y;
-    const dz = t.z - c.target.z;
+    // keep the fly in view: move target and camera together so the user's orbit angle is kept
+    const k = view === 'wide' ? Math.min(1, dtWall * WIDE_FOLLOW_PER_S) : 1;
+    const dx = (t.x - c.target.x) * k;
+    const dy = (lift.current * (view === 'wide' ? 0.6 : 0.85) - c.target.y) * k;
+    const dz = (t.z - c.target.z) * k;
     c.target.x += dx;
     c.target.y += dy;
     c.target.z += dz;
@@ -96,9 +123,10 @@ function FlyActor({
     const k = Math.min(1, dtWall * 6);
     const ease = (cur: number, target: number) => cur + (target - cur) * k;
 
+    const ext = d.pose ?? null;
     // a hop starts whenever the escape behaviour (Giant Fiber above threshold) is on and the fly is on the ground
     a.pause = Math.max(0, a.pause - dtWall);
-    if (d.escape && a.takeoff < 0 && a.pause === 0) {
+    if (!ext && d.escape && a.takeoff < 0 && a.pause === 0) {
       const s = state.current;
       a.takeoff = 0;
       a.from = { x: s.x, z: s.z };
@@ -110,9 +138,13 @@ function FlyActor({
     }
 
     let lift = 0;
-    const flying = a.takeoff >= 0;
+    const flying = ext ? ext.y > AIRBORNE_MM : a.takeoff >= 0;
     const g = flying ? { frequency: 0, left: 0, right: 0 } : gaitDrive(gait, d.command.speed, d.command.turnRate);
-    if (flying) {
+    if (ext) {
+      lift = ext.y;
+      state.current = { x: ext.x, z: ext.z, heading: ext.heading };
+      if (!flying) a.phase += 2 * Math.PI * g.frequency * simS;
+    } else if (flying) {
       a.takeoff += dtWall / TAKEOFF_S;
       const t = Math.min(1, a.takeoff);
       lift = Math.sin(Math.PI * t) * TAKEOFF_HEIGHT_MM;
@@ -150,7 +182,8 @@ function FlyActor({
       const s = state.current;
       h.position.set(s.x, lift - GROUND_OFFSET_MM, s.z);
       liftOut.current = lift;
-      h.rotation.y = s.heading;
+      // forward is the rig's +x: roll turns about it, pitch about the side axis (z)
+      h.rotation.set(ext ? ext.roll : 0, s.heading, ext ? ext.pitch : 0, 'YXZ');
     }
   });
 
@@ -238,9 +271,10 @@ export interface Fly3DProps {
   onArenaClick?: (x: number, z: number) => void;
   onFlyClick?: (part: 'head' | 'body') => void;
   onModelError?: (message: string) => void;
+  view?: CameraView;
 }
 
-export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyClick, onModelError }: Fly3DProps) {
+export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyClick, onModelError, view = 'close' }: Fly3DProps) {
   const [model, setModel] = useState<FlyModelData | null>(null);
   const [gait, setGait] = useState<GaitData | null>(null);
   const lift = useRef(0);
@@ -251,7 +285,7 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
     loadGait(base).then(setGait, (e: Error) => onModelError?.(e.message));
   }, [onModelError]);
   return (
-    <Canvas shadows camera={{ position: [5, 4.5, 6.5], fov: 35, near: 0.1, far: 500 }} dpr={quality.dpr} role="img" aria-label={label} gl={{ preserveDrawingBuffer: true }} data-testid="fly-canvas">
+    <Canvas shadows camera={{ position: CAMERA_START[view], fov: 35, near: 0.1, far: 500 }} dpr={quality.dpr} role="img" aria-label={label} gl={{ preserveDrawingBuffer: true }} data-testid="fly-canvas">
       <ambientLight intensity={0.7} />
       <FollowLight target={state} castShadow={quality.shadows} />
       <Arena onPick={onArenaClick} />
@@ -269,7 +303,7 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
           <FlyActor model={model} gait={gait} drive={drive} state={state} liftOut={lift} />
         </group>
       )}
-      <Follow target={state} lift={lift} />
+      <Follow target={state} lift={lift} view={view} />
     </Canvas>
   );
 }

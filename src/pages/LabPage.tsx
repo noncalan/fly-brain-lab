@@ -325,6 +325,14 @@ export function LabPage() {
                 <span className="ml-auto font-mono text-xs text-muted">
                   {t('beh.readout', { neuron: NEURON_LABEL[b.readout] ?? b.readout, hz: n(st?.rateHz ?? 0, 1), threshold: n(b.thresholdHz, 1) })}
                 </span>
+                {/* the readout neuron's rate; the tick in the middle is the behaviour threshold */}
+                <span aria-hidden="true" className="relative mt-0.5 block h-1.5 basis-full overflow-hidden rounded-full bg-surface-2">
+                  <span
+                    className={`block h-full rounded-full ${st?.active ? 'bg-accent' : 'bg-muted/60'}`}
+                    style={{ width: `${Math.min(100, (50 * (st?.rateHz ?? 0)) / b.thresholdHz)}%` }}
+                  />
+                  <span className="absolute inset-y-0 left-1/2 w-0.5 bg-bg" />
+                </span>
               </li>
             );
           })}

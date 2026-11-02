@@ -19,6 +19,8 @@ const shots = [
   ['scale-phone', 'scale', phone, 1000, 'scale-brains'],
   ['lessons-desktop', 'lessons?l=switching', desktop, 1000, 'lesson-step'],
   ['lessons-phone', 'lessons?l=pathway', phone, 1000, 'lesson-step'],
+  ['play-desktop', 'play', desktop, 4000, 'play-mode'],
+  ['play-phone', 'play', phone, 4000, 'play-mode'],
 ];
 for (const [name, path, opts, wait, ready] of shots) {
   if (only && !name.includes(only)) continue;

@@ -3,7 +3,7 @@ import { LANGS, useI18n, type StringKey } from '../i18n';
 import { FlyIcon } from './FlyIcon';
 
 const THEME_KEY = 'fbl.theme';
-export type Route = '/' | '/experiments' | '/compare' | '/compress' | '/scale' | '/lessons' | '/about';
+export type Route = '/' | '/experiments' | '/compare' | '/compress' | '/scale' | '/lessons' | '/play' | '/about';
 const ROUTES: Array<{ path: Route; label: StringKey }> = [
   { path: '/', label: 'nav.lab' },
   { path: '/experiments', label: 'nav.experiments' },
@@ -11,6 +11,7 @@ const ROUTES: Array<{ path: Route; label: StringKey }> = [
   { path: '/compress', label: 'nav.compress' },
   { path: '/scale', label: 'nav.scale' },
   { path: '/lessons', label: 'nav.lessons' },
+  { path: '/play', label: 'nav.play' },
   { path: '/about', label: 'nav.about' },
 ];
 
