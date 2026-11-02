@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-02 — v2: lessons, quiz and teacher mode
+
+- New page `/lessons` with 6 step-by-step lessons (RU/KK/EN): what a neuron is; receptor neurons; a signal's path
+  (looming → LC4/LPLC2 → Giant Fiber → escape, and sugar → GNG → MN9); memory and the mushroom bodies (says plainly
+  that this model has fixed weights and cannot learn; demo switches on KCg-m Kenyon cells); how scientists switch
+  neurons on and off (MDN, DNp09, GNG silencing); how much a brain "weighs" in data. Steps link to live lab demos,
+  each lesson ends with a two-question quiz with explanations and a score, and lists its sources (DOIs or result
+  files). Content: `src/content/lessons.ts`; facts only from already verified sources and this model's results.
+- Teacher mode: full screen (Fullscreen API, with an overlay fallback for browsers without it), large text,
+  ← / → between steps, Esc to leave.
+- Tests: content test (three languages filled, quiz answers valid, every demo link resolves to known stimuli,
+  cell types and regions); e2e for a lesson with teacher mode and quiz score, and for the Kenyon cell demo
+  (mushroom body is the most active region).
+
 ## 2026-11-02 — v2: Scale page
 
 - New page `/scale`: neurons in a fly (139,255), a mouse (70.89 ± 10.41 million) and a human (86.1 ± 8.1 billion) on a
