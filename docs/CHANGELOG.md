@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-11-02 — Quality pass (Lighthouse)
+
+- Lighthouse on production before this pass (mobile / desktop, lab page): performance 95 / 100, accessibility 100,
+  best practices 100, SEO 91; other pages mobile performance 95–98, SEO 82.
+- Fixed SEO: `robots.txt`, `sitemap.xml` and `llms.txt` (they used to fall through to index.html); canonical URL,
+  og:url and the tab title now follow the current page.
+- Pages other than the lab load on demand (main bundle 100.8 kB gzip; lessons, scale, compress etc. in their own chunks).
+- Not fixable here: the Vercel Analytics script's cache lifetime (served by Vercel), and the 7.7 MB connectome download
+  on pages that simulate a fly (that is the model itself).
+
 ## 2026-11-02 — Less text on screen
 
 - Long notes moved behind a small "i" button (`src/app/Hint.tsx`, opens on click, closes on Esc or a click outside):

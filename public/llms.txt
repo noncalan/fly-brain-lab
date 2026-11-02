@@ -1,0 +1,14 @@
+# Fly Brain Lab
+
+> An interactive, non-commercial teaching lab: a simulated fruit-fly brain (139,255 neurons, FlyWire v783 wiring,
+> leaky integrate-and-fire model of Shiu et al. 2024) runs in the browser. Visitors give the fly stimuli and watch
+> which neurons and brain regions respond. The model is simplified and feels nothing.
+
+- [Lab](https://fly.noncalan.xyz/): stimuli, optogenetics, lesions, 3D fly and 3D brain, an "alive fly" whose body
+  runs on a script while behaviours come from neurons.
+- [Experiments](https://fly.noncalan.xyz/experiments): ready-made experiments with their published sources.
+- [Compare](https://fly.noncalan.xyz/compare): two flies side by side, one changed.
+- [Compress the brain](https://fly.noncalan.xyz/compress): how much the wiring can be compressed before behaviour changes.
+- [Scale](https://fly.noncalan.xyz/scale): fly, mouse and human brains and the data needed to map them, with sources.
+- [Lessons](https://fly.noncalan.xyz/lessons): six short lessons with quizzes and a teacher mode.
+- [About](https://fly.noncalan.xyz/about): what the model is and is not, sources and licences (FlyWire data: CC BY-NC 4.0).
