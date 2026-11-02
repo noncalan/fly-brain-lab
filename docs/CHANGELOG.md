@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-02 — One lab with an alive fly (game page merged in)
+
+- Nurik asked to merge the Lab and the Game fly into one page. `/play` is gone (page moved to `legacy/`); the Lab has
+  an "Alive fly" switch (on by default, `?life=0` turns it off). The body runs on the needs script (wandering, flying,
+  hunger, thirst, fear, pain, tiredness, curiosity); the moment the model's neurons drive a behaviour — feeding (MN9),
+  escape (Giant Fiber), grooming (aDN1), walking/turning (DNp09, MDN, DNa02) — they take over, and a badge always says
+  who moves the fly. Code: `src/play/useLife.ts` (arbitration), `src/lab/LifePanel.tsx` (needs, tools).
+- The script and the brain are coupled only through real sensory sets: a hungry fly walks to sugar, the sugar under
+  the proboscis drives the sugar taste neurons, and hunger drops only while MN9 makes the fly feed (silence the GNG
+  and the fly gives up and walks away). Water drops drive the water taste neurons; a click on the head is the antenna
+  touch (JO neurons); the Clap button is a 1 s pulse on the auditory JO neurons. Hits on the body and fear exist
+  only in the script.
+- Tests: unit tests for the feeding coupling and the take-over rule; e2e for the alive fly and `?life=0`.
+
 ## 2026-11-02 — Game fly (Nurik's request) and rate bars in the lab
 
 - Nurik asked for a lively fly with hunger, fear, pain and chaotic flight, and chose: keep the Lab honest and add a

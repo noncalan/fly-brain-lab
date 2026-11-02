@@ -35,12 +35,22 @@ export interface GameFly {
   nextTurn: number;
   pitch: number;
   roll: number;
+  /** seconds at the food without the brain feeding */
+  unfed: number;
+  /** seconds during which food is ignored (after giving up) */
+  foodCooldown: number;
   stats: { hits: number; eaten: number; drunk: number; flightS: number };
 }
 
 export interface World {
   items: Item[];
   arenaRadius: number;
+  /**
+   * In the lab the brain model decides whether the fly actually feeds (MN9 above threshold). When set, eating
+   * lowers hunger only while this is true, and a fly whose brain does not feed gives up after a while.
+   * Undefined = the script alone decides.
+   */
+  feeding?: boolean;
 }
 
 /** Tunables (per second of wall time). Chosen for a lively, readable game — not measured fly physiology. */
@@ -64,6 +74,10 @@ export const GAME = {
   curiosityDropPerS: 0.06,
   eatPerS: 0.25,
   dropUsePerS: 0.05,
+  /** a fly at food whose brain does not feed walks off after this long… */
+  giveUpS: 4,
+  /** …and ignores food for this long */
+  foodCooldownS: 15,
 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -86,6 +100,8 @@ export function createFly(rng: () => number): GameFly {
     nextTurn: 1,
     pitch: 0,
     roll: 0,
+    unfed: 0,
+    foodCooldown: 0,
     stats: { hits: 0, eaten: 0, drunk: 0, flightS: 0 },
   };
 }
@@ -126,7 +142,7 @@ function decideOnGround(f: GameFly, world: World, rng: () => number): GameFly {
   if (f.mode === 'rest' && n.fatigue > 0.25) return f;
   if (n.fatigue > 0.85) return { ...f, mode: 'rest', timer: 0 };
   if (n.thirst > 0.55 && nearest(f, world.items, 'water')) return { ...f, mode: f.mode === 'drink' ? 'drink' : 'seekWater' };
-  if (n.hunger > 0.5 && nearest(f, world.items, 'food')) return { ...f, mode: f.mode === 'eat' ? 'eat' : 'seekFood' };
+  if (n.hunger > 0.5 && f.foodCooldown <= 0 && nearest(f, world.items, 'food')) return { ...f, mode: f.mode === 'eat' ? 'eat' : 'seekFood' };
   if (FEEDING.has(f.mode) && f.timer > 0) return f;
   if (n.curiosity > 0.75 && n.fatigue < 0.6) return rng() < 0.6 ? takeOff(f, 'flight', rng) : { ...f, mode: 'explore', timer: 4 + rng() * 4 };
   if (f.timer > 0) return f;
@@ -137,14 +153,15 @@ function decideOnGround(f: GameFly, world: World, rng: () => number): GameFly {
   return { ...f, mode: 'wander', timer: 2 + rng() * 5 };
 }
 
-function updateNeeds(f: GameFly, dt: number): Needs {
+function updateNeeds(f: GameFly, dt: number, world: World): Needs {
   const n = f.needs;
+  const eating = f.mode === 'eat' && world.feeding !== false;
   const air = isAirborne(f);
   const resting = f.mode === 'rest' || f.mode === 'pause';
   const exploring = air || f.mode === 'explore';
   const fatigueRate = air ? GAME.fatigueFlyPerS : resting ? -GAME.restRecoverPerS : f.speed > 0 ? GAME.fatigueWalkPerS : 0;
   return {
-    hunger: clamp01(n.hunger + GAME.hungerPerS * dt - (f.mode === 'eat' ? GAME.eatPerS * dt : 0)),
+    hunger: clamp01(n.hunger + GAME.hungerPerS * dt - (eating ? GAME.eatPerS * dt : 0)),
     thirst: clamp01(n.thirst + GAME.thirstPerS * dt - (f.mode === 'drink' ? GAME.eatPerS * dt : 0)),
     fear: clamp01(n.fear - GAME.fearDecayPerS * dt),
     pain: clamp01(n.pain - GAME.painDecayPerS * dt),
@@ -227,6 +244,9 @@ function walk(f: GameFly, dt: number, world: World, rng: () => number): GameFly 
         timer = 1;
       }
     }
+  } else if (mode === 'eat' && world.feeding === false && f.unfed + dt > GAME.giveUpS) {
+    // the brain does not feed (e.g. the GNG is silenced): walk away and leave the food alone for a while
+    return walk({ ...f, mode: 'explore', timer: 3 + rng() * 3, unfed: 0, foodCooldown: GAME.foodCooldownS }, dt, world, rng);
   } else if (mode === 'eat' || mode === 'drink') {
     const it = nearest(f, world.items, mode === 'eat' ? 'food' : 'water');
     const need = mode === 'eat' ? f.needs.hunger : f.needs.thirst;
@@ -255,7 +275,8 @@ function walk(f: GameFly, dt: number, world: World, rng: () => number): GameFly 
 /** Advance the game fly by `dt` seconds of wall time. Food and water drops shrink in place while used. */
 export function stepFly(f: GameFly, dt: number, world: World, rng: () => number): GameFly {
   const step = Math.min(dt, 0.1); // after a stall (background tab), do not jump
-  const withNeeds = { ...f, needs: updateNeeds(f, step) };
+  const unfed = f.mode === 'eat' && world.feeding === false ? f.unfed + step : 0;
+  const withNeeds = { ...f, needs: updateNeeds(f, step, world), unfed, foodCooldown: Math.max(0, f.foodCooldown - step) };
   if (isAirborne(withNeeds)) return fly(withNeeds, step, world, rng);
   const decided = decideOnGround(withNeeds, world, rng);
   if (isAirborne(decided)) return fly(decided, step, world, rng);

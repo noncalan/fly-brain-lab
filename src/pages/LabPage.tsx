@@ -17,7 +17,10 @@ import { NeuronInspector } from '../lab/NeuronInspector';
 import { decodeState, encodeState, type LabState, type OptoTarget } from '../lab/labState';
 import { RegionBars, type RegionRate } from '../lab/RegionBars';
 import { SignalPath } from '../lab/SignalPath';
+import { LifePanel, type ArenaTool } from '../lab/LifePanel';
 import { SpikeSonifier } from '../lab/sonify';
+import { useLife, type LifeView, type NeuralDrive } from '../play/useLife';
+import { isAirborne } from '../play/gameFly';
 import { SonifyControl } from '../lab/SonifyControl';
 import { TimeControls } from '../lab/TimeControls';
 import type { BehaviorState } from '../sim';
@@ -39,7 +42,14 @@ const TOUCH_PULSE_MS = 4000;
 const MAX_QUEUED_FRAMES = 8;
 /** walking command low-pass (simulated ms): smooths frame-to-frame spike noise in the descending neurons */
 const LOCOMOTION_TAU_MS = 150;
-const ARENA_STIMULUS = { food: 'shiu_sugar_r', touch: 'jo_wind_gravity' } as const;
+const ARENA_STIMULUS = { food: 'shiu_sugar_r', water: 'grn_water', touch: 'jo_wind_gravity', sound: 'jo_auditory' } as const;
+/** = ARENA_RADIUS_MM in Fly3D (lazy-loaded, so not imported here) */
+const ARENA_MM = 60;
+/** a click on the floor this close (mm) to a fly on the ground hits it: the fly is only a few mm long */
+const HIT_MM = 4;
+/** a tap on the floor closer than this startles the fly more */
+const NEAR_TAP_MM = 12;
+const CLAP_PULSE_MS = 1000;
 const WALK_SPEED_MIN = 0.3;
 const TURN_MIN = 0.15;
 /** faster than ~1.5 recorded strides per step cycle reads as running */
@@ -79,7 +89,14 @@ export function LabPage() {
   const smoothed = useRef<Float32Array | null>(null);
   const neuropilsRef = useRef<string[]>([]);
   const drive = useRef<FlyDrive>({ command: { speed: 0, turnRate: 0 }, feeding: false, escape: false, grooming: false, pendingSimMs: 0 });
+  // what the neurons ask for; the life layer decides whether they or the body script move the fly this frame
+  const neural = useRef<NeuralDrive>({ command: { speed: 0, turnRate: 0 }, feeding: false, escape: false, grooming: false, pendingSimMs: 0 });
   const flyState = useRef<FlyState>({ x: 0, z: 0, heading: Math.PI / 2 });
+  const [life, setLife] = useState(() => new URLSearchParams(window.location.search).get('life') !== '0');
+  const [lifeView, setLifeView] = useState<LifeView | null>(null);
+  const [tool, setTool] = useState<ArenaTool>('food');
+  const [waterContact, setWaterContact] = useState(false);
+  const [clapping, setClapping] = useState(false);
   const marksRef = useRef<ArenaMark[]>([]);
   const [marks, setMarks] = useState<ArenaMark[]>([]);
   const [status, setStatus] = useState<Status | null>(null);
@@ -120,7 +137,7 @@ export function LabPage() {
     }
     regions.sort((a, b) => b.hz - a.hz);
     const on = (id: string) => f.behaviors.find((b) => b.id === id)?.active ?? false;
-    const d = drive.current;
+    const d = neural.current;
     const raw = locomotionFromRates(setRatesHz);
     const alpha = 1 - Math.exp(-windowMs / LOCOMOTION_TAU_MS);
     d.command = {
@@ -131,11 +148,13 @@ export function LabPage() {
     d.escape = on('escape');
     d.grooming = on('antennal_grooming');
     d.pendingSimMs += windowMs;
-    // taste contact: is any food mark at the proboscis tip?
+    // taste contact: is a drop at the proboscis tip? (sugar and water drive their real taste neurons)
     const s = flyState.current;
     const hx = s.x + Math.cos(s.heading) * HEAD_OFFSET_MM;
     const hz = s.z - Math.sin(s.heading) * HEAD_OFFSET_MM;
-    setFoodContact(marksRef.current.some((m) => Math.hypot(m.x - hx, m.z - hz) < CONTACT_MM));
+    const touchingKind = (kind: ArenaMark['kind']) => marksRef.current.some((m) => m.kind === kind && Math.hypot(m.x - hx, m.z - hz) < CONTACT_MM);
+    setFoodContact(touchingKind('food'));
+    setWaterContact(touchingKind('water'));
     setStatus({ timeMs: f.activity.timeMs, realtimeFactor: f.realtimeFactor, behaviors: f.behaviors, setRatesHz, regions, command: { ...d.command } });
   }, [sonifier]);
 
@@ -212,11 +231,25 @@ export function LabPage() {
   }, [foodContact, info, stimulateIndices]);
   useEffect(() => {
     if (!info) return;
+    stimulateIndices('arena:water', waterContact ? info.sets[ARENA_STIMULUS.water].indices : [], waterContact ? 150 : 0);
+  }, [waterContact, info, stimulateIndices]);
+  useEffect(() => {
+    if (!info) return;
     stimulateIndices('arena:touch', touching ? info.sets[ARENA_STIMULUS.touch].indices : [], touching ? 150 : 0);
     if (!touching) return;
     const timer = setTimeout(() => setTouching(false), TOUCH_PULSE_MS);
     return () => clearTimeout(timer);
   }, [touching, info, stimulateIndices]);
+  // a clap is a sound: a short pulse on the auditory Johnston's organ neurons
+  useEffect(() => {
+    if (!info) return;
+    stimulateIndices('arena:sound', clapping ? info.sets[ARENA_STIMULUS.sound].indices : [], clapping ? 150 : 0);
+    if (!clapping) return;
+    const timer = setTimeout(() => setClapping(false), CLAP_PULSE_MS);
+    return () => clearTimeout(timer);
+  }, [clapping, info, stimulateIndices]);
+
+  const lifeApi = useLife({ enabled: life, drive, neural, flyState, marks: marksRef, arenaRadius: ARENA_MM, onView: setLifeView });
 
   const changeState = (s: LabState) => {
     const added = Object.keys(s.stimuli).filter((id) => !(id in state.stimuli));
@@ -230,11 +263,36 @@ export function LabPage() {
     setState(s);
   };
 
-  const dropFood = useCallback((x: number, z: number) => {
-    const mark: ArenaMark = { id: `${Date.now()}`, x, z, kind: 'food' };
-    marksRef.current = [...marksRef.current.slice(-4), mark];
-    setMarks(marksRef.current);
-  }, []);
+  const onArenaClick = useCallback(
+    (x: number, z: number) => {
+      const f = flyState.current;
+      const d = Math.hypot(f.x - x, f.z - z);
+      const grounded = !lifeView || !isAirborne(lifeView.fly);
+      if (life && d < HIT_MM && grounded) {
+        lifeApi.hit(1);
+        return;
+      }
+      if (tool === 'poke') {
+        if (life) lifeApi.scare(d < NEAR_TAP_MM ? 0.8 : 0.25);
+        return;
+      }
+      const mark: ArenaMark = { id: `${Date.now()}`, x, z, kind: tool };
+      marksRef.current = [...marksRef.current.slice(-4), mark];
+      setMarks(marksRef.current);
+    },
+    [life, lifeApi, lifeView, tool],
+  );
+  const onFlyClick = useCallback(
+    (part: 'head' | 'body') => {
+      if (part === 'head') {
+        setTouching(true); // antennae: Johnston's organ neurons → aDN1 (the model's grooming reflex)
+        if (life) lifeApi.scare(0.2);
+      } else if (life) {
+        lifeApi.hit(1);
+      }
+    },
+    [life, lifeApi],
+  );
 
   const applySpeed = (s: number, p: boolean) => {
     setSpeed(s);
@@ -304,8 +362,9 @@ export function LabPage() {
               state={flyState}
               marks={marks}
               label={t('arena.label', { behaviors: activeLabels.length ? activeLabels.join(', ') : t('beh.none') })}
-              onArenaClick={dropFood}
-              onFlyClick={(part) => part === 'head' && setTouching(true)}
+              onArenaClick={onArenaClick}
+              onFlyClick={onFlyClick}
+              view={life ? 'wide' : 'close'}
             />
           </Suspense>
           {dragOver && <p className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm text-accent">{t('stim.dropHere')}</p>}
@@ -315,6 +374,21 @@ export function LabPage() {
             </p>
           )}
         </div>
+        <LifePanel
+          view={lifeView}
+          enabled={life}
+          onEnabled={setLife}
+          tool={tool}
+          onTool={setTool}
+          onClap={() => {
+            setClapping(true);
+            if (life) lifeApi.scare(0.9);
+          }}
+          onReset={() => {
+            marksRef.current = [];
+            setMarks([]);
+          }}
+        />
         <ul className="mt-3 space-y-1.5" aria-live="polite" data-testid="behaviors">
           {behaviorsConfig.behaviors.map((b) => {
             const st = status?.behaviors.find((x) => x.id === b.id);

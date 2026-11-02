@@ -70,17 +70,29 @@ test('memory lesson demo: Kenyon cell optogenetics lights up the mushroom body',
   await expect(page.getByRole('list', { name: /Activity by region now/ }).locator('li').first()).toContainText(/^MB_/, { timeout: 30_000 });
 });
 
-test('game fly: clearly labelled as a game, a clap makes it flee, a click on the fly is a hit', async ({ page }) => {
-  await page.goto('/play');
-  await expect(page.getByTestId('play-banner')).toContainText(/game/i);
-  await page.waitForTimeout(2000); // fly model loads
-  await page.getByTestId('play-clap').click();
-  await expect(page.getByTestId('play-mode')).toHaveText(/fleeing/i, { timeout: 2000 });
-  await expect(page.getByTestId('play-mode')).toHaveText(/landing|standing|wandering|grooming|exploring|flying|resting/i, { timeout: 15_000 });
-  // the wide camera keeps the fly in the middle of the arena view once it has landed
+test('alive fly in the lab: the body script moves it, neurons take over, a clap scares it, a click hits it', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByTestId('life-toggle')).toBeChecked();
+  await expect(page.getByTestId('life-needs')).toBeVisible();
+  // without a stimulus the body script moves the fly
+  await expect(page.getByTestId('life-control')).toHaveAttribute('data-control', 'script', { timeout: 10_000 });
+  await page.getByTestId('clap').click();
+  await expect(page.getByTestId('life-control')).toContainText(/fleeing/, { timeout: 3000 });
+  await expect(page.getByTestId('life-control')).not.toContainText(/fleeing|landing/, { timeout: 15_000 });
+  // the wide camera keeps the landed fly in the middle of the arena view
   await page.waitForTimeout(2500);
-  const box = (await page.getByTestId('play-arena').boundingBox())!;
+  const box = (await page.getByTestId('fly').boundingBox())!;
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  await expect(page.getByTestId('play-hits')).toHaveText('1', { timeout: 3000 });
-  await expect(page.getByTestId('play-need-pain')).not.toHaveText('0');
+  await expect(page.getByTestId('life-hits')).toHaveText('1', { timeout: 3000 });
+  // a looming shadow drives the Giant Fiber: the neurons take over
+  await page.getByTestId('stim-looming').click();
+  await expect(page.getByTestId('life-control')).toHaveAttribute('data-control', 'neurons', { timeout: 20_000 });
+});
+
+test('?life=0 leaves the fly to the neurons only', async ({ page }) => {
+  await page.goto('/?life=0');
+  await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByTestId('life-toggle')).not.toBeChecked();
+  await expect(page.getByTestId('life-control')).toHaveAttribute('data-control', 'neurons');
 });

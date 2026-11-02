@@ -10,6 +10,8 @@ final check (step 6). Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md`
 - Spike sonification under the 3D brain (clicks per spike of a chosen region).
 - `/scale`: neuron counts and EM dataset sizes, every number with DOI and location in the paper.
 - `/lessons`: 6 lessons with demos, quizzes and a full-screen teacher mode.
+- Lab "Alive fly" (default on): needs script moves the body, neurons take over when they drive a behaviour
+  (`src/play/useLife.ts`); the former `/play` page lives in `legacy/PlayPage.tsx`.
 - Mobile: shared FPS governor lowers pixel ratio / shadows / neuron points below 30 FPS; phones start at medium;
   one-row time bar (~5 % of the screen); nav scrolls on phones.
 - Tests: Vitest unit tests (+2 probes skipped by default) and the e2e suite in `e2e/` (smoke, stimuli, perf, v1, v2);

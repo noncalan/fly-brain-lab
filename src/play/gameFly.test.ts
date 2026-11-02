@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mulberry32 } from '../sim/rng';
 import { createFly, hit, isAirborne, render, stepFly, type GameFly, type Item, type World } from './gameFly';
+import { neuronsBusy } from './useLife';
 
 const DT = 1 / 60;
 
@@ -74,6 +75,20 @@ describe('game fly', () => {
     expect(f.needs.fatigue).toBeLessThan(0.3);
   });
 
+  it('in the lab, hunger drops only while the brain feeds; a fly whose brain does not feed gives up', () => {
+    const food: Item = { id: 'f', kind: 'food', x: 0.5, z: 0, amount: 1 };
+    const hungry = (rng: () => number): GameFly => ({ ...createFly(rng), heading: 0, needs: { hunger: 0.9, thirst: 0, fear: 0, pain: 0, fatigue: 0, curiosity: 0 } });
+    const rngA = mulberry32(7);
+    const fed = run(hungry(rngA), 3, { items: [{ ...food }], arenaRadius: 60, feeding: true }, rngA);
+    expect(fed.needs.hunger).toBeLessThan(0.5);
+    const rngB = mulberry32(7);
+    const modes = new Set<string>();
+    const unfed = run(hungry(rngB), 8, { items: [{ ...food }], arenaRadius: 60, feeding: false }, rngB, (x) => modes.add(x.mode));
+    expect(unfed.needs.hunger).toBeGreaterThan(0.9);
+    expect(modes.has('eat')).toBe(true);
+    expect(unfed.foodCooldown).toBeGreaterThan(0); // it walked away from food it cannot eat
+  });
+
   it('renders feeding, grooming and an airborne pose', () => {
     const rng = mulberry32(6);
     const f = createFly(rng);
@@ -82,5 +97,18 @@ describe('game fly', () => {
     const air = render({ ...f, mode: 'flight', y: 12, speed: 40 });
     expect(air.pose.y).toBe(12);
     expect(air.command.speed).toBe(0);
+  });
+});
+
+describe('neuronsBusy', () => {
+  const idle = { command: { speed: 0, turnRate: 0 }, feeding: false, escape: false, grooming: false, pendingSimMs: 0 };
+  it('is true whenever the brain drives a behaviour the body must show', () => {
+    expect(neuronsBusy(idle)).toBe(false);
+    expect(neuronsBusy({ ...idle, feeding: true })).toBe(true);
+    expect(neuronsBusy({ ...idle, escape: true })).toBe(true);
+    expect(neuronsBusy({ ...idle, grooming: true })).toBe(true);
+    expect(neuronsBusy({ ...idle, command: { speed: 2, turnRate: 0 } })).toBe(true);
+    expect(neuronsBusy({ ...idle, command: { speed: 0, turnRate: -1 } })).toBe(true);
+    expect(neuronsBusy({ ...idle, command: { speed: 0.1, turnRate: 0.05 } })).toBe(false);
   });
 });
