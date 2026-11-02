@@ -21,3 +21,5 @@ Known issues / next:
 Remaining from the plan: v2 (compress-the-brain page with model size MB, lessons + quiz + teacher mode, spike
 sonification, Scale page, mobile auto-quality), final Lighthouse/a11y pass. Gait is recorded-step playback
 (NeuroMechFly CPG style), not a physics simulation; turning and backward walking reuse the forward step.
+
+Full handoff for a fresh session: `docs/HANDOFF_PROMPT.md`.
