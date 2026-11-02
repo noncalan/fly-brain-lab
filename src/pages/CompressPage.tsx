@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import { Hint } from '../app/Hint';
 import { Panel } from '../app/shell';
 import { useI18n, type StringKey } from '../i18n';
 import { loadAtlas, type Atlas } from '../lab/atlas';
@@ -71,7 +72,13 @@ export function CompressPage() {
   return (
     <div className="mx-auto max-w-7xl space-y-4 p-4">
       <div>
-        <h1 className="text-2xl font-semibold">{t('zip.title')}</h1>
+        <h1 className="flex items-center gap-2 text-2xl font-semibold">
+          {t('zip.title')}
+          <Hint label={t('zip.why.title')}>
+            <span className="block font-semibold">{t('zip.why.title')}</span>
+            {t('zip.why.text')}
+          </Hint>
+        </h1>
         <p className="mt-1 max-w-3xl text-muted">{t('zip.intro')}</p>
       </div>
       <StimulusChips stimuli={stimuli} onChange={setStimuli} />
@@ -131,21 +138,24 @@ export function CompressPage() {
                 />
                 <span>{t('zip.merge')}</span>
               </label>
-              <p className="mt-1 text-xs text-muted">
-                {grouping ? t('zip.mergeHint', { groups: n(grouping.groupCount), neurons: n(neuronCount) }) : t('zip.mergeWait')}
+              <p className="mt-1 flex items-center gap-2 text-xs text-muted">
+                {grouping ? (
+                  <>
+                    {t('zip.nodesOf', { groups: n(grouping.groupCount), neurons: n(neuronCount) })}
+                    <Hint>{t('zip.mergeHint', { groups: n(grouping.groupCount), neurons: n(neuronCount) })}</Hint>
+                  </>
+                ) : (
+                  t('zip.mergeWait')
+                )}
               </p>
             </div>
           </div>
         </Panel>
-        <Panel title={t('zip.size')}>
+        <Panel title={t('zip.size')} aside={<Hint label={t('zip.how.title')}>{t('zip.how.text')}</Hint>}>
           <div className="grid grid-cols-2 gap-3">
             <SizeCard title={t('zip.a')} model={statsA?.model ?? null} base={null} testId="zip-size-a" />
             <SizeCard title={t('zip.b')} model={statsB?.model ?? null} base={statsA?.model ?? null} testId="zip-size-b" />
           </div>
-          <details className="mt-3 text-sm">
-            <summary className="cursor-pointer text-muted">{t('zip.how.title')}</summary>
-            <p className="mt-2 text-muted">{t('zip.how.text')}</p>
-          </details>
         </Panel>
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
@@ -161,7 +171,7 @@ export function CompressPage() {
       <p className={`rounded-lg border p-3 text-sm ${verdict === 'yes' ? 'border-accent/50 text-accent' : 'border-warn/50 text-warn'}`} role="status" data-testid="zip-verdict">
         {t(`cmp.verdict.${verdict}` as StringKey)}
       </p>
-      <Panel title={t('zip.readouts')}>
+      <Panel title={t('zip.readouts')} aside={<Hint>{t('zip.caveat')}</Hint>}>
         <table className="w-full text-sm" data-testid="zip-readouts">
           <thead>
             <tr className="text-left text-muted">
@@ -180,10 +190,6 @@ export function CompressPage() {
             ))}
           </tbody>
         </table>
-        <p className="mt-2 text-xs text-muted">{t('zip.caveat')}</p>
-      </Panel>
-      <Panel title={t('zip.why.title')}>
-        <p className="max-w-3xl text-sm text-muted">{t('zip.why.text')}</p>
       </Panel>
     </div>
   );

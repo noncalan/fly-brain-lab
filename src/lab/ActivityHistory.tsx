@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
+import { Hint } from '../app/Hint';
 import { useI18n } from '../i18n';
 import { HISTORY_MS, type History } from './history';
 
@@ -86,7 +87,9 @@ export function ActivityHistory({ history, neuropils, labels }: { history: Mutab
         </ul>
         <canvas ref={canvasRef} className="h-48 w-full rounded" role="img" aria-label={t(`hist.${mode}`)} data-testid="history-canvas" />
       </div>
-      <p className="mt-1 text-xs text-muted">{mode === 'raster' ? t('hist.rasterHint') : t('hist.heatmapHint', { s: HISTORY_MS / 1000 })}</p>
+      <div className="mt-1 flex justify-end">
+        <Hint>{mode === 'raster' ? t('hist.rasterHint') : t('hist.heatmapHint', { s: HISTORY_MS / 1000 })}</Hint>
+      </div>
     </div>
   );
 }

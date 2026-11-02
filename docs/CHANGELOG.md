@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-02 — Less text on screen
+
+- Long notes moved behind a small "i" button (`src/app/Hint.tsx`, opens on click, closes on Esc or a click outside):
+  arena and brain hints, the brain disclaimer, walking-neuron rates, the sonification note, the raster/heatmap
+  caption, the alive-fly explanation (one short line stays), and on Compress the merge note, how the size is counted,
+  the verdict caveat and "why compress" (that panel is gone). Walking states are one row of chips instead of five
+  rows. The Compress intro is one sentence.
+
 ## 2026-11-02 — One lab with an alive fly (game page merged in)
 
 - Nurik asked to merge the Lab and the Game fly into one page. `/play` is gone (page moved to `legacy/`); the Lab has

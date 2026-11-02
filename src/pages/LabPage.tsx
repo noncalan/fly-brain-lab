@@ -1,6 +1,7 @@
 import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import behaviorsConfig from '../../config/behaviors.json';
 import stimuliConfig from '../../config/stimuli.json';
+import { Hint } from '../app/Hint';
 import { Panel } from '../app/shell';
 import { NeuronCloud, type NeuronCloudHandle } from '../app/NeuronCloud';
 import { useSimulation, type SimFrame } from '../app/useSimulation';
@@ -350,7 +351,7 @@ export function LabPage() {
         <p className="mt-1 font-mono text-xs text-muted">{t('app.stats', { neurons: n(info.neuronCount), edges: n(info.edgeCount) })}</p>
       </div>
 
-      <Panel title={t('beh.title')} aside={<span className="hidden text-xs text-muted sm:inline">{t('arena.hint')}</span>}>
+      <Panel title={t('beh.title')} aside={<Hint>{t('arena.hint')}</Hint>}>
         <div
           ref={arenaRef}
           data-testid="fly"
@@ -410,18 +411,28 @@ export function LabPage() {
               </li>
             );
           })}
-          {walking.map((w) => (
-            <li key={w.id} data-active={w.on ? 'true' : 'false'} data-behavior={w.id.slice(4)} className="flex items-baseline gap-2 text-sm">
-              <span aria-hidden="true" className={`inline-block h-2.5 w-2.5 rounded-full ${w.on ? 'bg-accent' : 'bg-surface-2 ring-1 ring-line'}`} />
-              <span className={w.on ? 'font-medium' : 'text-muted'}>{t(w.id)}</span>
-            </li>
-          ))}
         </ul>
-        <p className="mt-2 font-mono text-xs text-muted" data-testid="walk-readout">
-          {t('walk.readout', { l: hz('dnp09_l'), r: hz('dnp09_r'), mdn: hz('mdn'), al: hz('dna02_l'), ar: hz('dna02_r') })} ·{' '}
-          {t('walk.speed', { v: n(Math.abs(cmd.speed), 1) })}
-        </p>
-        <p className="text-xs text-muted">{t('walk.note')}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
+          <ul className="contents" aria-live="polite">
+            {walking.map((w) => (
+              <li
+                key={w.id}
+                data-active={w.on ? 'true' : 'false'}
+                data-behavior={w.id.slice(4)}
+                className={`rounded-full px-2 py-0.5 ${w.on ? 'bg-accent/15 font-medium text-accent' : 'bg-surface-2 text-muted'}`}
+              >
+                {t(w.id)}
+              </li>
+            ))}
+          </ul>
+          <span className="ml-auto font-mono text-muted">{t('walk.speed', { v: n(Math.abs(cmd.speed), 1) })}</span>
+          <Hint>
+            <span className="block font-mono" data-testid="walk-readout">
+              {t('walk.readout', { l: hz('dnp09_l'), r: hz('dnp09_r'), mdn: hz('mdn'), al: hz('dna02_l'), ar: hz('dna02_r') })}
+            </span>
+            <span className="mt-1 block">{t('walk.note')}</span>
+          </Hint>
+        </div>
         {notReproduced.map((s) => (
           <p key={s.id} role="status" data-testid={`not-reproduced-${s.id}`} className="mt-2 rounded-md border border-warn/40 bg-warn/10 p-2 text-sm text-warn">
             {t('beh.notReproduced', { stimulus: t(`stim.${s.id}` as StringKey), behavior: s.expects.map((e) => t(`beh.${e}` as StringKey)).join(', ') })}
@@ -429,13 +440,19 @@ export function LabPage() {
         ))}
       </Panel>
 
-      <Panel title={t('brain.title')} aside={<span className="hidden text-xs text-muted sm:inline">{t('brain.hint')}</span>}>
+      <Panel
+        title={t('brain.title')}
+        aside={
+          <Hint>
+            {t('brain.hint')} {t('brain.disclaimer')}
+          </Hint>
+        }
+      >
         <div className="h-72 sm:h-96" data-testid="brain">
           <Suspense fallback={<div className="h-full animate-pulse rounded-lg bg-surface-2" />}>
             <BrainView levels={levels} activeCount={activeRegionCount} atlas={atlas} spikes={spikeQueue} selected={selected} onPickNeuron={setSelected} />
           </Suspense>
         </div>
-        <p className="mt-2 text-xs text-muted">{t('brain.disclaimer')}</p>
         <div className="mt-3">
           <SonifyControl sonifier={sonifier} neuropils={info.neuropils} suggest={() => status?.regions.find((r) => r.hz > 0.5)?.name ?? null} />
         </div>

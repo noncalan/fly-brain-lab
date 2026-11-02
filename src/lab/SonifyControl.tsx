@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Hint } from '../app/Hint';
 import { categoryOf } from '../content/regions';
 import { useI18n } from '../i18n';
 import { MAX_CLICKS_PER_SEC, type SpikeSonifier } from './sonify';
@@ -61,7 +62,8 @@ export function SonifyControl({ sonifier, neuropils, suggest }: { sonifier: Spik
             ))}
         </select>
       </label>
-      <p className="w-full text-xs text-muted">{failed ? t('snd.failed') : t('snd.hint', { max: MAX_CLICKS_PER_SEC })}</p>
+      <Hint>{t('snd.hint', { max: MAX_CLICKS_PER_SEC })}</Hint>
+      {failed && <p className="w-full text-xs text-warn">{t('snd.failed')}</p>}
     </div>
   );
 }

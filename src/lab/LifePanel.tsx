@@ -1,4 +1,5 @@
 // Controls and readouts of the "alive fly" layer in the lab: who drives the fly, the body's needs, arena tools.
+import { Hint } from '../app/Hint';
 import { useI18n, type StringKey } from '../i18n';
 import { NEEDS, type Need } from '../play/gameFly';
 import type { LifeView } from '../play/useLife';
@@ -89,7 +90,10 @@ export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onRe
           {t('play.clear')}
         </button>
       </div>
-      <p className="text-xs text-muted">{t('life.hint')}</p>
+      <p className="flex items-center gap-2 text-xs text-muted">
+        {t('life.short')}
+        <Hint>{t('life.hint')}</Hint>
+      </p>
     </div>
   );
 }
