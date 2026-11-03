@@ -1,0 +1,216 @@
+{
+ "generatedBy": "tools/brian2/brian2_reference.py",
+ "brian2Target": "numpy",
+ "neurons": 138639,
+ "edges": 2700513,
+ "minSynapses": 5,
+ "rateHz": 150.0,
+ "durationS": 1.0,
+ "data": "philshiu/Drosophila_brain_model@91bdd1e7 Completeness_783.csv, Connectivity_783.parquet",
+ "runs": [
+  {
+   "stimulus": "none",
+   "seed": 1,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 0,
+   "totalSpikes": 0,
+   "wallS": 131.2631320953369
+  },
+  {
+   "stimulus": "none",
+   "seed": 2,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 0,
+   "totalSpikes": 0,
+   "wallS": 112.6557137966156
+  },
+  {
+   "stimulus": "shiu_sugar_r",
+   "seed": 1,
+   "ratesHz": {
+    "mn9": 60.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 352,
+   "totalSpikes": 10764,
+   "wallS": 139.84280228614807
+  },
+  {
+   "stimulus": "shiu_sugar_r",
+   "seed": 2,
+   "ratesHz": {
+    "mn9": 68.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 350,
+   "totalSpikes": 10842,
+   "wallS": 100.42569541931152
+  },
+  {
+   "stimulus": "trn_heat",
+   "seed": 1,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 45.0,
+    "dna02_r": 3.0
+   },
+   "activeNeurons": 6567,
+   "totalSpikes": 348688,
+   "wallS": 3185.7313764095306
+  },
+  {
+   "stimulus": "trn_heat",
+   "seed": 2,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 50.0,
+    "dna02_r": 1.0
+   },
+   "activeNeurons": 6548,
+   "totalSpikes": 346273,
+   "wallS": 87.13623070716858
+  },
+  {
+   "stimulus": "vpn_looming",
+   "seed": 1,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 179.5,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 3.0,
+    "dna02_l": 0.0,
+    "dna02_r": 1.0
+   },
+   "activeNeurons": 985,
+   "totalSpikes": 72616,
+   "wallS": 88.05847835540771
+  },
+  {
+   "stimulus": "vpn_looming",
+   "seed": 2,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 177.5,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 1.25,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 988,
+   "totalSpikes": 72245,
+   "wallS": 84.07477951049805
+  },
+  {
+   "stimulus": "jo_wind_gravity",
+   "seed": 1,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 4.5,
+    "abn1": 20.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 957,
+   "totalSpikes": 82939,
+   "wallS": 86.5533607006073
+  },
+  {
+   "stimulus": "jo_wind_gravity",
+   "seed": 2,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 3.0,
+    "abn1": 18.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 0.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 955,
+   "totalSpikes": 83374,
+   "wallS": 91.04373168945312
+  },
+  {
+   "stimulus": "orn_dm1",
+   "seed": 1,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 42.0,
+    "dna02_r": 1.0
+   },
+   "activeNeurons": 6667,
+   "totalSpikes": 363575,
+   "wallS": 83.68730401992798
+  },
+  {
+   "stimulus": "orn_dm1",
+   "seed": 2,
+   "ratesHz": {
+    "mn9": 0.0,
+    "giant_fiber": 0.0,
+    "adn1": 0.0,
+    "abn1": 0.0,
+    "dnp09": 0.0,
+    "mdn": 0.0,
+    "dna02_l": 36.0,
+    "dna02_r": 0.0
+   },
+   "activeNeurons": 6590,
+   "totalSpikes": 363393,
+   "wallS": 91.17168188095093
+  }
+ ]
+}
