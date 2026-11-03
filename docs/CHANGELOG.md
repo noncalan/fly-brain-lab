@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-11-03 — Removed four texts (Nurik's request)
+
+- About: the "What this is not" block. Lab: the stimulus palette instruction, the alive-fly short line (its full
+  explanation stays behind the "i" next to "Alive fly"), and the "Moved by: …" badge. Who moves the fly is still
+  exposed to tests as `data-control` / `data-mode` on the alive-fly panel. Footer and intro still say the model is
+  not a living fly.
+
 ## 2026-11-03 — Final check (step 6)
 
 - Lighthouse on production after the fixes (`tools/lighthouse/results/2026-11-03.json`): mobile, all 7 pages —

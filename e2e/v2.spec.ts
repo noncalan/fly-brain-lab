@@ -76,10 +76,10 @@ test('alive fly in the lab: the body script moves it, neurons take over, a clap 
   await expect(page.getByTestId('life-toggle')).toBeChecked();
   await expect(page.getByTestId('life-needs')).toBeVisible();
   // without a stimulus the body script moves the fly
-  await expect(page.getByTestId('life-control')).toHaveAttribute('data-control', 'script', { timeout: 10_000 });
+  await expect(page.getByTestId('life')).toHaveAttribute('data-control', 'script', { timeout: 10_000 });
   await page.getByTestId('clap').click();
-  await expect(page.getByTestId('life-control')).toContainText(/fleeing/, { timeout: 3000 });
-  await expect(page.getByTestId('life-control')).not.toContainText(/fleeing|landing/, { timeout: 15_000 });
+  await expect(page.getByTestId('life')).toHaveAttribute('data-mode', 'flee', { timeout: 3000 });
+  await expect(page.getByTestId('life')).not.toHaveAttribute('data-mode', /flee|landing/, { timeout: 15_000 });
   // the wide camera keeps the landed fly in the middle of the arena view
   await page.waitForTimeout(2500);
   const box = (await page.getByTestId('fly').boundingBox())!;
@@ -87,12 +87,12 @@ test('alive fly in the lab: the body script moves it, neurons take over, a clap 
   await expect(page.getByTestId('life-hits')).toHaveText('1', { timeout: 3000 });
   // a looming shadow drives the Giant Fiber: the neurons take over
   await page.getByTestId('stim-looming').click();
-  await expect(page.getByTestId('life-control')).toHaveAttribute('data-control', 'neurons', { timeout: 20_000 });
+  await expect(page.getByTestId('life')).toHaveAttribute('data-control', 'neurons', { timeout: 20_000 });
 });
 
 test('?life=0 leaves the fly to the neurons only', async ({ page }) => {
   await page.goto('/?life=0');
   await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
   await expect(page.getByTestId('life-toggle')).not.toBeChecked();
-  await expect(page.getByTestId('life-control')).toHaveAttribute('data-control', 'neurons');
+  await expect(page.getByTestId('life')).toHaveAttribute('data-control', 'neurons');
 });

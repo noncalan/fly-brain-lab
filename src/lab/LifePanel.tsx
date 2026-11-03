@@ -27,22 +27,20 @@ export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onRe
 }) {
   const { t, n } = useI18n();
   const btn = 'rounded-md border border-line px-3 py-1 hover:border-accent';
-  const control = !enabled ? t('life.off') : view?.control === 'script' ? t('life.script', { mode: t(`play.mode.${view.fly.mode}` as StringKey) }) : t('life.neurons');
   return (
-    <div className="mt-3 space-y-3 rounded-lg border border-line p-3 text-sm" data-testid="life">
-      <div className="flex flex-wrap items-center gap-3">
+    <div
+      className="mt-3 space-y-3 rounded-lg border border-line p-3 text-sm"
+      data-testid="life"
+      // who moves the fly right now (read by tests, not shown)
+      data-control={enabled ? (view?.control ?? 'neurons') : 'neurons'}
+      data-mode={enabled && view ? view.fly.mode : ''}
+    >
+      <div className="flex flex-wrap items-center gap-2">
         <label className="flex items-center gap-2 font-medium">
           <input type="checkbox" checked={enabled} onChange={(e) => onEnabled(e.target.checked)} data-testid="life-toggle" />
           {t('life.toggle')}
         </label>
-        <span
-          className={`rounded-full px-2 py-0.5 text-xs ${enabled && view?.control === 'script' ? 'bg-surface-2 text-muted' : 'bg-accent/15 text-accent'}`}
-          aria-live="polite"
-          data-testid="life-control"
-          data-control={enabled ? (view?.control ?? 'neurons') : 'neurons'}
-        >
-          {control}
-        </span>
+        <Hint>{t('life.hint')}</Hint>
       </div>
       {enabled && view && (
         <div>
@@ -90,10 +88,6 @@ export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onRe
           {t('play.clear')}
         </button>
       </div>
-      <p className="flex items-center gap-2 text-xs text-muted">
-        {t('life.short')}
-        <Hint>{t('life.hint')}</Hint>
-      </p>
     </div>
   );
 }

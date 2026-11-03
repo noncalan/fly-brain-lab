@@ -49,7 +49,6 @@ export function StimulusPalette({ active, onToggle, onActivate, dropTarget, onDr
 
   return (
     <div>
-      <p className="mb-3 text-sm text-muted">{t('stim.hint')}</p>
       {groups.map((g) => (
         <div key={g.key} className="mb-3">
           <h3 className="mb-1.5 text-xs font-medium text-muted">{t(g.key)}</h3>

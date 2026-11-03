@@ -20,7 +20,6 @@ const en = {
   'load.parsing': 'Preparing 139,255 neurons…',
   'load.error': 'The simulation could not start: {message}',
   'stim.title': 'Stimuli',
-  'stim.hint': 'Click a stimulus or drag it onto the fly. Click again to remove it.',
   'stim.group.pleasant': 'Pleasant',
   'stim.group.danger': 'Danger response',
   'stim.sugar': 'Sugar',
@@ -75,9 +74,6 @@ const en = {
   'about.what': 'What this is',
   'about.whatText':
     'A simplified computer model that runs on the real wiring diagram of an adult fruit fly brain: 139,255 neurons and the 2.7 million strongest connections (5 or more synapses) mapped by the FlyWire Consortium. Each neuron is a leaky integrate-and-fire unit with the parameters of Shiu et al. (2024). A behaviour is shown only when specific motor or descending neurons in the simulation fire above a threshold.',
-  'about.not': 'What this is not',
-  'about.notText':
-    'It is not a living fly and not a full fly. The body, the ventral nerve cord, muscles, hormones, learning and most chemistry are missing. The model has no consciousness and feels no pain. When it fails to reproduce a known behaviour, we say so.',
   'about.credits': 'Credits',
   'about.author': 'Author',
   'about.license': 'Licence',
@@ -105,7 +101,6 @@ const ru: Dict = {
   'load.parsing': 'Готовим 139 255 нейронов…',
   'load.error': 'Симуляция не запустилась: {message}',
   'stim.title': 'Стимулы',
-  'stim.hint': 'Нажмите на стимул или перетащите его на муху. Повторное нажатие убирает стимул.',
   'stim.group.pleasant': 'Приятные',
   'stim.group.danger': 'Реакция на опасность',
   'stim.sugar': 'Сахар',
@@ -160,9 +155,6 @@ const ru: Dict = {
   'about.what': 'Что это',
   'about.whatText':
     'Упрощённая компьютерная модель, работающая на настоящей схеме связей мозга взрослой плодовой мушки: 139 255 нейронов и 2,7 млн самых сильных связей (5 и более синапсов), картированных консорциумом FlyWire. Каждый нейрон — модель «утечка-интегрирование-срабатывание» с параметрами из работы Shiu et al. (2024). Поведение показывается, только когда конкретные моторные или нисходящие нейроны в симуляции срабатывают выше порога.',
-  'about.not': 'Чем это не является',
-  'about.notText':
-    'Это не живая муха и не вся муха. Нет тела, брюшной нервной цепочки, мышц, гормонов, обучения и большей части химии. У модели нет сознания, и она не чувствует боли. Если модель не воспроизводит известное поведение, мы прямо об этом пишем.',
   'about.credits': 'Благодарности и источники',
   'about.author': 'Автор',
   'about.license': 'Лицензия',
@@ -186,7 +178,6 @@ const kk: Dict = {
   'load.parsing': '139 255 нейрон дайындалуда…',
   'load.error': 'Симуляция іске қосылмады: {message}',
   'stim.title': 'Тітіркендіргіштер',
-  'stim.hint': 'Тітіркендіргішті басыңыз немесе шыбынға сүйреп апарыңыз. Қайта басу оны алып тастайды.',
   'stim.group.pleasant': 'Жағымды',
   'stim.group.danger': 'Қауіпке жауап',
   'stim.sugar': 'Қант',
@@ -241,9 +232,6 @@ const kk: Dict = {
   'about.what': 'Бұл не',
   'about.whatText':
     'Ересек жеміс шыбыны миының нақты байланыс сызбасында жұмыс істейтін жеңілдетілген компьютерлік модель: FlyWire консорциумы картаға түсірген 139 255 нейрон және ең күшті 2,7 млн байланыс (5 және одан көп синапс). Әр нейрон Shiu et al. (2024) параметрлері бар «ағып кету-жинақтау-іске қосылу» моделі. Мінез-құлық тек симуляциядағы нақты моторлық немесе төмен түсетін нейрондар шектен жоғары іске қосылғанда көрсетіледі.',
-  'about.not': 'Бұл не емес',
-  'about.notText':
-    'Бұл тірі шыбын емес және толық шыбын емес. Дене, құрсақ нерв тізбегі, бұлшықеттер, гормондар, үйрену және химияның көп бөлігі жоқ. Модельде сана жоқ және ол ауырсынуды сезбейді. Модель белгілі мінез-құлықты қайталамаса, біз оны ашық айтамыз.',
   'about.credits': 'Алғыс және дереккөздер',
   'about.author': 'Авторы',
   'about.license': 'Лицензия',

@@ -67,10 +67,6 @@ export function AboutPage() {
         <h2 className="mb-2 text-xl font-semibold">{t('about.what')}</h2>
         <p>{t('about.whatText')}</p>
       </section>
-      <section className="rounded-xl border border-warn/40 bg-warn/10 p-4">
-        <h2 className="mb-2 text-xl font-semibold">{t('about.not')}</h2>
-        <p>{t('about.notText')}</p>
-      </section>
       <section>
         <h2 className="mb-2 text-xl font-semibold">{t('about.credits')}</h2>
         <ul className="space-y-3">
