@@ -152,3 +152,16 @@ Numbers below: `tools/calibrate/results/compression.json` (`COMPRESSION=1 npx vi
 * Reading: pruning weak edges removes grooming first (the JO → aBN1 → aDN1 path is carried by many weak edges);
   weight precision barely matters down to 4 bits; type-level merging keeps these three reflexes but changes rates,
   so it is a coarser model, not a lossless one. Only three stimuli and three readouts were tested.
+
+### 7.1 Full sweep: size vs behaviour (2026-11-03)
+
+`tools/calibrate/results/compression_sweep.json` (`COMPRESSION_SWEEP=1 npx vitest run src/sim/compression.probe.test.ts`):
+126 settings = min synapses {5, 7, 10, 14, 20, 28, 40, 56, 80} × weight bits {exact, 8, 6, 4, 3, 2, 1} × merging
+{off, on}; same stimuli, readouts and seeds as above. A behaviour counts as kept when its readout's 1 s mean rate
+passes the `config/behaviors.json` threshold (MN9 > 10 Hz under sugar, Giant Fiber > 50 Hz under looming, aDN1 > 0.5 Hz
+under antenna touch; the lab itself uses 300 ms / 1 s windows, so borderline cases can differ).
+* 23 of 126 settings keep all three behaviours. The smallest: **merge types + drop < 14 synapses + 4 bits =
+  0.63 MB (17× smaller than 10.85 MB)**; then 0.69 MB (6 bits) and 0.75 MB (8 bits) at the same pruning.
+* Grooming is the most fragile behaviour (kept in 38 settings), escape next (59), feeding the most robust (75).
+* Effects are not monotonic: fewer bits sometimes keep a behaviour that more bits lose (rates move around the
+  thresholds), so the chart on the Compress page shows every measured point, not a fitted curve.

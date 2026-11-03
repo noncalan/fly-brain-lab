@@ -4,10 +4,13 @@ import { Panel } from '../app/shell';
 import { useI18n, type StringKey } from '../i18n';
 import { loadAtlas, type Atlas } from '../lab/atlas';
 import { FlyColumn, StimulusChips, behaviourVerdict, type FlyMods, type FlyStats } from '../lab/FlyColumn';
+import { SizeBehaviourChart, type SweepRow } from '../lab/SizeBehaviourChart';
 import { groupByTypeAndSide, type ModelSize } from '../sim';
+import sweep from '../../tools/calibrate/results/compression_sweep.json';
 
-const PRUNE_STEPS = [5, 10, 20, 40, 80];
-const BIT_STEPS: Array<number | null> = [null, 8, 4, 2, 1];
+// the same grid as the size-vs-behaviour sweep (src/sim/compression.probe.test.ts)
+const PRUNE_STEPS = [5, 7, 10, 14, 20, 28, 40, 56, 80];
+const BIT_STEPS: Array<number | null> = [null, 8, 6, 4, 3, 2, 1];
 const READOUTS = ['mn9', 'giant_fiber', 'adn1', 'dnp09', 'mdn'] as const;
 
 type Settings = Pick<FlyMods, 'minSynapses' | 'weightBits' | 'merge'>;
@@ -158,6 +161,9 @@ export function CompressPage() {
           </div>
         </Panel>
       </div>
+      <Panel title={t('zip.curve.title')} aside={<Hint>{t('zip.curve.hint')}</Hint>}>
+        <SizeBehaviourChart rows={sweep.rows as SweepRow[]} current={settings} onPick={setSettings} />
+      </Panel>
       <div className="grid gap-4 lg:grid-cols-2">
         <FlyColumn title={t('zip.a')} stimuli={stimuli} mods={null} atlas={atlas} onBehaviors={onA} onInfo={onInfo} onStats={setStatsA} />
         {aReady ? (

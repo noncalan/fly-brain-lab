@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-11-03 — Size-vs-behaviour chart on Compress
+
+- Swept 126 compression settings on the real connectome (`tools/calibrate/results/compression_sweep.json`) and put
+  them on the Compress page as a chart: model size (log scale) against behaviours kept, one marker shape and colour
+  per method, a table view, hover details, and a click on a point applies that setting to fly B. Headline: the
+  smallest model that keeps feeding, escape and grooming is 0.63 MB, 17× smaller (merge types, drop < 14 synapses,
+  4 bits). Pruning and bit steps on the page now match the sweep grid. Notes: `docs/MODEL_NOTES.md` §7.1.
+- Tests: sweep consistency with `compression.json`; e2e clicks a point on the chart.
+
 ## 2026-11-03 — Removed four texts (Nurik's request)
 
 - About: the "What this is not" block. Lab: the stimulus palette instruction, the alive-fly short line (its full

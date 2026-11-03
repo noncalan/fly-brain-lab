@@ -30,6 +30,12 @@ test('compress: merged 4-bit model is smaller and keeps sugar feeding; strong-on
   const ratio = await page.getByTestId('zip-size-b-ratio').innerText();
   expect(parseFloat(ratio.replace(',', '.'))).toBeGreaterThan(3);
 
+  // the size-vs-behaviour chart: clicking a point applies that setting to fly B
+  await expect(page.getByTestId('zip-curve-best')).toContainText(/0\.63 MB/);
+  await page.getByTestId('zip-point-14-4-m').click();
+  await expect(page.getByTestId('zip-prune')).toHaveValue('3'); // 14 synapses
+  await expect(page.getByTestId('zip-merge')).toBeChecked();
+
   await page.getByTestId('zip-preset-strong').click();
   await expect(page.getByTestId('zip-merge')).not.toBeChecked();
   await expect(page.getByTestId('beh-b')).not.toContainText(/feeding/, { timeout: 30_000 });
