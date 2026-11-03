@@ -137,6 +137,10 @@ export const v2En = {
   'play.flight': 'Time in the air',
   'play.seconds': '{n} s',
   'hint.more': 'More about this',
+  'life.flies': 'Flies',
+  'life.more': 'Add a fly',
+  'life.fewer': 'Remove a fly',
+  'life.fliesHint': 'The brain model runs in the first fly. The others live on the body script only: they wander, fly, eat the same sugar, get nervous when another fly comes too close, and can be hit too.',
   'life.toggle': 'Alive fly',
   'life.needs': 'Body needs (script)',
   'life.hint':
@@ -282,6 +286,10 @@ export const v2Ru: V2Dict = {
   'play.flight': 'В воздухе',
   'play.seconds': '{n} с',
   'hint.more': 'Подробнее',
+  'life.flies': 'Мухи',
+  'life.more': 'Добавить муху',
+  'life.fewer': 'Убрать муху',
+  'life.fliesHint': 'Модель мозга работает в первой мухе. Остальные живут только по скрипту тела: бродят, летают, едят тот же сахар, нервничают, если другая муха подходит слишком близко, и их тоже можно ударить.',
   'life.toggle': 'Живая муха',
   'life.needs': 'Потребности тела (скрипт)',
   'life.hint':
@@ -424,6 +432,10 @@ export const v2Kk: V2Dict = {
   'play.flight': 'Ауада',
   'play.seconds': '{n} с',
   'hint.more': 'Толығырақ',
+  'life.flies': 'Шыбындар',
+  'life.more': 'Шыбын қосу',
+  'life.fewer': 'Шыбынды алып тастау',
+  'life.fliesHint': 'Ми моделі бірінші шыбында жұмыс істейді. Қалғандары тек дене скриптімен өмір сүреді: кезеді, ұшады, сол қантты жейді, басқа шыбын тым жақын келсе мазасызданады, оларды да ұруға болады.',
   'life.toggle': 'Тірі шыбын',
   'life.needs': 'Дене қажеттіліктері (скрипт)',
   'life.hint':

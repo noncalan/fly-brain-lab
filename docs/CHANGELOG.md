@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-11-03 — More flies in the arena
+
+- Lab, alive-fly panel: "Flies 1 + N" counter (up to 5 extra flies). The brain model runs in the first fly; the extra
+  flies live on the body script only (a full brain per fly would mean 139,255 more neurons each, too heavy for
+  phones). They arrive flying, wander, fly, eat the same sugar and drink the same water, get nervous and turn away
+  when another fly (or the main fly) comes within 4 mm, and a click hits any of them; a clap scares them all.
+  The camera switches to the wide view when there are extra flies. Code: `src/play/useFlock.ts`, `crowd()` in
+  `src/play/gameFly.ts`, extra fly rendering in `src/fly/Fly3D.tsx`.
+- Brian2 reference run (`tools/brian2/`, results `tools/brian2/results/reference.json`): an independent Brian2
+  implementation of the Shiu et al. equations on the same ≥ 5-synapse graph reproduces the heat/odour state with left
+  DNa02 ~36–50 Hz and ~6,550 active neurons, so the "left turn" comes from the model and graph, not from the browser
+  port. A quantitative engine-vs-Brian2 comparison is the next step.
+- Tests: 100 Vitest (+2 probes skipped); e2e for the fly counter.
+
 ## 2026-11-03 — Size-vs-behaviour chart on Compress
 
 - Swept 126 compression settings on the real connectome (`tools/calibrate/results/compression_sweep.json`) and put

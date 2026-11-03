@@ -96,6 +96,22 @@ test('alive fly in the lab: the body script moves it, neurons take over, a clap 
   await expect(page.getByTestId('life')).toHaveAttribute('data-control', 'neurons', { timeout: 20_000 });
 });
 
+test('more flies: up to 1 + 5 in the arena, no errors', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.goto('/');
+  await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByTestId('flies-count')).toHaveText('1');
+  for (let i = 0; i < 6; i++) await page.getByTestId('flies-plus').click({ force: true });
+  await expect(page.getByTestId('flies-count')).toHaveText('6');
+  await expect(page.getByTestId('flies-plus')).toBeDisabled();
+  await page.getByTestId('clap').click();
+  await page.waitForTimeout(3000);
+  await page.getByTestId('flies-minus').click();
+  await expect(page.getByTestId('flies-count')).toHaveText('5');
+  expect(errors).toEqual([]);
+});
+
 test('?life=0 leaves the fly to the neurons only', async ({ page }) => {
   await page.goto('/?life=0');
   await expect(page.getByTestId('stim-sugar')).toBeVisible({ timeout: 60_000 });

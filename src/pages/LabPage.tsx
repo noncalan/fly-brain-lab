@@ -20,6 +20,7 @@ import { RegionBars, type RegionRate } from '../lab/RegionBars';
 import { SignalPath } from '../lab/SignalPath';
 import { LifePanel, type ArenaTool } from '../lab/LifePanel';
 import { SpikeSonifier } from '../lab/sonify';
+import { MAX_EXTRA_FLIES, useFlock } from '../play/useFlock';
 import { useLife, type LifeView, type NeuralDrive } from '../play/useLife';
 import { isAirborne } from '../play/gameFly';
 import { SonifyControl } from '../lab/SonifyControl';
@@ -251,6 +252,9 @@ export function LabPage() {
   }, [clapping, info, stimulateIndices]);
 
   const lifeApi = useLife({ enabled: life, drive, neural, flyState, marks: marksRef, arenaRadius: ARENA_MM, onView: setLifeView });
+  const [extraFlies, setExtraFlies] = useState(0);
+  // a neighbour standing too close makes the main fly nervous too (fear builds up over about half a second)
+  const flock = useFlock({ count: extraFlies, marks: marksRef, main: flyState, arenaRadius: ARENA_MM, onCrowdMain: (dt) => life && lifeApi.scare(dt) });
 
   const changeState = (s: LabState) => {
     const added = Object.keys(s.stimuli).filter((id) => !(id in state.stimuli));
@@ -365,7 +369,10 @@ export function LabPage() {
               label={t('arena.label', { behaviors: activeLabels.length ? activeLabels.join(', ') : t('beh.none') })}
               onArenaClick={onArenaClick}
               onFlyClick={onFlyClick}
-              view={life ? 'wide' : 'close'}
+              view={life || extraFlies > 0 ? 'wide' : 'close'}
+              flock={flock.drives}
+              flockCount={extraFlies}
+              onFlockClick={flock.hit}
             />
           </Suspense>
           {dragOver && <p className="pointer-events-none absolute inset-x-0 bottom-2 text-center text-sm text-accent">{t('stim.dropHere')}</p>}
@@ -376,6 +383,9 @@ export function LabPage() {
           )}
         </div>
         <LifePanel
+          extraFlies={extraFlies}
+          maxExtraFlies={MAX_EXTRA_FLIES}
+          onExtraFlies={(k) => setExtraFlies(Math.max(0, Math.min(MAX_EXTRA_FLIES, k)))}
           view={lifeView}
           enabled={life}
           onEnabled={setLife}
@@ -384,6 +394,7 @@ export function LabPage() {
           onClap={() => {
             setClapping(true);
             if (life) lifeApi.scare(0.9);
+            flock.scareAll(0.9);
           }}
           onReset={() => {
             marksRef.current = [];

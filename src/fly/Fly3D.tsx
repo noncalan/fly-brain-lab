@@ -272,9 +272,42 @@ export interface Fly3DProps {
   onFlyClick?: (part: 'head' | 'body') => void;
   onModelError?: (message: string) => void;
   view?: CameraView;
+  /** extra flies drawn from externally set poses (game layer); the camera keeps following the main fly */
+  flock?: MutableRefObject<FlyDrive[]>;
+  flockCount?: number;
+  onFlockClick?: (index: number) => void;
 }
 
-export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyClick, onModelError, view = 'close' }: Fly3DProps) {
+const IDLE_DRIVE: FlyDrive = { command: { speed: 0, turnRate: 0 }, feeding: false, escape: false, grooming: false, pendingSimMs: 0, pose: null };
+
+/** One extra fly: its own rig and state, its drive read from the shared flock array. */
+function FlockFly({ index, flock, model, gait, onClick }: { index: number; flock: MutableRefObject<FlyDrive[]>; model: FlyModelData; gait: GaitData; onClick?: (i: number) => void }) {
+  const drive = useMemo<MutableRefObject<FlyDrive>>(
+    () => ({
+      get current() {
+        return flock.current[index] ?? IDLE_DRIVE;
+      },
+      set current(v) {
+        flock.current[index] = v;
+      },
+    }),
+    [flock, index],
+  );
+  const state = useRef<FlyState>({ x: 0, z: 0, heading: 0 });
+  const lift = useRef(0);
+  return (
+    <group
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.(index);
+      }}
+    >
+      <FlyActor model={model} gait={gait} drive={drive} state={state} liftOut={lift} />
+    </group>
+  );
+}
+
+export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyClick, onModelError, view = 'close', flock, flockCount = 0, onFlockClick }: Fly3DProps) {
   const [model, setModel] = useState<FlyModelData | null>(null);
   const [gait, setGait] = useState<GaitData | null>(null);
   const lift = useRef(0);
@@ -303,6 +336,7 @@ export default function Fly3D({ drive, state, marks, label, onArenaClick, onFlyC
           <FlyActor model={model} gait={gait} drive={drive} state={state} liftOut={lift} />
         </group>
       )}
+      {model && gait && flock && Array.from({ length: flockCount }, (_, i) => <FlockFly key={i} index={i} flock={flock} model={model} gait={gait} onClick={onFlockClick} />)}
       <Follow target={state} lift={lift} view={view} />
     </Canvas>
   );

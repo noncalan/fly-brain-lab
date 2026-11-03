@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { mulberry32 } from '../sim/rng';
-import { createFly, hit, isAirborne, render, stepFly, type GameFly, type Item, type World } from './gameFly';
+import { PERSONAL_MM, createFly, crowd, hit, isAirborne, render, stepFly, type GameFly, type Item, type World } from './gameFly';
 import { neuronsBusy } from './useLife';
 
 const DT = 1 / 60;
@@ -110,5 +110,31 @@ describe('neuronsBusy', () => {
     expect(neuronsBusy({ ...idle, command: { speed: 2, turnRate: 0 } })).toBe(true);
     expect(neuronsBusy({ ...idle, command: { speed: 0, turnRate: -1 } })).toBe(true);
     expect(neuronsBusy({ ...idle, command: { speed: 0.1, turnRate: 0.05 } })).toBe(false);
+  });
+});
+
+describe('crowd', () => {
+  it('two flies on the ground too close to each other get nervous, turn apart, and separate or take off', () => {
+    const rng = mulberry32(8);
+    let flies: GameFly[] = [
+      { ...createFly(rng), x: 0, z: 0, heading: 0, needs: { hunger: 0, thirst: 0, fear: 0, pain: 0, fatigue: 0, curiosity: 0 } },
+      { ...createFly(rng), x: 2, z: 0, heading: Math.PI, needs: { hunger: 0, thirst: 0, fear: 0, pain: 0, fatigue: 0, curiosity: 0 } },
+    ];
+    flies = crowd(flies, 0.1);
+    expect(flies[0].needs.fear).toBeGreaterThan(0);
+    expect(Math.cos(flies[0].targetHeading)).toBeLessThan(0); // fly 0 turns away from fly 1 (which is at +x)
+    let resolved = false;
+    for (let t = 0; t < 3; t += DT) {
+      flies = crowd(flies.map((f) => stepFly(f, DT, { items: [], arenaRadius: 60 }, rng)), DT);
+      if (flies.some(isAirborne) || Math.hypot(flies[0].x - flies[1].x, flies[0].z - flies[1].z) > PERSONAL_MM) resolved = true;
+    }
+    expect(resolved).toBe(true);
+  });
+
+  it('ignores flies far apart and counts extra neighbours such as the brain-driven fly', () => {
+    const rng = mulberry32(9);
+    const lone = { ...createFly(rng), x: 0, z: 0, needs: { hunger: 0, thirst: 0, fear: 0, pain: 0, fatigue: 0, curiosity: 0 } };
+    expect(crowd([lone, { ...lone, x: 30 }], 0.1)[0].needs.fear).toBe(0);
+    expect(crowd([lone], 0.1, [{ x: 1, z: 0 }])[0].needs.fear).toBeGreaterThan(0);
   });
 });

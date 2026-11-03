@@ -283,6 +283,34 @@ export function stepFly(f: GameFly, dt: number, world: World, rng: () => number)
   return walk(decided, step, world, rng);
 }
 
+/** Flies on the ground closer than this (mm) bother each other. */
+export const PERSONAL_MM = 4;
+/** fear per second while another fly is too close: about half a second of crowding makes one take off */
+const CROWD_FEAR_PER_S = 1;
+
+/**
+ * Flies notice each other: a fly on the ground with a neighbour closer than PERSONAL_MM gets nervous and turns away.
+ * `neighbours` are extra positions that are not in `flies` (e.g. the brain-driven fly).
+ */
+export function crowd(flies: GameFly[], dt: number, neighbours: Array<{ x: number; z: number }> = []): GameFly[] {
+  const others = [...flies.filter((f) => !isAirborne(f)).map((f) => ({ x: f.x, z: f.z, self: f })), ...neighbours.map((p) => ({ ...p, self: null }))];
+  return flies.map((f) => {
+    if (isAirborne(f)) return f;
+    let best: { x: number; z: number } | null = null;
+    let bd = PERSONAL_MM;
+    for (const o of others) {
+      if (o.self === f) continue;
+      const d = Math.hypot(o.x - f.x, o.z - f.z);
+      if (d < bd) {
+        bd = d;
+        best = o;
+      }
+    }
+    if (!best) return f;
+    return { ...f, targetHeading: headingTo(f, best.x, best.z) + Math.PI, needs: { ...f.needs, fear: clamp01(f.needs.fear + CROWD_FEAR_PER_S * dt) } };
+  });
+}
+
 /** A hit or poke on the fly: pain and fear jump, and the fly bolts. */
 export function hit(f: GameFly, strength: number): GameFly {
   const s = clamp01(strength);

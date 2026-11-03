@@ -16,7 +16,7 @@ const NEED_COLOR: Record<Need, string> = {
   curiosity: '#2f9e55',
 };
 
-export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onReset }: {
+export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onReset, extraFlies, maxExtraFlies, onExtraFlies }: {
   view: LifeView | null;
   enabled: boolean;
   onEnabled: (on: boolean) => void;
@@ -24,6 +24,9 @@ export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onRe
   onTool: (t: ArenaTool) => void;
   onClap: () => void;
   onReset: () => void;
+  extraFlies: number;
+  maxExtraFlies: number;
+  onExtraFlies: (n: number) => void;
 }) {
   const { t, n } = useI18n();
   const btn = 'rounded-md border border-line px-3 py-1 hover:border-accent';
@@ -41,6 +44,19 @@ export function LifePanel({ view, enabled, onEnabled, tool, onTool, onClap, onRe
           {t('life.toggle')}
         </label>
         <Hint>{t('life.hint')}</Hint>
+        <div className="ml-auto flex items-center gap-1.5" role="group" aria-label={t('life.flies')}>
+          <span className="text-muted">{t('life.flies')}</span>
+          <button type="button" className="h-7 w-7 rounded-md border border-line hover:border-accent disabled:opacity-40" onClick={() => onExtraFlies(extraFlies - 1)} disabled={extraFlies === 0} aria-label={t('life.fewer')} data-testid="flies-minus">
+            −
+          </button>
+          <span className="min-w-[2.5rem] text-center font-mono" data-testid="flies-count" aria-live="polite">
+            {1 + extraFlies}
+          </span>
+          <button type="button" className="h-7 w-7 rounded-md border border-line hover:border-accent disabled:opacity-40" onClick={() => onExtraFlies(extraFlies + 1)} disabled={extraFlies >= maxExtraFlies} aria-label={t('life.more')} data-testid="flies-plus">
+            +
+          </button>
+          <Hint>{t('life.fliesHint')}</Hint>
+        </div>
       </div>
       {enabled && view && (
         <div>
