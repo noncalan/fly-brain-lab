@@ -1,6 +1,8 @@
 /legacy/
 /data/
-/tools/
+/tools/*
+# the Compress page imports tools/calibrate/results/compression_sweep.json at build time
+!/tools/calibrate/
 /e2e/
 /docs/
 /test-results/
